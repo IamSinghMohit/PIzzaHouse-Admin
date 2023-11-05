@@ -35,7 +35,7 @@ function Layout() {
             <Navbar />
             <div className="flex">
                 <TabList />
-                <div className="layout sm:h-full p-2 flex-grow">
+                <div className="layout sm:h-full p-2 pt-1 flex-grow">
                     <BreadCrumbs />
                     <Outlet />
                 </div>

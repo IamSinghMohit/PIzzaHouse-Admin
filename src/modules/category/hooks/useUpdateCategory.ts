@@ -4,9 +4,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
-async function createCategory(data: any): Promise<string> {
+async function updateCategory(data: any): Promise<string> {
     return await axios
-        .post("/category/create", data, {
+        .put("/category/update", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -14,15 +14,16 @@ async function createCategory(data: any): Promise<string> {
         .then((res) => res.data);
 }
 
-export function useCreateCategory() {
+export function useUpdateCategory() {
     const qeryClient = useQueryClient();
     return useMutation({
-        mutationKey: ["category", "create"],
-        mutationFn: createCategory,
+        mutationKey: ["category", "update"],
+        mutationFn:  updateCategory,
         onSuccess: () => {
             qeryClient.invalidateQueries({
                 queryKey: ["category"],
             });
+            toast.success('category updated')
         },
         onError:(err:AxiosError<BackendError>) =>  {
             toast.error(err.response?.data.error);

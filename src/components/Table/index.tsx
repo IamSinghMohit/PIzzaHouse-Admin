@@ -16,9 +16,9 @@ interface Props {
     classsName?: string;
     columns: Array<{ name: string }>;
     data: CategorySchemaType[];
-    onEditClick: (cat: CategorySchemaType) => void;
-    onViewClick: (cat: CategorySchemaType) => void;
-    onDeleteClick: (cat: CategorySchemaType) => void;
+    onEditClick?: (cat: CategorySchemaType) => void;
+    onViewClick?: (cat: CategorySchemaType) => void;
+    onDeleteClick?: (cat: CategorySchemaType) => void;
 }
 
 function AppTable({

@@ -6,6 +6,11 @@ const initialState: CategorySliceInitialState = {
     categoryArray: [],
     fetchedCategoryAttr: [],
     currentSelectedCategory: null,
+    updatedFields: {
+        name: false,
+        image: false,
+        price_attributes: false,
+    },
 };
 
 export const CategorySlice = createSlice({
@@ -56,6 +61,27 @@ export const CategorySlice = createSlice({
         mutatePriceAttr(state, action: PayloadAction<Attribute[]>) {
             state.categoryArray = action.payload;
         },
+
+        setUpdatedFields(
+            state,
+            action: PayloadAction<"name" | "image" | "price_attributes">
+        ) {
+            switch (action.payload) {
+                case "image":
+                    state.updatedFields.image = true;
+                    break;
+                case "name":
+                    state.updatedFields.name = true;
+                    break;
+                case "price_attributes":
+                    state.updatedFields.price_attributes = true;
+                    break;
+                default:
+                    null;
+            }
+        },
+
+
     },
 });
 
@@ -64,5 +90,6 @@ export const {
     updateAttribute,
     deleteAttribute,
     mutatePriceAttr,
+    setUpdatedFields,
     setCurrentSelectedCategory,
 } = CategorySlice.actions;

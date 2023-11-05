@@ -1,28 +1,33 @@
-import { Tabs, Tab } from "@nextui-org/react";
+import { Tabs, Tab, Button } from "@nextui-org/react";
 import TabIcon from "./TabIcon";
 import { Link, useLocation } from "react-router-dom";
 import { TAB } from "@/data/tab";
 import { IoClose } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setNavOpen } from "@/store/features/userSlice";
+import {  setNavOpen } from "@/store/features/userSlice";
+import { useRef } from "react";
 
 interface Props {}
 
 function TabList({}: Props) {
     const location = useLocation();
     const { isNavOpen } = useAppSelector((state) => state.user);
+    const buttonRef = useRef<HTMLButtonElement | null>(null)
     const dispatch = useAppDispatch();
     return (
         <>
             {isNavOpen && (
-                <div
-                    className="text-white text-4xl absolute top-2 right-2 z-40 mb-3 "
+                <Button
+                    className="text-white text-4xl absolute top-2 right-2 z-40 mb-3  bg-transparent"
                     onClick={() => dispatch(setNavOpen())}
+                    ref={buttonRef}
+                    isIconOnly
                 >
                     <IoClose />
-                </div>
+                </Button>
             )}
             <Tabs
+                onSelectionChange={() => buttonRef.current?.click()}
                 classNames={{
                     cursor: "w-full bg-transparent sm:bg-primaryOrange",
                     tabList: "flex flex-col p-0 bg-primaryOrange",

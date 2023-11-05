@@ -10,12 +10,17 @@ import Orders from "./modules/orders";
 import CreateCategory from "./modules/category/pages/CreateCategory";
 import { Toaster } from "sonner";
 import CreateProduct from "./modules/products/pages/CreateProduct";
+import { SocketContextProvider } from "./socketContext";
 
 const App = () => {
     const router = createBrowserRouter([
         {
-            // path: "",
-            element: <Layout />,
+            element: (
+                <SocketContextProvider>
+                    {" "}
+                    <Layout />
+                </SocketContextProvider>
+            ),
             children: [
                 {
                     path: "/",
@@ -35,7 +40,7 @@ const App = () => {
                 },
                 {
                     path: "products/create",
-                    element: <CreateProduct/>,
+                    element: <CreateProduct />,
                 },
                 {
                     path: "topings",
@@ -54,7 +59,7 @@ const App = () => {
     ]);
     return (
         <div className="max-w-[1536px] mx-auto">
-            <Toaster closeButton position="top-right" richColors/>
+            <Toaster closeButton position="top-right" richColors />
             <RouterProvider router={router} />
         </div>
     );

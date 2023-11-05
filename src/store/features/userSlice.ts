@@ -23,10 +23,19 @@ export const UserSlice = createSlice({
             state.isTriedToAutoLogin = action.payload;
         },
 
-        setNavOpen(state){
-            state.isNavOpen = !state.isNavOpen 
-        }
+        setNavOpen(state) {
+            state.isNavOpen = !state.isNavOpen;
+        },
+        mutateNavOpen(state, action: PayloadAction<boolean>) {
+            state.isNavOpen = action.payload;
+        },
     },
 });
 // export default UserSlice.reducer;
-export const { setUser, removeUser, setTriedToLogin ,setNavOpen} = UserSlice.actions;
+export const {
+    setUser,
+    removeUser,
+    setTriedToLogin,
+    setNavOpen,
+    mutateNavOpen,
+} = UserSlice.actions;

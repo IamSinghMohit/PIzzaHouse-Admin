@@ -10,7 +10,6 @@ import {
     Chip,
 } from "@nextui-org/react";
 import useCategoryAttributes from "../hooks/useCategoryAttributes";
-import { CategorySchemaType } from "../schema";
 import { useAppSelector } from "@/hooks/state";
 
 interface Props {
@@ -33,7 +32,9 @@ function ViewCategory({ open, setModalOpen}: Props) {
         <>
             <UiModal ref={modalRef} size="5xl" bodyClassName="flex-col sm:flex-row" onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center gap-2 justify-center">
-                    <Image src={category?.image} />
+                    <Image src={category?.image}  isZoomed classNames={{
+                        wrapper:'border-2 border-primaryOrange w-4/5'
+                    }}/>
                     <Chip
                         className=""
                         variant="bordered"

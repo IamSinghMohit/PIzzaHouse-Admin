@@ -14,6 +14,8 @@ import Cropper, { Point, Area } from "react-easy-crop";
 import getCroppedImg from "@/components/ImageUploader/helper/getCroppedImage";
 import IconWrapper from "../IconWrapper";
 import { ModalRefType } from "@/schema/modal";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { setUpdatedFields } from "@/store/features/categorySlice";
 
 interface Props {
     Image: string;
@@ -35,6 +37,8 @@ function ImageUploader(
         x: 0,
         y: 0,
     });
+    const { updatedFields } = useAppSelector((state) => state.category);
+    const dispatch = useAppDispatch();
 
     const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -59,18 +63,22 @@ function ImageUploader(
 
             if (croppedImage) {
                 setImage(croppedImage);
+                if (!updatedFields.image) {
+                    dispatch(setUpdatedFields("image"));
+                }
             }
+
         } catch (e) {
             console.log(e);
         }
     };
 
-    const { isOpen, onOpen, onOpenChange ,onClose} = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
     useImperativeHandle(
         ref,
         () => {
-            return { onOpen, isOpen ,onClose};
+            return { onOpen, isOpen, onClose };
         },
         []
     );

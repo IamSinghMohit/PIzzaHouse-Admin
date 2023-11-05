@@ -1,4 +1,9 @@
 import { AttributeSchemaType, CategorySchemaType } from "@/modules/category/schema";
+export interface UpdatedFields{
+    image:boolean;
+    name:boolean;
+    price_attributes:boolean;
+}
 
 export interface SubAttribute {
     id: string;
@@ -19,4 +24,5 @@ export interface CategorySliceInitialState {
     categoryArray: Attribute[];
     fetchedCategoryAttr:AttributeSchemaType;
     currentSelectedCategory:CategorySchemaType | null;
+    updatedFields: UpdatedFields
 }

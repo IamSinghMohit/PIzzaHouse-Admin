@@ -4,6 +4,7 @@ interface Props {
     baseClassName?:string;
     inputClassName?:string;
     buttonClassName?:string;
+    inputEvents?:React.HTMLProps<HTMLInputElement>
 }
 
 function SearchField({baseClassName,buttonClassName,inputClassName}: Props) {
@@ -12,6 +13,7 @@ function SearchField({baseClassName,buttonClassName,inputClassName}: Props) {
             <input
                 type="text"
                 className={`w-[250px] active:outline-none focus:outline-none px-2 bg-white ${inputClassName}`}
+                {...InputEvent}
             />
             <Button isIconOnly radius="none" className={`bg-gray-100 border-l-2 h-full ${buttonClassName}`}>
                 <BiSearch />
