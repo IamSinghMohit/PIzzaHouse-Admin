@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import  { Dispatch, SetStateAction} from "react";
 import { useCategory } from "@/modules/category/hooks/useCategory";
-import { Select, SelectItem, Selection } from "@nextui-org/react";
-import useCategoryAttributes from "@/modules/category/hooks/useCategoryAttributes";
+import { Select, SelectItem, } from "@nextui-org/react";
+import { useCategoryAttributes } from "@/modules/category/hooks";
 
 interface Props {
     setValue: Dispatch<SetStateAction<string>>;

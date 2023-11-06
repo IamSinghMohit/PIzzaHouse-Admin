@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import RenderAttribute from "../components/RenderAttribute";
 import ImageUploader from "@/components/ImageUploader";
 import CategoryAttribute from "../components/CategoryAttribute";
-import { useCreateCategory } from "../hooks/useCreateCategory";
 import { useState } from "react";
 import { ProcessedImageType } from "@/schema/ImageUploader";
 import { Navigate, useParams } from "react-router-dom";
@@ -20,27 +19,22 @@ import {
     setUpdatedFields,
 } from "@/store/features/categorySlice";
 import { Attribute } from "@/schema/categorySlice";
-import useCategoryAttributes from "../hooks/useCategoryAttributes";
 import { useEffect } from "react";
-import { useSocketContext } from "@/socketContext";
-import { useUpdateCategory } from "../hooks/useUpdateCategory";
-// import CategoryContextProvider from "../context";
+import { useCategoryAttributes,useCreateCategory,useUpdateCategory } from "../hooks";
+import { FormDataUpdate } from "@/utils";
+import { toast } from "sonner";
 
 function CreateCategory() {
-    const socket = useSocketContext()
-    // socket.on('uploading_image',() => {
-
-    // })
-    const { type } = useParams();
+    const { type :pageType } = useParams();
     const dispatch = useAppDispatch();
     const queryClient = useQueryClient();
     const category = useAppSelector(
         (state) => state.category.currentSelectedCategory
     );
-    if (!category && type === "update") {
+    if (!category && pageType === "update") {
         return <Navigate to="/category" />;
     }
-// fetching attributes if they are not in state
+    // fetching attributes if they are not in state
     const [id, setId] = useState("");
     const { data, isLoading } = useCategoryAttributes(id);
     const categoryAtt = queryClient.getQueryState<Attribute[]>([
@@ -48,8 +42,11 @@ function CreateCategory() {
         "attribute",
         category && category.id,
     ]);
-// for udpating the cateogry 
-const {mutate:updateCategory,isPending:UpdatePending} = useUpdateCategory()
+    // for udpating the cateogry
+    const {
+        mutate: updateCategory,
+        isPending: UpdatePending,
+    } = useUpdateCategory();
 
     const { categoryArray, updatedFields } = useAppSelector(
         (state) => state.category
@@ -62,30 +59,39 @@ const {mutate:updateCategory,isPending:UpdatePending} = useUpdateCategory()
     });
 
     function handleCreate() {
-        const form = new FormData();
-        form.append("image", processedImage.file as Blob);
-        form.append("name", name);
-        form.append("json", JSON.stringify(categoryArray));
-        mutate(form);
+        if(!processedImage.file){
+           return toast.error('image is required')
+        }
+        FormDataUpdate(
+            {
+                image: processedImage.file,
+                name: name,
+                json: JSON.stringify(categoryArray),
+            },
+            mutate
+        );
     }
-    function handleUpdate(){
-        const form = new FormData()
-        if(category){
-            form.append("id",category.id)
-            form.append("is_name_update",`${updatedFields.name}`)
-            form.append("is_image_update",`${updatedFields.image}`)
-            form.append("is_price_attributes_update",`${updatedFields.price_attributes}`)
-            form.append("name",name)
-            form.append("image",processedImage.file as Blob)
-            form.append('json',JSON.stringify(categoryArray))
-            updateCategory(form)
+    function handleUpdate() {
+        if (category) {
+            FormDataUpdate(
+                {
+                    id: category.id,
+                    is_name_update: `${updatedFields.name}`,
+                    is_image_update: `${updatedFields.image}`,
+                    is_price_attributes_update: `${updatedFields.price_attributes}`,
+                    name: name,
+                    image: processedImage.file,
+                    json: JSON.stringify(categoryArray),
+                },
+                updateCategory
+            );
         }
     }
 
     useEffect(() => {
-        if (type === "update" && categoryAtt?.data) {
+        if (pageType === "update" && categoryAtt?.data) {
             dispatch(mutatePriceAttr(categoryAtt?.data));
-        } else if (type === "update") {
+        } else if (pageType === "update") {
             setId(category?.id || "");
         }
     }, []);
@@ -153,7 +159,11 @@ const {mutate:updateCategory,isPending:UpdatePending} = useUpdateCategory()
                                 )}
                             </div>
                             <Button
-                                onPress={ type == 'create' ? handleCreate : handleUpdate }
+                                onPress={
+                                    pageType == "create"
+                                        ? handleCreate
+                                        : handleUpdate
+                                }
                                 className="w-[100px] bg-primaryOrange text-white self-end mt-auto"
                                 isLoading={isPending || UpdatePending}
                             >

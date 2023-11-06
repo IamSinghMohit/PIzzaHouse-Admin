@@ -6,6 +6,7 @@ import {
     TableRow,
     TableCell,
     Avatar,
+    Spinner,
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
 import { uuid } from "@/utils/uuid";
@@ -16,9 +17,11 @@ interface Props {
     classsName?: string;
     columns: Array<{ name: string }>;
     data: CategorySchemaType[];
-    onEditClick?: (cat: CategorySchemaType) => void;
-    onViewClick?: (cat: CategorySchemaType) => void;
-    onDeleteClick?: (cat: CategorySchemaType) => void;
+    onEditClick: (cat: CategorySchemaType) => void;
+    onViewClick: (cat: CategorySchemaType) => void;
+    onDeleteClick: (cat: CategorySchemaType) => void;
+    emptyContent: string;
+    isLoading: boolean;
 }
 
 function AppTable({
@@ -28,16 +31,30 @@ function AppTable({
     onEditClick,
     onViewClick,
     onDeleteClick,
+    emptyContent,
+    isLoading,
 }: Props) {
+    const shouldRenderData:any = data && !isLoading;
     return (
-        <Table aria-label="Prodcut table" layout="auto" className={classsName}>
+        <Table
+            aria-label="Prodcut table"
+            layout="auto"
+            className={classsName}
+            classNames={{
+                table: `${isLoading && "min-h-[250px]"}`,
+            }}
+        >
             <TableHeader>
                 {columns.map(({ name }) => (
                     <TableColumn key={`${uuid()}`}>{name}</TableColumn>
                 ))}
             </TableHeader>
-            <TableBody emptyContent={"No product found, 🔥create one"}>
-                {data &&
+            <TableBody
+                emptyContent={!isLoading && emptyContent}
+                isLoading={isLoading}
+                loadingContent={<Spinner label="Loading..." />}
+            >
+                {shouldRenderData &&
                     data.map((cat, index) => (
                         <TableRow key={`${index + 1}`}>
                             <TableCell>

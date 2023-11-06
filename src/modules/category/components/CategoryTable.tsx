@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppTable from "@/components/Table";
 import { CategoryColumns } from "@/data/cateogry-table";
 import { useCategory } from "../hooks/useCategory";
@@ -9,21 +9,29 @@ import DeleteAlart from "@/components/DeleteAlert";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
+import { toast } from "sonner";
 
 interface Props {}
 
 function CategoryTable({}: Props) {
-    const { data = [] } = useCategory();
+    const { data = [], isLoading, isError } = useCategory();
     const { mutate } = useDeleteCategory();
-    const category = useAppSelector((state) => state.category.currentSelectedCategory)
-    
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [viewModalOpen,setViewModalOpen] = useState(false)
-    const navigate = useNavigate()
-    const dispatch = useAppDispatch()
+    const category = useAppSelector(
+        (state) => state.category.currentSelectedCategory
+    );
+    const {
+        fetchedCategories,
+        startedSearching,
+        isLoading: searchCategoryLoading,
+    } = useAppSelector((state) => state.search.categories);
 
-    function handleSetCategory(cat:CategorySchemaType){
-        dispatch(setCurrentSelectedCategory(cat))
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [viewModalOpen, setViewModalOpen] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    function handleSetCategory(cat: CategorySchemaType) {
+        dispatch(setCurrentSelectedCategory(cat));
     }
 
     function handleDelete() {
@@ -33,23 +41,35 @@ function CategoryTable({}: Props) {
         const image = url[url.length - 1].split(".")[0];
         mutate({ id, image });
     }
+
+    useEffect(() => {
+        if (isError) {
+            toast.error("Some error while fetching categories");
+        }
+    }, [isError]);
     return (
         <>
             <AppTable
                 columns={CategoryColumns}
+                emptyContent={
+                    isError
+                        ? "Some server occured ❌"
+                        : "No Category found create 🔥 one!"
+                }
+                isLoading={searchCategoryLoading || isLoading}
                 classsName="screen"
-                data={data}
+                data={startedSearching ? fetchedCategories : data}
                 onDeleteClick={(cat) => {
-                    handleSetCategory(cat)
+                    handleSetCategory(cat);
                     setDeleteModalOpen(true);
                 }}
                 onEditClick={(cat) => {
-                    handleSetCategory(cat)
-                   navigate(`update`) 
+                    handleSetCategory(cat);
+                    navigate(`update`);
                 }}
                 onViewClick={(cat) => {
-                    handleSetCategory(cat)
-                    setViewModalOpen((true))
+                    handleSetCategory(cat);
+                    setViewModalOpen(true);
                 }}
             />
             <DeleteAlart
@@ -59,7 +79,10 @@ function CategoryTable({}: Props) {
                 onNoPress={() => setDeleteModalOpen(false)}
                 onYesPress={handleDelete}
             />
-            <ViewCategory open={viewModalOpen} setModalOpen={setViewModalOpen} />
+            <ViewCategory
+                open={viewModalOpen}
+                setModalOpen={setViewModalOpen}
+            />
         </>
     );
 }

@@ -58,8 +58,17 @@ export const CategorySlice = createSlice({
             state.currentSelectedCategory = action.payload;
         },
 
-        mutatePriceAttr(state, action: PayloadAction<Attribute[]>) {
-            state.categoryArray = action.payload;
+        mutatePriceAttr(
+            state,
+            action: PayloadAction<
+                Attribute[] | ((arg: Attribute[]) => Attribute[])
+            >
+        ) {
+            if (typeof action.payload == "function") {
+                state.categoryArray = action.payload(state.categoryArray);
+            } else {
+                state.categoryArray = action.payload;
+            }
         },
 
         setUpdatedFields(
@@ -80,8 +89,6 @@ export const CategorySlice = createSlice({
                     null;
             }
         },
-
-
     },
 });
 

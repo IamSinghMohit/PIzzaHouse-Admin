@@ -9,7 +9,7 @@ import {
     Divider,
     Chip,
 } from "@nextui-org/react";
-import useCategoryAttributes from "../hooks/useCategoryAttributes";
+import { useCategoryAttributes } from "../hooks";
 import { useAppSelector } from "@/hooks/state";
 
 interface Props {
@@ -30,7 +30,7 @@ function ViewCategory({ open, setModalOpen}: Props) {
 
     return (
         <>
-            <UiModal ref={modalRef} size="5xl" bodyClassName="flex-col sm:flex-row" onClose={() => setModalOpen(false)}>
+            <UiModal ref={modalRef} bodyClassName="flex-col sm:flex-row" onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center gap-2 justify-center">
                     <Image src={category?.image}  isZoomed classNames={{
                         wrapper:'border-2 border-primaryOrange w-4/5'
@@ -59,12 +59,12 @@ function ViewCategory({ open, setModalOpen}: Props) {
                                     {a.attribute_title}
                                 </CardHeader>
                                 <Divider />
-                                <CardBody className="p-2 block h-full flex-wrap flex-row gap-2 overflow-auto">
+                                <CardBody className="block h-full flex-wrap flex-row overflow-auto">
                                     {a.attributes.map((att) => (
                                         <Chip
                                             key={att.id}
                                             classNames={{
-                                                base: "my-1 text-white bg-primaryOrange text-[12px] lg:text-[16px]",
+                                                base: "my-1 text-white bg-primaryOrange text-[12px] lg:text-[16px] m-1",
                                                 closeButton:
                                                     "text-2xl text-red-800",
                                             }}

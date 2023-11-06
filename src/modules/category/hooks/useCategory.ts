@@ -14,6 +14,6 @@ export function useCategory() {
                 console.log('fetched category');
                 return res.data
             }),
-            enabled:!!!categories?.data?.length,
+            enabled:!!!categories?.data?.length
     });
 }

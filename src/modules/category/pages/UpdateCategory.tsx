@@ -10,56 +10,69 @@ import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import RenderAttribute from "../components/RenderAttribute";
 import ImageUploader from "@/components/ImageUploader";
 import CategoryAttribute from "../components/CategoryAttribute";
-import { useCreateCategory } from "../hooks/useCreateCategory";
 import { useState } from "react";
 import { ProcessedImageType } from "@/schema/ImageUploader";
-import { Navigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import {
     mutatePriceAttr,
+    setUpdatedFields,
 } from "@/store/features/categorySlice";
 import { Attribute } from "@/schema/categorySlice";
-import useCategoryAttributes from "../hooks/useCategoryAttributes";
 import { useEffect } from "react";
+import { useCategoryAttributes, useUpdateCategory } from "../hooks";
+import { FormDataUpdate } from "@/utils";
+import { toast } from "sonner";
 
 function UpdateCategory() {
-    const { type } = useParams();
     const dispatch = useAppDispatch();
     const queryClient = useQueryClient();
+    const [id, setId] = useState(""); // this state will be used to fetch attributes if they not exists in query cache
+    // checking the attributes in redux state if it exists or not if category ever have been viewed
     const category = useAppSelector(
         (state) => state.category.currentSelectedCategory
     );
-    if (!category && type === "update") {
-        return <Navigate to="/category" />;
-    }
-    const [id, setId] = useState("");
-    const { data, isLoading } = useCategoryAttributes(id);
     const categoryAtt = queryClient.getQueryState<Attribute[]>([
         "category",
         "attribute",
         category && category.id,
     ]);
+    // we will fetch the attributes if they are not exists in redux state
+    const { data, isLoading ,isError} = useCategoryAttributes(id);
+    const { mutate, isPending } = useUpdateCategory();
 
-    const { categoryArray } = useAppSelector((state) => state.category);
     const [name, setName] = useState(category?.name || "");
-    const { mutate, isPending } = useCreateCategory();
     const [processedImage, setProcessedImage] = useState<ProcessedImageType>({
         url: "",
         file: "",
     });
-    function handleSubmit() {
-        const form = new FormData();
-        form.append("image", processedImage.file as Blob);
-        form.append("name", name);
-        form.append("priceAttributes_json", JSON.stringify(categoryArray));
-        form.append("updatedFields_json", JSON.stringify(categoryArray));
-        // mutate(form);
+
+    const { categoryArray, updatedFields } = useAppSelector(
+        (state) => state.category
+    );
+
+
+    function handleUpdate() {
+        if (category) {
+            FormDataUpdate(
+                {
+                    id: category.id,
+                    is_name_update: `${updatedFields.name}`,
+                    is_image_update: `${updatedFields.image}`,
+                    is_price_attributes_update: `${updatedFields.price_attributes}`,
+                    name: name,
+                    image: processedImage.file,
+                    json: JSON.stringify(categoryArray),
+                },
+                mutate
+            );
+        }
     }
 
     useEffect(() => {
-        if (type === "update" && categoryAtt?.data) {
+        // fetching attributes if they are not exists in query cache be changing id state
+        if (categoryAtt?.data) {
             dispatch(mutatePriceAttr(categoryAtt?.data));
-        } else if (type === "update") {
+        } else {
             setId(category?.id || "");
         }
     }, []);
@@ -68,7 +81,10 @@ function UpdateCategory() {
         if (data) {
             dispatch(mutatePriceAttr(data));
         }
-    }, [data]);
+        if(isError){
+            toast.error('error while fetching attributes')
+        }
+    }, [data,isError]);
 
     return (
         <Card
@@ -100,10 +116,14 @@ function UpdateCategory() {
                                     radius="sm"
                                     placeholder="Category name"
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={(e) => {
+                                        setName(e.target.value);
+                                        if (!updatedFields.name) {
+                                            dispatch(setUpdatedFields("name"));
+                                        }
+                                    }}
                                     classNames={{
                                         base: "w-[200px]",
-                                        input: "uppercase",
                                     }}
                                 />
                             </div>
@@ -123,7 +143,7 @@ function UpdateCategory() {
                                 )}
                             </div>
                             <Button
-                                onPress={handleSubmit}
+                                onPress={handleUpdate}
                                 className="w-[100px] bg-primaryOrange text-white self-end mt-auto"
                                 isLoading={isPending}
                             >
@@ -136,4 +156,4 @@ function UpdateCategory() {
         </Card>
     );
 }
-export default UpdateCategory
+export default UpdateCategory;
