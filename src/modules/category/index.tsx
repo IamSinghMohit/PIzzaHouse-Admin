@@ -1,4 +1,4 @@
-import CategoryTable from "./components/CategoryTable";
+import CategoryTable from "./components/tables/CategoryTable";
 import { Card, CardBody } from "@nextui-org/react";
 import SearchCategory from "./components/SearchCategory";
 import CreateButton from "@/components/TopBar/CreateButton";

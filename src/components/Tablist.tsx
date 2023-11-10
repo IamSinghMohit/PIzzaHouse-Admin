@@ -4,16 +4,18 @@ import { Link, useLocation } from "react-router-dom";
 import { TAB } from "@/data/tab";
 import { IoClose } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import {  setNavOpen } from "@/store/features/userSlice";
-import { useRef } from "react";
+import { setNavOpen } from "@/store/features/userSlice";
+import { useRef} from "react";
 
 interface Props {}
 
 function TabList({}: Props) {
     const location = useLocation();
     const { isNavOpen } = useAppSelector((state) => state.user);
-    const buttonRef = useRef<HTMLButtonElement | null>(null)
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const dispatch = useAppDispatch();
+
+
     return (
         <>
             {isNavOpen && (
@@ -27,7 +29,7 @@ function TabList({}: Props) {
                 </Button>
             )}
             <Tabs
-                onSelectionChange={() => buttonRef.current?.click()}
+                onSelectionChange={() => dispatch(setNavOpen())}
                 classNames={{
                     cursor: "w-full bg-transparent sm:bg-primaryOrange",
                     tabList: "flex flex-col p-0 bg-primaryOrange",
@@ -38,14 +40,11 @@ function TabList({}: Props) {
                 variant="light"
                 color="primary"
                 radius="none"
-                motionProps={{
-                    animate:{y:'-100%'}
-                }}
                 defaultSelectedKey={location.pathname.split("/")[1]}
                 className={`glass fixed  rounded-none top-0 right-0 ${
                     !isNavOpen && "-right-full"
-                } transition-all animate-appearance-in h-screen pt-16 flex flex-col gap-5
-                sm:block sm:bg-white sm:static sm:pt-0 sm:border-none z-30`}
+                } transition-all animate-appearance-in pt-16 flex flex-col gap-5
+                sm:block sm:bg-white sm:static sm:pt-0 sm:border-none z-30 h-screen`}
             >
                 {TAB.map((tab) => (
                     <Tab

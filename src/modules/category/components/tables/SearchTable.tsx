@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import AppTable from "@/components/Table";
 import { CategoryColumns } from "@/data/cateogry-table";
-import { useCategory } from "../hooks/useCategory";
-import { useDeleteCategory } from "../hooks/useDeleteCategory";
-import { CategorySchemaType } from "../schema";
-import ViewCategory from "./ViewCategory";
+import { useCategory } from "../../hooks/useCategory";
+import { useDeleteCategory } from "../../hooks/useDeleteCategory";
+import { CategorySchemaType } from "../../schema";
+import ViewCategory from "../ViewCategory";
 import DeleteAlart from "@/components/DeleteAlert";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
@@ -14,13 +14,11 @@ import {
 } from "@/store/features/categorySlice";
 import { errorToast } from "@/lib/toast";
 import { Pagination, Select, SelectItem } from "@nextui-org/react";
-import { uuid } from "@/utils/uuid";
 
 interface Props {}
 
-function CategoryTable({}: Props) {
+function SearchCategoryTable({}: Props) {
     const [page, setPage] = useState(1);
-    const { data, isLoading, isError } = useCategory(page);
 
     const [selected, setSelected] = useState("10");
     const { mutate } = useDeleteCategory();
@@ -145,4 +143,4 @@ function CategoryTable({}: Props) {
     );
 }
 
-export default CategoryTable;
+export default SearchCategoryTable;
