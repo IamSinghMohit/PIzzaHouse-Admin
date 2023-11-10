@@ -15,9 +15,27 @@ const SearchSlice = createSlice({
     reducers: {
         setSearchedCategories(
             state,
-            action: PayloadAction<CategorySchemaType[]>
+            action: PayloadAction<
+                CategorySchemaType | CategorySchemaType[] | ((arg: CategorySchemaType[]) => any)
+            >
         ) {
-            state.categories.fetchedCategories = action.payload;
+            // state.categories.fetchedCategories = action.payload;
+
+            if (typeof action.payload == "function") {
+                state.categories.fetchedCategories = action.payload(
+                    state.categories.fetchedCategories
+                );
+            } else if (Array.isArray(action.payload)) {
+                state.categories.fetchedCategories = [
+                    ...state.categories.fetchedCategories,
+                    ...action.payload,
+                ];
+            } else {
+                state.categories.fetchedCategories = [
+                    ...state.categories.fetchedCategories,
+                    action.payload,
+                ];
+            }
         },
         setSearchCategoryLoading(state, action: PayloadAction<boolean>) {
             state.categories.isLoading = action.payload;

@@ -12,7 +12,7 @@ interface Props {
 }
 
 function SelectCategory({ setValue,value, size, baseClassName ,className}: Props) {
-    const { data = [] } = useCategory();
+    // const { data = [] } = useCategory();
     useCategoryAttributes(value)
 
     return (
@@ -26,9 +26,9 @@ function SelectCategory({ setValue,value, size, baseClassName ,className}: Props
                 base: baseClassName,
             }}
         >
-            {data.map((cat) => (
+            {/* {data.map((cat) => (
                 <SelectItem key={cat.id}>{cat.name}</SelectItem>
-            ))}
+            ))} */}
         </Select>
     );
 }

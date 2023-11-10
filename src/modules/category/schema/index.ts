@@ -28,6 +28,5 @@ export const AttributeSchema = z.array(
     })
 );
 
-
 export interface CategorySchemaType extends TypeOf<typeof CategorySchema> {}
 export interface AttributeSchemaType extends TypeOf<typeof AttributeSchema> {}

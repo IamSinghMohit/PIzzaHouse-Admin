@@ -1,8 +1,8 @@
 import axios from "@/lib/axios";
+import { successToast ,errorToast} from "@/lib/toast";
 import { BackendError } from "@/schema/Error";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { toast } from "sonner";
 
 async function updateCategory(data: any): Promise<string> {
     return await axios
@@ -23,10 +23,12 @@ export function useUpdateCategory() {
             qeryClient.invalidateQueries({
                 queryKey: ["category"],
             });
-            toast.success('category updated')
+            successToast('category updated')
         },
         onError:(err:AxiosError<BackendError>) =>  {
-            toast.error(err.response?.data.error);
+            if (err.response) {
+                errorToast(err.response.data.error);
+            }
         }
     });
 }

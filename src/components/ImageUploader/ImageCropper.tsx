@@ -37,7 +37,7 @@ function ImageUploader(
         x: 0,
         y: 0,
     });
-    const { updatedFields } = useAppSelector((state) => state.category);
+    const { updated_fields } = useAppSelector((state) => state.category);
     const dispatch = useAppDispatch();
 
     const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
@@ -63,7 +63,7 @@ function ImageUploader(
 
             if (croppedImage) {
                 setImage(croppedImage);
-                if (!updatedFields.image) {
+                if (!updated_fields.image) {
                     dispatch(setUpdatedFields("image"));
                 }
             }
@@ -95,7 +95,7 @@ function ImageUploader(
                 {(onclose) => (
                     <>
                         <ModalBody className="gap-1 relative p-7 pb-0 m-0">
-                            <div className="w-full h-[400px] relative rounded-md overflow-hidden border">
+                            <div className="w-full h-[200px] relative rounded-md overflow-hidden border">
                                 <Cropper
                                     image={Image}
                                     crop={crop}

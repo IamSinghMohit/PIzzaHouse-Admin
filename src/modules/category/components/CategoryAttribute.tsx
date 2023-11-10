@@ -12,11 +12,13 @@ import IconWrapper from "@/components/IconWrapper";
 import { BiReset } from "react-icons/bi";
 import { useRef, useState } from "react";
 import { uuid } from "@/utils/uuid";
-import { setPriceAttribute, setUpdatedFields } from "@/store/features/categorySlice";
+import {
+    setPriceAttribute,
+    setUpdatedFields,
+} from "@/store/features/categorySlice";
 import { SubAttribute } from "@/schema/categorySlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
-import UiButton from "@/ui/UiButton";
 import { validateString } from "@/utils/ValidateString";
 
 interface Props {}
@@ -31,7 +33,7 @@ function CategoryAttribute({}: Props) {
     const titleRef = useRef<HTMLInputElement>(null);
     // Errors
     const [errors, setErrors] = useState({ title: "", att: "" });
-    const {updatedFields} = useAppSelector((state) => state.category)
+    const { updated_fields } = useAppSelector((state) => state.category);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const dispatch = useAppDispatch();
 
@@ -92,12 +94,12 @@ function CategoryAttribute({}: Props) {
             return;
         }
 
-        if(attributes.length <= 0){
+        if (attributes.length <= 0) {
             setErrors((prev) => ({
                 att: "please add something",
                 title: prev.title,
             }));
-            chipRef.current?.focus()
+            chipRef.current?.focus();
             return;
         }
 
@@ -109,13 +111,13 @@ function CategoryAttribute({}: Props) {
             })
         );
         // updating the filds in reduxstore
-        if(!updatedFields.price_attributes){
-            dispatch(setUpdatedFields('price_attributes'))
+        if (!updated_fields.price_attributes) {
+            dispatch(setUpdatedFields("price_attributes"));
         }
-            setErrors({
-                att: "",
-                title: "",
-            });
+        setErrors({
+            att: "",
+            title: "",
+        });
 
         setAttributes([]);
         setChipText("");
@@ -144,15 +146,15 @@ function CategoryAttribute({}: Props) {
                         onKeyDown={handleTitltInputEvent}
                         ref={titleRef}
                     />
-                    <UiButton
+                    <Button
                         isIconOnly
                         radius="md"
-                        className="mb-1 "
+                        className="mb-1 text-white bg-primaryOrange"
                         size="md"
                         onClick={handleRegisterClick}
                     >
                         <IconWrapper icon={<FaCheck />} className="text-md" />
-                    </UiButton>
+                    </Button>
                 </div>
                 <div className="flex justify-between w-full gap-1">
                     <UiInput

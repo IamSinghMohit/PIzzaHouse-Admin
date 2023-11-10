@@ -8,16 +8,24 @@ import ViewCategory from "./ViewCategory";
 import DeleteAlart from "@/components/DeleteAlert";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
-import { toast } from "sonner";
+import {
+    setCurrentSelectedCategory,
+    setTotalPages,
+} from "@/store/features/categorySlice";
+import { errorToast } from "@/lib/toast";
+import { Pagination, Select, SelectItem } from "@nextui-org/react";
+import { uuid } from "@/utils/uuid";
 
 interface Props {}
 
 function CategoryTable({}: Props) {
-    const { data = [], isLoading, isError } = useCategory();
+    const [page, setPage] = useState(1);
+    const { data, isLoading, isError } = useCategory(page);
+
+    const [selected, setSelected] = useState("10");
     const { mutate } = useDeleteCategory();
-    const category = useAppSelector(
-        (state) => state.category.currentSelectedCategory
+    const { current_selected_category: category, total_pages } = useAppSelector(
+        (state) => state.category
     );
     const {
         fetchedCategories,
@@ -44,9 +52,17 @@ function CategoryTable({}: Props) {
 
     useEffect(() => {
         if (isError) {
-            toast.error("Some error while fetching categories");
+            errorToast("Some error while fetching categories");
         }
     }, [isError]);
+
+    useEffect(() => {
+        if (total_pages == 1 && data?.pages) {
+            dispatch(setTotalPages(data?.pages));
+        }
+    }, [data]);
+
+
     return (
         <>
             <AppTable
@@ -58,7 +74,7 @@ function CategoryTable({}: Props) {
                 }
                 isLoading={searchCategoryLoading || isLoading}
                 classsName="screen"
-                data={startedSearching ? fetchedCategories : data}
+                data={startedSearching ? fetchedCategories : data?.data || []}
                 onDeleteClick={(cat) => {
                     handleSetCategory(cat);
                     setDeleteModalOpen(true);
@@ -71,6 +87,48 @@ function CategoryTable({}: Props) {
                     handleSetCategory(cat);
                     setViewModalOpen(true);
                 }}
+                bottomContent={
+                    <div className="flex items-center gap-1">
+                        <Pagination
+                            className="w-full"
+                            total={total_pages}
+                            page={page}
+                            onChange={setPage}
+                            isCompact
+                            showControls
+                            showShadow
+                        />
+                        <Select
+                            className="w-[140px] items-center"
+                            label="Limit"
+                            labelPlacement="outside-left"
+                            defaultSelectedKeys={["10"]}
+                            radius="sm"
+                            variant="faded"
+                            selectedKeys={[selected]}
+                            onChange={(e) => {
+                                if (!e.target.value) return;
+                                setSelected(`${e.target.value}`);
+                            }}
+                            classNames={{
+                                selectorIcon: "text-primaryOrange",
+                                base: "p-0 h-[40px]",
+                                innerWrapper: "p-0 ",
+                                mainWrapper: "p-0 h-[40px]",
+                            }}
+                        >
+                            <SelectItem key={"10"} value={10}>
+                                10
+                            </SelectItem>
+                            <SelectItem key={"20"} value={20}>
+                                20
+                            </SelectItem>
+                            <SelectItem key={"30"} value={30}>
+                                30
+                            </SelectItem>
+                        </Select>
+                    </div>
+                }
             />
             <DeleteAlart
                 onClose={() => setDeleteModalOpen(false)}

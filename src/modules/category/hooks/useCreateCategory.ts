@@ -2,16 +2,23 @@ import axios from "@/lib/axios";
 import { BackendError } from "@/schema/Error";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { toast } from "sonner";
+import { errorToast, promiseToast } from "@/lib/toast";
 
 async function createCategory(data: any): Promise<string> {
-    return await axios
+    const promise = axios
         .post("/category/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
         .then((res) => res.data);
+    promiseToast(
+        promise,
+        "creating category",
+        "successfully created category",
+        "some error occured"
+    );
+    return await promise;
 }
 
 export function useCreateCategory() {
@@ -24,8 +31,10 @@ export function useCreateCategory() {
                 queryKey: ["category"],
             });
         },
-        onError:(err:AxiosError<BackendError>) =>  {
-            toast.error(err.response?.data.error);
-        }
+        onError: (err: AxiosError<BackendError>) => {
+            if (err.response) {
+                errorToast(err.response.data.error);
+            }
+        },
     });
 }

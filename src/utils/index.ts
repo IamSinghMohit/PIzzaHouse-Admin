@@ -1,2 +1,4 @@
 import { FormDataUpdate } from "./FormDataUpdate";
-export { FormDataUpdate }
+import { getCurrentLimit } from "./getCurrentLimit";
+import { getCurrentWindow } from "./getCurrentWindow";
+export { FormDataUpdate,getCurrentLimit ,getCurrentWindow }

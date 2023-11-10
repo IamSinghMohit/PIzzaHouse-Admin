@@ -21,8 +21,9 @@ export interface Attribute {
 }
 
 export interface CategorySliceInitialState {
-    categoryArray: Attribute[];
-    fetchedCategoryAttr:AttributeSchemaType;
-    currentSelectedCategory:CategorySchemaType | null;
-    updatedFields: UpdatedFields
+    category_attr_array: Attribute[];
+    fetched_category_attr:AttributeSchemaType;
+    current_selected_category:CategorySchemaType | null;
+    updated_fields: UpdatedFields
+    total_pages:number;
 }

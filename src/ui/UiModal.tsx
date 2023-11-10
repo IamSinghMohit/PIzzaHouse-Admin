@@ -14,11 +14,11 @@ interface Props {
     footerContent?: React.ReactNode;
     children: React.ReactNode;
     onClose?: () => void;
-    size?:'2xl'|'3xl'|'5xl'|'full'
-    bodyClassName?:string;
+    size?: "2xl" | "3xl" | "5xl" | "full";
+    bodyClassName?: string;
 }
 function UiModal(
-    { title, children, footerContent, onClose ,size,bodyClassName}: Props,
+    { title, children, footerContent, onClose, size, bodyClassName }: Props,
     ref: Ref<ModalRefType>
 ) {
     const discloser = useDisclosure();
@@ -43,7 +43,31 @@ function UiModal(
                 isOpen={discloser.isOpen}
                 onOpenChange={discloser.onOpenChange}
                 scrollBehavior="inside"
+                backdrop="blur"
+                classNames={{
+                    base:'w-auto'
+                }}
                 onClose={onClose}
+                motionProps={{
+                    variants: {
+                        enter: {
+                            y: 0,
+                            opacity: 1,
+                            transition: {
+                                duration: 0.3,
+                                ease: "easeOut",
+                            },
+                        },
+                        exit: {
+                            y: -20,
+                            opacity: 0,
+                            transition: {
+                                duration: 0.2,
+                                ease: "easeIn",
+                            },
+                        },
+                    },
+                }}
             >
                 <ModalContent>
                     {() => (
@@ -53,7 +77,9 @@ function UiModal(
                                     {title}
                                 </ModalHeader>
                             )}
-                            <ModalBody className={bodyClassName}>{children}</ModalBody>
+                            <ModalBody className={bodyClassName}>
+                                {children}
+                            </ModalBody>
                             {footerContent && (
                                 <ModalFooter>{footerContent}</ModalFooter>
                             )}

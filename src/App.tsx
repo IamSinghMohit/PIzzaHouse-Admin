@@ -8,9 +8,10 @@ import Product from "./modules/products";
 import Topings from "./modules/topings";
 import Orders from "./modules/orders";
 import CreateCategory from "./modules/category/pages/CreateCategory";
-import { Toaster } from "sonner";
+import { Toaster } from "react-hot-toast";
 import CreateProduct from "./modules/products/pages/CreateProduct";
 import { SocketContextProvider } from "./socketContext";
+import UpdateCategory from "./modules/category/pages/UpdateCategory";
 
 const App = () => {
     const router = createBrowserRouter([
@@ -31,8 +32,12 @@ const App = () => {
                     element: <Category />,
                 },
                 {
-                    path: "category/:type",
+                    path: "category/create",
                     element: <CreateCategory />,
+                },
+                {
+                    path: "category/update",
+                    element: <UpdateCategory />,
                 },
                 {
                     path: "products",
@@ -59,7 +64,7 @@ const App = () => {
     ]);
     return (
         <div className="max-w-[1536px] mx-auto">
-            <Toaster closeButton position="top-right" richColors />
+            <Toaster position="top-right" />
             <RouterProvider router={router} />
         </div>
     );

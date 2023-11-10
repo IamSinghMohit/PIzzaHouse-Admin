@@ -15,6 +15,9 @@ export default {
                 secondaryBlack:'#282828',
                 beforeColor:'rgba(255, 147, 67, 0.11)'
             },
+            screens:{
+                'xs':'450px'
+            }
         },
     },
     plugins: [nextui({

@@ -8,7 +8,7 @@ function Topings({}: Props) {
     return (
         <>
             <TopingBar/>
-            <AppTable columns={TopingColumns} classsName="screen"/>
+            {/* <AppTable columns={TopingColumns} classsName="screen"/> */}
         </>
     );
 }

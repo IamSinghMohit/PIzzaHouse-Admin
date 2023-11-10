@@ -14,14 +14,14 @@ import { useState } from "react";
 import { ProcessedImageType } from "@/schema/ImageUploader";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-    mutatePriceAttr,
+    setPriceAttribute,
     setUpdatedFields,
 } from "@/store/features/categorySlice";
 import { Attribute } from "@/schema/categorySlice";
 import { useEffect } from "react";
 import { useCategoryAttributes, useUpdateCategory } from "../hooks";
 import { FormDataUpdate } from "@/utils";
-import { toast } from "sonner";
+import { errorToast } from "@/lib/toast";
 
 function UpdateCategory() {
     const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ function UpdateCategory() {
     const [id, setId] = useState(""); // this state will be used to fetch attributes if they not exists in query cache
     // checking the attributes in redux state if it exists or not if category ever have been viewed
     const category = useAppSelector(
-        (state) => state.category.currentSelectedCategory
+        (state) => state.category.current_selected_category
     );
     const categoryAtt = queryClient.getQueryState<Attribute[]>([
         "category",
@@ -46,7 +46,7 @@ function UpdateCategory() {
         file: "",
     });
 
-    const { categoryArray, updatedFields } = useAppSelector(
+    const { category_attr_array, updated_fields } = useAppSelector(
         (state) => state.category
     );
 
@@ -56,12 +56,12 @@ function UpdateCategory() {
             FormDataUpdate(
                 {
                     id: category.id,
-                    is_name_update: `${updatedFields.name}`,
-                    is_image_update: `${updatedFields.image}`,
-                    is_price_attributes_update: `${updatedFields.price_attributes}`,
+                    is_name_update: `${updated_fields.name}`,
+                    is_image_update: `${updated_fields.image}`,
+                    is_price_attributes_update: `${updated_fields.price_attributes}`,
                     name: name,
                     image: processedImage.file,
-                    json: JSON.stringify(categoryArray),
+                    json: JSON.stringify(category_attr_array),
                 },
                 mutate
             );
@@ -71,7 +71,7 @@ function UpdateCategory() {
     useEffect(() => {
         // fetching attributes if they are not exists in query cache be changing id state
         if (categoryAtt?.data) {
-            dispatch(mutatePriceAttr(categoryAtt?.data));
+            dispatch(setPriceAttribute((_) => categoryAtt?.data));
         } else {
             setId(category?.id || "");
         }
@@ -79,10 +79,10 @@ function UpdateCategory() {
 
     useEffect(() => {
         if (data) {
-            dispatch(mutatePriceAttr(data));
+            dispatch(setPriceAttribute(data));
         }
         if(isError){
-            toast.error('error while fetching attributes')
+            errorToast('error while fetching attributes')
         }
     }, [data,isError]);
 
@@ -118,7 +118,7 @@ function UpdateCategory() {
                                     value={name}
                                     onChange={(e) => {
                                         setName(e.target.value);
-                                        if (!updatedFields.name) {
+                                        if (!updated_fields.name) {
                                             dispatch(setUpdatedFields("name"));
                                         }
                                     }}
@@ -131,7 +131,7 @@ function UpdateCategory() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-2">
-                                {categoryArray.map(
+                                {category_attr_array.map(
                                     ({ attribute_title, id, attributes }) => (
                                         <RenderAttribute
                                             attribute_title={attribute_title}

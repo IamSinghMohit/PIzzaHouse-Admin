@@ -19,7 +19,7 @@ interface Props {
 
 function ViewCategory({ open, setModalOpen}: Props) {
     const modalRef = useRef<ModalRefType | null>(null);
-    const category = useAppSelector((state) => state.category.currentSelectedCategory)
+    const category = useAppSelector((state) => state.category.current_selected_category)
     const { data } = useCategoryAttributes(category ? category.id : "");
 
     useEffect(() => {
@@ -30,10 +30,10 @@ function ViewCategory({ open, setModalOpen}: Props) {
 
     return (
         <>
-            <UiModal ref={modalRef} bodyClassName="flex-col sm:flex-row" onClose={() => setModalOpen(false)}>
+            <UiModal ref={modalRef} size="5xl" bodyClassName="flex-col sm:flex-row gap-4" onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center gap-2 justify-center">
                     <Image src={category?.image}  isZoomed classNames={{
-                        wrapper:'border-2 border-primaryOrange w-4/5'
+                        wrapper:'border-2 border-primaryOrange mt-2 w-4/5 max-w-[380px] xs:w-[290px] md:w-[350px]',
                     }}/>
                     <Chip
                         className=""
@@ -47,19 +47,18 @@ function ViewCategory({ open, setModalOpen}: Props) {
                         {category?.name}
                     </Chip>
                 </div>
-                <div className="flex flex-col gap-3 mt-3  max-h-[220px] sm:max-h-[550px] overflow-y-auto">
+                <div className="flex flex-col gap-3 mt-3  max-h-[220px] sm:max-h-[300px] overflow-y-auto pr-1 mr-1">
                     {data &&
                             data.map((a) => (
-                            <Card
-                                shadow="sm"
-                                className="max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange min-h-[80px] h-fit"
+                            <div
+                                className="max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange rounded-lg"
                                 key={a.id}
                             >
-                                <CardHeader className="flex gap-2 p-0 justify-between bg-primaryOrange text-lg uppercase text-white pl-3">
+                                <div className="flex gap-2 p-0 md:p-1 justify-between bg-primaryOrange text-lg uppercase text-white pl-3 rounded-t-lg ">
                                     {a.attribute_title}
-                                </CardHeader>
+                                </div>
                                 <Divider />
-                                <CardBody className="block h-full flex-wrap flex-row overflow-auto">
+                                <div className="block flex-wrap flex-row overflow-auto">
                                     {a.attributes.map((att) => (
                                         <Chip
                                             key={att.id}
@@ -73,8 +72,8 @@ function ViewCategory({ open, setModalOpen}: Props) {
                                             {att.title}
                                         </Chip>
                                     ))}
-                                </CardBody>
-                            </Card>
+                                </div>
+                            </div>
                         ))}
                 </div>
             </UiModal>

@@ -1,23 +1,29 @@
 import UiModal from "@/ui/UiModal";
 import { ModalRefType } from "@/schema/modal";
-import { useEffect, useRef, useState } from "react";
-import UiButton from "@/ui/UiButton";
+import { useEffect, useRef } from "react";
+import { Button } from "@nextui-org/react";
 
 interface Props {
     onYesPress: () => void;
     onNoPress: () => void;
     text: React.ReactNode;
     open: boolean;
-    onClose:() => void;
+    onClose: () => void;
 }
 
-function DeleteAlart({ onYesPress, onNoPress, text, open ,onClose}: Props) {
+function DeleteAlart({
+    onYesPress,
+    onNoPress,
+    text,
+    open,
+    onClose,
+}: Props) {
     const ModalRef = useRef<ModalRefType>(null);
 
     useEffect(() => {
         if (open) {
             ModalRef.current?.onOpen();
-        } 
+        }
     }, [open]);
 
     return (
@@ -26,25 +32,28 @@ function DeleteAlart({ onYesPress, onNoPress, text, open ,onClose}: Props) {
             onClose={onClose}
             footerContent={
                 <>
-                    <UiButton variant="application" onPress={onYesPress}>
-                        Yes
-                    </UiButton>
-                    <UiButton
-                        className="bg-red-800 text-white"
+                    <Button
+                        className="text-white bg-primaryOrange"
                         onPress={() => {
-                            onNoPress()
-                            ModalRef.current?.onClose()
-                        }
-                        }
+                            ModalRef.current?.onClose();
+                            onYesPress();
+                        }}
+                    >
+                        Yes
+                    </Button>
+                    <Button
+                        className="bg-red-500 text-white"
+                        onPress={() => {
+                            onNoPress();
+                            ModalRef.current?.onClose();
+                        }}
                     >
                         No
-                    </UiButton>
+                    </Button>
                 </>
             }
         >
-            <p className="text-sm mt-5 ml-2 text-black">
-                {text}
-            </p>
+            <p className="text-sm mt-5 ml-2 text-black">{text}</p>
         </UiModal>
     );
 }

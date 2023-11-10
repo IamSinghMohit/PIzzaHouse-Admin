@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 
 interface Props {
-    buttonText:string
+    buttonText:string;
+    onPress?:() => void;
 }
 
-function CreateButton({buttonText}: Props) {
+function CreateButton({buttonText,onPress}: Props) {
     return (
         <>
         <Button
@@ -16,6 +17,7 @@ function CreateButton({buttonText}: Props) {
                 </div>
             ))()}
             className="bg-primaryOrange text-white"
+            onPress={onPress}
             radius="sm"
             as={Link}
             to="create"

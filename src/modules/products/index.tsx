@@ -8,7 +8,7 @@ function Product({}: Props) {
     return (
         <>
             <ProductBar />
-            <Apptable classsName="screen" columns={ProductColumns }/>
+            {/* <Apptable classsName="screen" columns={ProductColumns }/> */}
         </>
     );
 }

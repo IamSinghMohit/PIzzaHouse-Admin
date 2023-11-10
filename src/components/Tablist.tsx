@@ -38,6 +38,9 @@ function TabList({}: Props) {
                 variant="light"
                 color="primary"
                 radius="none"
+                motionProps={{
+                    animate:{y:'-100%'}
+                }}
                 defaultSelectedKey={location.pathname.split("/")[1]}
                 className={`glass fixed  rounded-none top-0 right-0 ${
                     !isNavOpen && "-right-full"

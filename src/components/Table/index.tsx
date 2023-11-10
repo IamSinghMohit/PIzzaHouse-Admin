@@ -12,6 +12,7 @@ import * as dayjs from "dayjs";
 import { uuid } from "@/utils/uuid";
 import { CategorySchemaType } from "@/modules/category/schema";
 import TableActions from "./TableAction";
+import { getCurrentWindow } from "@/utils";
 
 interface Props {
     classsName?: string;
@@ -22,6 +23,22 @@ interface Props {
     onDeleteClick: (cat: CategorySchemaType) => void;
     emptyContent: string;
     isLoading: boolean;
+    bottomContent?: React.ReactNode;
+    bottomContentPlacement?: "inside" | "outside";
+    classNames?: {
+        base: React.HTMLProps<HTMLDivElement>;
+        table: React.HTMLProps<HTMLTableElement>
+        thead: React.HTMLProps<HTMLTableHeaderCellElement>;
+        tbody: React.HTMLProps<HTMLTableSectionElement>; // Adjust the type as needed
+        tfoot: React.HTMLProps<HTMLTableHeaderCellElement>;
+        emptyWrapper: React.HTMLProps<HTMLDivElement>;
+        loadingWrapper: React.HTMLProps<HTMLDivElement>;
+        wrapper: React.HTMLProps<HTMLDivElement>;
+        tr: React.HTMLProps<HTMLTableRowElement>; // Adjust the type as needed
+        th: React.HTMLProps<HTMLTableHeaderCellElement>;
+        td: React.HTMLProps<HTMLTableCellElement>;
+        sortIcon: React.HTMLProps<HTMLDivElement>;
+    };
 }
 
 function AppTable({
@@ -33,16 +50,28 @@ function AppTable({
     onDeleteClick,
     emptyContent,
     isLoading,
+    bottomContent,
+    bottomContentPlacement,
+    classNames,
 }: Props) {
-    const shouldRenderData:any = data && !isLoading;
+    const shouldRenderData: any = data && !isLoading;
+    const screen = getCurrentWindow();
     return (
         <Table
+            isHeaderSticky
             aria-label="Prodcut table"
             layout="auto"
             className={classsName}
-            classNames={{
-                table: `${isLoading && "min-h-[250px]"}`,
-            }}
+            // classNames={{
+            //     table: `${isLoading && "min-h-[250px]"}`,
+            //     base: `${
+            //         screen == "mobile" ? "max-h-[420px]" : "max-h-[520px]"
+            //     } overflow-scroll`,
+            // }}
+            // the library was throwing type errors, to resolve them 
+            classNames={classNames as unknown as Record<string,string>}
+            bottomContent={bottomContent}
+            bottomContentPlacement={bottomContentPlacement}
         >
             <TableHeader>
                 {columns.map(({ name }) => (
