@@ -3,15 +3,17 @@ import { useAppSelector } from "@/hooks/state";
 import RenderAttribute from "../components/RenderAttribute";
 import ImageUploader from "@/components/ImageUploader";
 import CategoryAttribute from "../components/CategoryAttribute";
-import { useEffect, useState } from "react";
+import { useEffect,  useState } from "react";
 import { ProcessedImageType } from "@/schema/ImageUploader";
 import { useCreateCategory } from "../hooks";
 import { FormDataUpdate } from "@/utils";
 import { useNavigate } from "react-router-dom";
 import { errorToast} from "@/lib/toast";
+import { SubAttribute } from "@/schema/categorySlice";
 
 function CreateCategory() {
     const { category_attr_array } = useAppSelector((state) => state.category);
+    const [attributes, setAttributes] = useState<SubAttribute[]>([]);
     const [name, setName] = useState("");
     const { mutate, isPending ,isSuccess} = useCreateCategory();
     const navigate = useNavigate()
@@ -23,6 +25,10 @@ function CreateCategory() {
     function handleCreate() {
         if (!processedImage.file) {
             return errorToast("image is required");
+        }else if(!name){
+            return errorToast("name is required");
+        }else if(attributes.length > 0){
+            return errorToast("please save you attributes");
         }
         FormDataUpdate(
             {
@@ -34,11 +40,11 @@ function CreateCategory() {
         );
     }
 
-    // useEffect(() => {
-    //     if(isSuccess){
-    //         navigate('/category')
-    //     } 
-    // },[isSuccess])
+    useEffect(() => {
+        if(isSuccess){
+            // navigate('/category')
+        } 
+    },[isSuccess])
     return (
         <Card
             classNames={{
@@ -70,7 +76,7 @@ function CreateCategory() {
                             }}
                         />
                     </div>
-                    <CategoryAttribute />
+                    <CategoryAttribute attributes={attributes} setAttributes={setAttributes}/>
                 </div>
                 <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-2">
@@ -90,7 +96,7 @@ function CreateCategory() {
                         className="w-[100px] bg-primaryOrange text-white self-end mt-auto"
                         isLoading={isPending}
                     >
-                        Submit
+                        Create
                     </Button>
                 </div>
             </CardBody>

@@ -143,7 +143,7 @@ function ImageUploader(
                                 className="text-white"
                                 onPress={onclose}
                             >
-                                show image
+                               Crop image
                             </Button>
                         </ModalFooter>
                     </>

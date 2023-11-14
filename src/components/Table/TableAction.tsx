@@ -1,5 +1,6 @@
 import { Tooltip } from "@nextui-org/react";
 import { EyeIcon, DeleteIcon, EditIcon } from "@/icons";
+import {Ref, forwardRef} from "react"
 
 export interface TableActionProps {
     editIconEvents?: React.HTMLProps<HTMLSpanElement>;
@@ -11,11 +12,11 @@ function TableActions({
     editIconEvents,
     viewIconEvents,
     deleteIconEvents,
-}: TableActionProps) {
+}: TableActionProps,ref:Ref<HTMLDivElement>) {
     return (
-        <div className="relative flex items-center gap-3">
+        <div className="relative flex items-center gap-3" ref={ref}>
             <Tooltip
-                content="Details"
+                content="view"
                 color="primary"
                 showArrow
                 classNames={{
@@ -30,7 +31,7 @@ function TableActions({
                 </span>
             </Tooltip>
             <Tooltip
-                content="Edit user"
+                content="edit"
                 color="primary"
                 showArrow
                 classNames={{
@@ -46,7 +47,7 @@ function TableActions({
             </Tooltip>
             <Tooltip
                 color="primary"
-                content="Delete user"
+                content="delete"
                 showArrow
                 classNames={{
                     base: "text-white",
@@ -62,4 +63,4 @@ function TableActions({
         </div>
     );
 }
-export default TableActions;
+export default forwardRef(TableActions)

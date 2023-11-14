@@ -10,7 +10,7 @@ import { FaCheck } from "react-icons/fa6";
 import { BsPlusSquareDotted } from "react-icons/bs";
 import IconWrapper from "@/components/IconWrapper";
 import { BiReset } from "react-icons/bi";
-import { useRef, useState } from "react";
+import { useRef, useState, SetStateAction, Dispatch } from "react";
 import { uuid } from "@/utils/uuid";
 import {
     setPriceAttribute,
@@ -21,10 +21,12 @@ import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
 import { validateString } from "@/utils/ValidateString";
 
-interface Props {}
+interface Props {
+    attributes: SubAttribute[];
+    setAttributes: Dispatch<SetStateAction<SubAttribute[]>>;
+}
 
-function CategoryAttribute({}: Props) {
-    const [attributes, setAttributes] = useState<SubAttribute[]>([]);
+function CategoryAttribute({ attributes, setAttributes }: Props) {
     // this is for chip input tag
     const chipRef = useRef<HTMLInputElement>(null);
     const [chipText, setChipText] = useState("");
@@ -75,7 +77,7 @@ function CategoryAttribute({}: Props) {
         if (!validateString(title)) {
             if (chipText.length > 0) {
                 setErrors((prev) => ({
-                    att: "please save",
+                    att: "please add",
                     title: prev.title,
                 }));
             }

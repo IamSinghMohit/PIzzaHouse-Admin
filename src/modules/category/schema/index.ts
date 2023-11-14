@@ -9,9 +9,9 @@ export const CategorySchema = z.object({
     id: z.string(),
     image: z.string(),
     name: z.string(),
-    price_attributesId: z.array(z.string()),
-    createdAt: z.string(),
-    updatedAt: z.string(),
+    price_attributes: z.array(z.string()),
+    created_at: z.string(),
+    updated_at: z.string(),
 });
 
 export const AttributeSchema = z.array(
@@ -28,5 +28,25 @@ export const AttributeSchema = z.array(
     })
 );
 
-export interface CategorySchemaType extends TypeOf<typeof CategorySchema> {}
-export interface AttributeSchemaType extends TypeOf<typeof AttributeSchema> {}
+export const GetCategorySchema = z.object({
+    page: z.union([z.number(), z.string()]).transform((data) => {
+        if (typeof data == "string") {
+            return parseInt(data);
+        } else {
+            return data;
+        }
+    }),
+    pages: z.union([z.number(), z.string()]).transform((data) => {
+        if (typeof data == "string") {
+            return parseInt(data);
+        } else {
+            return data;
+        }
+    }),
+    data: z.array(CategorySchema),
+});
+
+export type GetCategorySchemaType
+    = TypeOf<typeof GetCategorySchema> 
+export type CategorySchemaType = TypeOf<typeof CategorySchema> 
+export type AttributeSchemaType = TypeOf<typeof AttributeSchema> 

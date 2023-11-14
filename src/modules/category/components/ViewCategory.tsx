@@ -3,9 +3,6 @@ import { useEffect, useRef, Dispatch, SetStateAction } from "react";
 import UiModal from "@/ui/UiModal";
 import {
     Image,
-    Card,
-    CardBody,
-    CardHeader,
     Divider,
     Chip,
 } from "@nextui-org/react";
@@ -32,7 +29,7 @@ function ViewCategory({ open, setModalOpen}: Props) {
         <>
             <UiModal ref={modalRef} size="5xl" bodyClassName="flex-col sm:flex-row gap-4" onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center gap-2 justify-center">
-                    <Image src={category?.image}  isZoomed classNames={{
+                    <Image src={category?.image}  classNames={{
                         wrapper:'border-2 border-primaryOrange mt-2 w-4/5 max-w-[380px] xs:w-[290px] md:w-[350px]',
                     }}/>
                     <Chip

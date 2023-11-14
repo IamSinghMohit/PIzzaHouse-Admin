@@ -31,10 +31,5 @@ export function useCreateCategory() {
                 queryKey: ["category"],
             });
         },
-        onError: (err: AxiosError<BackendError>) => {
-            if (err.response) {
-                errorToast(err.response.data.error);
-            }
-        },
     });
 }

@@ -3,29 +3,29 @@ import toast from "react-hot-toast";
 export function successToast(message: string) {
     return toast.success(message, {
         style: {
-            border: "2px solid #fb923c",
-            background: "#fed7aa",
+            border: "2px solid #84cc16",
+            background: "#fde68a",
             color: "white",
         },
         iconTheme: {
-            primary: "#ea580c",
+            primary: "#a3e635",
             secondary: "white",
         },
     });
 }
 
-export function promiseToast(
-    func: Promise<any>,
+export function promiseToast<T>(
+    func: Promise<T>,
     loadingText: string,
-    successText: string,
-    errorText: string
+    success: string| ((data:T) => string),
+    error: string| ((data:T) => string)
 ) {
     return toast.promise(
         func,
         {
             loading: loadingText,
-            success: successText,
-            error: errorText,
+            success, 
+            error, 
         },
         {
             loading: {
@@ -41,6 +41,17 @@ export function promiseToast(
             },
             success: {
                 duration: 2000,
+                style: {
+                    border: "2px solid #bef264",
+                    background: "#fde68a",
+                    color: "white",
+                },
+                iconTheme: {
+                    primary: "#a3e635",
+                    secondary: "white",
+                },
+            },
+            error: {
                 style: {
                     border: "2px solid #fb923c",
                     background: "#fed7aa",
@@ -58,12 +69,12 @@ export function promiseToast(
 export function errorToast(message: string) {
     toast.error(message, {
         style: {
-            border: "2px solid #ef4444",
-            background: "#fecaca",
-            color: "#b91c1c",
+            border: "2px solid #fb923c",
+            background: "#fed7aa",
+            color: "white",
         },
         iconTheme: {
-            primary: "#ef4444",
+            primary: "#ea580c",
             secondary: "white",
         },
     });

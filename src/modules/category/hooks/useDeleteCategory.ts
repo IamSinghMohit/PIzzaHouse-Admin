@@ -1,8 +1,6 @@
 import axios from "@/lib/axios";
-import { BackendError } from "@/schema/Error";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { promiseToast ,errorToast} from "@/lib/toast";
+import { useMutation,useQueryClient} from "@tanstack/react-query";
+import { promiseToast} from "@/lib/toast";
 
 async function deleteCategory(args: {
     id: string;
@@ -21,20 +19,14 @@ async function deleteCategory(args: {
 }
 
 export function useDeleteCategory() {
-    const qeryClient = useQueryClient();
+    const queryClient = useQueryClient()
     return useMutation({
         mutationKey: ["category", "delete"],
         mutationFn: deleteCategory,
-        onSuccess: () => {
-            qeryClient.invalidateQueries({
-                queryKey: ["category"],
-                exact: true,
-            });
-        },
-        onError: (err: AxiosError<BackendError>) => {
-            if (err.response) {
-                errorToast(err.response.data.error);
-            }
-        },
+        onSuccess:() => {
+            queryClient.invalidateQueries({
+                queryKey:['category']
+            })
+        }
     });
 }

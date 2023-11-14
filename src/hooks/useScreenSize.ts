@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useLayoutEffect} from "react";
 import { screenType } from "@/schema";
 
 export function useScreenSize() {
@@ -14,7 +14,7 @@ export function useScreenSize() {
         }
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Initialize the screen size on component mount
         handleResize();
 

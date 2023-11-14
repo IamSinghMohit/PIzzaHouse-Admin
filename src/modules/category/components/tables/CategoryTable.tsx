@@ -1,36 +1,38 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, memo } from "react";
 import AppTable from "@/components/Table";
 import { CategoryColumns } from "@/data/cateogry-table";
-import { useCategory } from "../../hooks/useCategory";
 import { useDeleteCategory } from "../../hooks/useDeleteCategory";
 import { CategorySchemaType } from "../../schema";
 import ViewCategory from "../ViewCategory";
 import DeleteAlart from "@/components/DeleteAlert";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import {
-    setCurrentSelectedCategory,
-    setTotalPages,
-} from "@/store/features/categorySlice";
-import { errorToast } from "@/lib/toast";
-import { Pagination, Select, SelectItem } from "@nextui-org/react";
+import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
 
-interface Props {}
+interface Props {
+    data: CategorySchemaType[];
+    isLoading: boolean;
+    isError: boolean;
+    cbIntersectionObr?: () => void;
+    observeLastBy?: number;
+    bottomContent?: React.ReactNode;
+    onDelete: (cat: CategorySchemaType) => void;
+}
 
-function CategoryTable({}: Props) {
-    const [page, setPage] = useState(1);
-    const { data, isLoading, isError } = useCategory(page);
-
-    const [selected, setSelected] = useState("10");
-    const { mutate } = useDeleteCategory();
-    const { current_selected_category: category, total_pages } = useAppSelector(
+function CategoryTable({
+    data,
+    isLoading,
+    isError,
+    cbIntersectionObr,
+    observeLastBy,
+    onDelete,
+    bottomContent,
+}: Props) {
+    const { mutate, isSuccess } = useDeleteCategory();
+    const { current_selected_category: category } = useAppSelector(
         (state) => state.category
     );
-    const {
-        fetchedCategories,
-        startedSearching,
-        isLoading: searchCategoryLoading,
-    } = useAppSelector((state) => state.search.categories);
+    console.log("rendered category Table");
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -41,27 +43,33 @@ function CategoryTable({}: Props) {
         dispatch(setCurrentSelectedCategory(cat));
     }
 
-    function handleDelete() {
+    const handleDelete = useCallback(() => {
         if (!category) return;
         const { id } = category;
         const url = category.image.split("/");
         const image = url[url.length - 1].split(".")[0];
         mutate({ id, image });
-    }
+        setDeleteModalOpen(false);
+    }, [category]);
+
+    const handleOnDeleteClick = useCallback((cat: CategorySchemaType) => {
+        handleSetCategory(cat);
+        setDeleteModalOpen(true);
+    }, []);
+    const handleOnEditClick = useCallback((cat: CategorySchemaType) => {
+        handleSetCategory(cat);
+        navigate(`update`);
+    }, []);
+    const handleOnViewClick = useCallback((cat: CategorySchemaType) => {
+        handleSetCategory(cat);
+        setViewModalOpen(true);
+    }, []);
 
     useEffect(() => {
-        if (isError) {
-            errorToast("Some error while fetching categories");
+        if (isSuccess && category) {
+            onDelete(category);
         }
-    }, [isError]);
-
-    useEffect(() => {
-        if (total_pages == 1 && data?.pages) {
-            dispatch(setTotalPages(data?.pages));
-        }
-    }, [data]);
-
-
+    }, [isSuccess]);
     return (
         <>
             <AppTable
@@ -71,68 +79,26 @@ function CategoryTable({}: Props) {
                         ? "Some server occured ❌"
                         : "No Category found create 🔥 one!"
                 }
-                isLoading={searchCategoryLoading || isLoading}
-                classsName="screen"
-                data={startedSearching ? fetchedCategories : data?.data || []}
-                onDeleteClick={(cat) => {
-                    handleSetCategory(cat);
-                    setDeleteModalOpen(true);
-                }}
-                onEditClick={(cat) => {
-                    handleSetCategory(cat);
-                    navigate(`update`);
-                }}
-                onViewClick={(cat) => {
-                    handleSetCategory(cat);
-                    setViewModalOpen(true);
-                }}
-                bottomContent={
-                    <div className="flex items-center gap-1">
-                        <Pagination
-                            className="w-full"
-                            total={total_pages}
-                            page={page}
-                            onChange={setPage}
-                            isCompact
-                            showControls
-                            showShadow
-                        />
-                        <Select
-                            className="w-[140px] items-center"
-                            label="Limit"
-                            labelPlacement="outside-left"
-                            defaultSelectedKeys={["10"]}
-                            radius="sm"
-                            variant="faded"
-                            selectedKeys={[selected]}
-                            onChange={(e) => {
-                                if (!e.target.value) return;
-                                setSelected(`${e.target.value}`);
-                            }}
-                            classNames={{
-                                selectorIcon: "text-primaryOrange",
-                                base: "p-0 h-[40px]",
-                                innerWrapper: "p-0 ",
-                                mainWrapper: "p-0 h-[40px]",
-                            }}
-                        >
-                            <SelectItem key={"10"} value={10}>
-                                10
-                            </SelectItem>
-                            <SelectItem key={"20"} value={20}>
-                                20
-                            </SelectItem>
-                            <SelectItem key={"30"} value={30}>
-                                30
-                            </SelectItem>
-                        </Select>
-                    </div>
-                }
+                isLoading={isLoading}
+                classsName="screen h-[320px] sm:h-[420px] md:h-[450px] lg:h-[510px]"
+                cbIntersectionObr={cbIntersectionObr}
+                observeLastBy={observeLastBy}
+                bottomContent={bottomContent}
+                data={data}
+                onDeleteClick={handleOnDeleteClick}
+                onEditClick={handleOnEditClick}
+                onViewClick={handleOnViewClick}
             />
             <DeleteAlart
                 onClose={() => setDeleteModalOpen(false)}
                 open={deleteModalOpen}
-                text={`Are you sure you want to delte ${category?.name} category`}
+                content={(() => (
+                    <p className="text-[14px] mt-7 ml-7">
+                        Are you sure you want to delete{" "}
+                        <span className="font-bold">{category?.name}</span>{" "}
+                        category
+                    </p>
+                ))()}
                 onNoPress={() => setDeleteModalOpen(false)}
                 onYesPress={handleDelete}
             />
@@ -144,4 +110,4 @@ function CategoryTable({}: Props) {
     );
 }
 
-export default CategoryTable;
+export default memo(CategoryTable)

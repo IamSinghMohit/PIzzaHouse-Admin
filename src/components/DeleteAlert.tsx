@@ -6,18 +6,12 @@ import { Button } from "@nextui-org/react";
 interface Props {
     onYesPress: () => void;
     onNoPress: () => void;
-    text: React.ReactNode;
+    content: React.ReactNode;
     open: boolean;
     onClose: () => void;
 }
 
-function DeleteAlart({
-    onYesPress,
-    onNoPress,
-    text,
-    open,
-    onClose,
-}: Props) {
+function DeleteAlart({ onYesPress, onNoPress, content, open, onClose }: Props) {
     const ModalRef = useRef<ModalRefType>(null);
 
     useEffect(() => {
@@ -53,7 +47,7 @@ function DeleteAlart({
                 </>
             }
         >
-            <p className="text-sm mt-5 ml-2 text-black">{text}</p>
+            {content}
         </UiModal>
     );
 }

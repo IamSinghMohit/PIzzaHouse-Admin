@@ -64,7 +64,7 @@ export const CategorySlice = createSlice({
 
         setCurrentSelectedCategory(
             state,
-            action: PayloadAction<CategorySchemaType>
+            action: PayloadAction<CategorySchemaType | null>
         ) {
             state.current_selected_category = action.payload;
         },

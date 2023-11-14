@@ -6,11 +6,8 @@
 
 body {
     @apply bg-gray-100 outline-darkOrange;
-}
-body {
     font-family: "Roboto", "Franklin Gothic Medium", "Arial Narrow", Arial,
         sans-serif;
-    height: max(100vh, 100%);
 }
 /* ************************************ Scrollbar******/
 /* Firefox */
@@ -109,4 +106,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: #007bff;
     border-radius: 50%;
     cursor: pointer;
+}
+.screen-height{
+    height: calc(100vh - 50px);
 }

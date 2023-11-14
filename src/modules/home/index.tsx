@@ -2,10 +2,10 @@ interface Props {
   
 }
 
-function Dashboard({}:Props){
+function index({}:Props){
   return (
-     <div>Admin</div>
+     <div>index</div>
   )
 }
 
-export default Dashboard    
+export default index

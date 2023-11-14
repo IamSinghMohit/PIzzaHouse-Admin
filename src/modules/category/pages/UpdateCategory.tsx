@@ -79,7 +79,7 @@ function UpdateCategory() {
 
     useEffect(() => {
         if (data) {
-            dispatch(setPriceAttribute(data));
+            dispatch(setPriceAttribute(data?.data));
         }
         if(isError){
             errorToast('error while fetching attributes')

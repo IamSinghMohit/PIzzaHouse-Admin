@@ -1,9 +1,7 @@
 import axios from "@/lib/axios";
-import {
-    useInfiniteQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCurrentWindow } from "@/utils";
-import { CategorySchemaType} from "../schema";
+import { CategorySchemaType } from "../schema";
 
 async function searchCategory(
     text: string,
@@ -19,17 +17,22 @@ export function useSearchCateogry(text: string) {
     const screen = getCurrentWindow();
     let limit = 3;
     if (screen == "mobile") {
-        limit = 10;
+        limit = 5;
     } else {
-        limit = 20;
+        limit = 10;
     }
     return useInfiniteQuery({
         queryKey: ["category", "search", text],
         queryFn: async ({ pageParam }) =>
             await searchCategory(text, limit, pageParam),
-        initialPageParam: '',
+        initialPageParam: "",
         getNextPageParam: (lastePage) =>
-            lastePage.length >= limit ? lastePage[lastePage.length - 1].id : undefined,
+            lastePage.length >= limit
+                ? lastePage[lastePage.length - 1].id
+                : undefined,
         enabled: !!text,
+        refetchOnWindowFocus: false,
+        refetchInterval: false,
+        refetchIntervalInBackground: false,
     });
 }

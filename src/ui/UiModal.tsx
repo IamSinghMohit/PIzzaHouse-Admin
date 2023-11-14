@@ -26,7 +26,6 @@ function UiModal(
     useImperativeHandle(
         ref,
         () => {
-            // return { onOpen, isOpen, onClose };
             return {
                 onOpen: discloser.onOpen,
                 isOpen: discloser.isOpen,
@@ -43,7 +42,7 @@ function UiModal(
                 isOpen={discloser.isOpen}
                 onOpenChange={discloser.onOpenChange}
                 scrollBehavior="inside"
-                backdrop="blur"
+                // backdrop="blur"
                 classNames={{
                     base:'w-auto'
                 }}
