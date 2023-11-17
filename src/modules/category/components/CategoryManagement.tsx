@@ -14,9 +14,11 @@ import {
     CardHeader,
     Spinner,
 } from "@nextui-org/react";
+
 interface Props {
-    isLoading: boolean;
-    defaultImage: string;
+    tableLoading?: boolean;
+    submitLoading: boolean;
+    defaultImage?: string;
     processedImage: ProcessedImageType;
     inputValue: string;
     onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +29,8 @@ interface Props {
 }
 
 function CategoryManagement({
-    isLoading,
+    tableLoading,
+    submitLoading,
     defaultImage,
     inputValue,
     onChangeInput,
@@ -44,10 +47,10 @@ function CategoryManagement({
                 body: "flex flex-col gap-3 lg:flex-row lg:justify-between xl:justify-normal xl:gap-[250px]",
             }}
             className={`min-h-[200px] ${
-                isLoading && "flex items-center justify-center"
+                tableLoading && "flex items-center justify-center"
             }`}
         >
-            {isLoading ? (
+            {tableLoading ? (
                 <Spinner size="lg" />
             ) : (
                 <>
@@ -64,7 +67,7 @@ function CategoryManagement({
                                     setProcessedImage={setProcessedImage}
                                 />
                                 <Input
-                                    size="lg"
+                                    size="sm"
                                     radius="sm"
                                     placeholder="Category name"
                                     value={inputValue}
@@ -95,7 +98,7 @@ function CategoryManagement({
                             <Button
                                 onPress={onSubmit}
                                 className="w-[100px] bg-primaryOrange text-white self-end mt-auto"
-                                isLoading={isLoading}
+                                isLoading={submitLoading}
                             >
                                 Submit
                             </Button>

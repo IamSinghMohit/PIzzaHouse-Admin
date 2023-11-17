@@ -13,13 +13,16 @@ async function searchCategory(
         .then((res) => res.data.data);
 }
 
-export function useSearchCateogry(text: string) {
+export function useSearchCateogry(text: string, argLimit?: number) {
     const screen = getCurrentWindow();
     let limit = 3;
     if (screen == "mobile") {
-        limit = 5;
+        limit = 5 as number;
     } else {
-        limit = 10;
+        limit = 10 as number;
+    }
+    if (argLimit) {
+        limit = argLimit;
     }
     return useInfiniteQuery({
         queryKey: ["category", "search", text],

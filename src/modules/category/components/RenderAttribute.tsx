@@ -7,6 +7,7 @@ import {
     Divider,
 } from "@nextui-org/react";
 import { deleteAttribute} from "@/store/features/categorySlice";
+import { memo } from "react";
 import { useAppDispatch, useAppSelector} from "@/hooks/state";
 import { SubAttribute } from "@/schema/categorySlice";
 import { DeleteIcon } from "@/icons";
@@ -20,12 +21,12 @@ interface Props {
 
 function RenderAttribute({ attribute_title, attributes, id }: Props) {
     const dispatch = useAppDispatch();
-    const {updatedFields} = useAppSelector((state) => state.category)
+    const {updated_fields} = useAppSelector((state) => state.category)
 
     function handleDeleteAtt(id:string){
         dispatch(deleteAttribute(id))
         // updating the filds in reduxstore
-        if(!updatedFields.price_attributes){
+        if(!updated_fields.price_attributes){
             dispatch(setUpdatedFields('price_attributes'))
         }
     }
@@ -66,4 +67,4 @@ function RenderAttribute({ attribute_title, attributes, id }: Props) {
     );
 }
 
-export default RenderAttribute;
+export default memo(RenderAttribute)

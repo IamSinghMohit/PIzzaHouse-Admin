@@ -9,15 +9,14 @@ import {
     Spinner,
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
-import { uuid } from "@/utils/uuid";
 import { CategorySchemaType } from "@/modules/category/schema";
 import TableActions from "./TableAction";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import {memo} from "react"
+import { memo } from "react";
 
 interface Props {
     classsName?: string;
-    columns: Array<{ name: string }>;
+    columns: Array<{ name: string; id: string }>;
     data: CategorySchemaType[];
     onEditClick: (cat: CategorySchemaType) => void;
     onViewClick: (cat: CategorySchemaType) => void;
@@ -59,12 +58,12 @@ function AppTable({
             bottomContent={bottomContent}
             bottomContentPlacement={bottomContentPlacement}
             classNames={{
-                table:'h-[320px] sm:h-[420px] md:h-[450px] lg:h-[510px]'
+                table: `${isLoading && "h-[520px]"}`,
             }}
         >
             <TableHeader>
-                {columns.map(({ name }) => (
-                    <TableColumn key={`${uuid()}`}>{name}</TableColumn>
+                {columns.map((col) => (
+                    <TableColumn key={col.id}>{col.name}</TableColumn>
                 ))}
             </TableHeader>
             <TableBody
@@ -74,7 +73,7 @@ function AppTable({
             >
                 {shouldRenderData &&
                     data.map((cat, index) => (
-                        <TableRow key={`${uuid()}`}>
+                        <TableRow key={cat.id}>
                             <TableCell>
                                 <Avatar src={cat.image} size="lg" radius="sm" />
                             </TableCell>
@@ -109,4 +108,4 @@ function AppTable({
     );
 }
 
-export default memo(AppTable)
+export default memo(AppTable);

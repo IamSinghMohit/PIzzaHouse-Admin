@@ -1,10 +1,10 @@
 import CategoryTable from "./CategoryTable";
-import { useCategory } from "../../hooks/useCategory";
 import { useState, useEffect, memo, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setTotalPages } from "@/store/features/categorySlice";
 import AppPagination from "@/components/AppPagination";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCategory } from "../../hooks";
 
 interface Props {}
 

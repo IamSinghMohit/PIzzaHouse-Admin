@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState, memo } from "react";
 import AppTable from "@/components/Table";
 import { CategoryColumns } from "@/data/cateogry-table";
-import { useDeleteCategory } from "../../hooks/useDeleteCategory";
 import { CategorySchemaType } from "../../schema";
 import ViewCategory from "../ViewCategory";
 import DeleteAlart from "@/components/DeleteAlert";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
+import { useDeleteCategory } from "../../hooks";
 
 interface Props {
     data: CategorySchemaType[];
@@ -32,7 +32,6 @@ function CategoryTable({
     const { current_selected_category: category } = useAppSelector(
         (state) => state.category
     );
-    console.log("rendered category Table");
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -46,9 +45,7 @@ function CategoryTable({
     const handleDelete = useCallback(() => {
         if (!category) return;
         const { id } = category;
-        const url = category.image.split("/");
-        const image = url[url.length - 1].split(".")[0];
-        mutate({ id, image });
+        mutate(id);
         setDeleteModalOpen(false);
     }, [category]);
 
@@ -70,6 +67,10 @@ function CategoryTable({
             onDelete(category);
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+
+    },[])
     return (
         <>
             <AppTable
@@ -80,7 +81,7 @@ function CategoryTable({
                         : "No Category found create 🔥 one!"
                 }
                 isLoading={isLoading}
-                classsName="screen h-[320px] sm:h-[420px] md:h-[450px] lg:h-[510px]"
+                classsName="screen max-h-[330px] sm:max-h-[450px] md:max-h-[460px] lg:max-h-[520px]"
                 cbIntersectionObr={cbIntersectionObr}
                 observeLastBy={observeLastBy}
                 bottomContent={bottomContent}
@@ -110,4 +111,4 @@ function CategoryTable({
     );
 }
 
-export default memo(CategoryTable)
+export default memo(CategoryTable);

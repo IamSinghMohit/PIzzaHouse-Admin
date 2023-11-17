@@ -6,18 +6,33 @@ const initialState: SearchSliceState = {
         started_searching: false,
         isLoading: false,
     },
+    products:{
+        started_searching: false,
+        isLoading: false,
+    }
 };
 const SearchSlice = createSlice({
     name: "search",
     initialState,
     reducers: {
-        setStartedSearching(state, action: PayloadAction<boolean>) {
+        setStartedSearchingCategory(state, action: PayloadAction<boolean>) {
             state.categories.started_searching = action.payload;
         },
-        setLoading(state, action: PayloadAction<boolean>) {
+        setLoadingCategory(state, action: PayloadAction<boolean>) {
+            state.categories.isLoading = action.payload;
+        },
+        setStartedSearchingProduct(state, action: PayloadAction<boolean>) {
+            state.categories.started_searching = action.payload;
+        },
+        setLoadingProduct(state, action: PayloadAction<boolean>) {
             state.categories.isLoading = action.payload;
         },
     },
 });
-export const { setStartedSearching, setLoading } = SearchSlice.actions;
+export const {
+    setStartedSearchingCategory,
+    setLoadingCategory,
+    setStartedSearchingProduct,
+    setLoadingProduct
+} = SearchSlice.actions;
 export default SearchSlice;

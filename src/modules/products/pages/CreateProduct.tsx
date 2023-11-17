@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState, useRef, FormEvent } from "react";
 import {
     Card,
     CardBody,
@@ -9,52 +8,67 @@ import {
     Textarea,
 } from "@nextui-org/react";
 
-import { DevTool } from "@hookform/devtools";
 import ImageUploader from "@/components/ImageUploader";
 import SelectCategory from "@/components/SelectCategory";
-import InputMapper from "../components/InputMapper";
-import ProductContextProvider, { useProductContext } from "../context";
-import { useQueryClient } from "@tanstack/react-query";
-import { AttributeSchemaType } from "@/modules/category/schema";
-import {z} from "zod"
-import { zodResolver } from "@hookform/resolvers/zod";
+import InputMapper, { InputMapperRefType } from "../components/InputMapper";
+import { ProcessedImageType } from "@/schema/ImageUploader";
+import { useCategoryAttributes } from "@/modules/category/hooks";
+import { useAppDispatch } from "@/hooks/state";
+import { manageProduct, setProductAttributes } from "@/store/features/productSlice";
+import { useCreateProduct } from "../hooks/useCreateProduct";
 interface Props {}
 
-function CreateProductComponent({}: Props) {
+function CreateProduct({}: Props) {
     const [productName, setProductName] = useState("");
-    const { processedImage, setProcessedImage, category, setCategory } =
-        useProductContext();
-    const queryClient = useQueryClient();
-    const categoriesAttr = queryClient.getQueryState<AttributeSchemaType>([
-        "category",
-        "attribute",
-        category,
-    ]);
-    const zodSchema = (formdata:Record<string,string>) => {
-        const schema:Record<string,any> = {}
-        for(const key in formdata){
-            schema[key] = z.number()
-        }
-        return z.object(schema)
-    }
-    const { register, control ,handleSubmit,formState} = useForm({
-        // resolver:zodResolver(zodSchema(formState))
+    const [formState,setFormState] = useState()
+    const [category, setCategory] = useState("");
+    const { data } = useCategoryAttributes(category);
+    const priceRef = useRef<InputMapperRefType>(null);
+    const dispatch = useAppDispatch();
+    const [showError, setShowError] = useState(false);
+    const [processedImage, setProcessedImage] = useState<ProcessedImageType>({
+        file: "",
+        url: "",
     });
+    const { mutate, isPending } = useCreateProduct();
 
-    function handleCreateProduct() {
+    function handleCreateProduct(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (priceRef.current) {
+            const prices = priceRef.current?.price.current;
+            for (let i = 0; i < prices.length; i++) {
+                for (let j = 0; j < prices[i].attributes.length; j++) {
+                    const currentNode = prices[i].attributes[j];
+                    if (!currentNode.value) {
+                            console.log('if block')
+                        prices[i].attributes[j].error = true;
+                        setShowError(true);
+                        return;
+                    } else if (currentNode.value) {
+                    }
+                }
+            }
+        }
+
         const form = new FormData();
         form.append("name", productName);
         // form.append('category',first)
+        // mutate(form);
     }
 
-    console.log(categoriesAttr );
+    useEffect(() => {
+        if (data) {
+            dispatch(manageProduct({ product_name: "hello world" }));
+            dispatch(setProductAttributes(data))
+        }
+    }, [data]);
     return (
         <Card shadow="sm" radius="sm">
             <CardHeader>Create Product</CardHeader>
             <CardBody className="gap-5">
-                <form onSubmit={handleSubmit(() => {console.log(formState);})}>
-                    <div className="flex gap-2 flex-col lg:flex-row lg:gap-3">
-                        <div className="flex flex-col gap-2 lg:w-[320px]">
+                <form onSubmit={handleCreateProduct}>
+                    <div className="flex gap-2 flex-col lg:flex-row lg:gap-3 mb-2">
+                        <div className="flex flex-col justify-between gap-2 lg:w-[320px]">
                             <Input
                                 label="Product name"
                                 size="sm"
@@ -64,8 +78,7 @@ function CreateProductComponent({}: Props) {
                             />
                             <SelectCategory
                                 size="sm"
-                                value={category}
-                                setValue={setCategory}
+                                selectedKeys={setCategory}
                                 className="max-w-[320px]"
                             />
                         </div>
@@ -81,14 +94,15 @@ function CreateProductComponent({}: Props) {
                     </div>
                     <div
                         className={`flex flex-wrap items-center ${
-                            categoriesAttr && "justify-between gap-3"
+                            data && "justify-between gap-3"
                         }`}
                     >
-                        {categoriesAttr?.data && (
+                        {data && (
                             <InputMapper
-                                data={categoriesAttr.data}
-                                register={register}
-                                formState={formState}
+                                data={data}
+                                ref={priceRef}
+                                showError={showError}
+                                setShowError={setShowError}
                             />
                         )}
                         <ImageUploader
@@ -99,25 +113,16 @@ function CreateProductComponent({}: Props) {
                         />
                     </div>
                     <Button
-                        onPress={handleCreateProduct}
-                        className="w-[100px] bg-primaryOrange text-white"
-                        // isLoading={isPending}
+                        className="w-[100px] bg-primaryOrange text-white my-2"
+                        isLoading={isPending}
                         type="submit"
                     >
                         Submit
                     </Button>
                 </form>
-                <DevTool control={control} />
+                {/* <DevTool control={control} /> */}
             </CardBody>
         </Card>
-    );
-}
-
-function CreateProduct() {
-    return (
-        <ProductContextProvider>
-            <CreateProductComponent />
-        </ProductContextProvider>
     );
 }
 

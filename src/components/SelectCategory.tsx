@@ -1,34 +1,49 @@
-import  { Dispatch, SetStateAction} from "react";
-import { useCategory } from "@/modules/category/hooks/useCategory";
-import { Select, SelectItem, } from "@nextui-org/react";
-import { useCategoryAttributes } from "@/modules/category/hooks";
+import { Select, SelectItem } from "@nextui-org/react";
+import { useCategoryScroll } from "@/hooks/useCategoryScroll";
+import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
+import { useState } from "react";
 
 interface Props {
-    setValue: Dispatch<SetStateAction<string>>;
-    value:string
+    selectedKeys: (e: string) => void;
     size: "sm" | "md" | "lg";
     baseClassName?: string;
-    className?:string;
+    className?: string;
 }
 
-function SelectCategory({ setValue,value, size, baseClassName ,className}: Props) {
-    // const { data = [] } = useCategory();
-    useCategoryAttributes(value)
+function SelectCategory({
+    selectedKeys,
+    size,
+    baseClassName,
+    className,
+}: Props) {
+    const [isOpen, setIsOpen] = useState(false);
+    const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
+
+    const [, scrollerRef] = useInfiniteScroll({
+        hasMore,
+        isEnabled: isOpen,
+        shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
+        onLoadMore,
+    });
 
     return (
         <Select
+            isLoading={isLoading}
             size={size}
+            items={items}
             placeholder="category"
             aria-label="category"
             className={className}
-            onChange={(e) => setValue(e.target.value)}
+            scrollRef={scrollerRef}
+            onChange={(e) => selectedKeys(e.target.value)}
             classNames={{
                 base: baseClassName,
+                selectorIcon: "text-primaryOrange",
+                spinner: "text-primaryOrange",
             }}
+            onOpenChange={setIsOpen}
         >
-            {/* {data.map((cat) => (
-                <SelectItem key={cat.id}>{cat.name}</SelectItem>
-            ))} */}
+            {(cat) => <SelectItem key={cat.id}>{cat.name}</SelectItem>}
         </Select>
     );
 }

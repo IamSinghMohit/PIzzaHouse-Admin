@@ -1,4 +1,5 @@
 import React, { useState, Ref, useImperativeHandle } from "react";
+import { Slider } from "@nextui-org/react";
 import { MdCropRotate } from "react-icons/md";
 import { BsZoomIn } from "react-icons/bs";
 
@@ -16,16 +17,19 @@ import IconWrapper from "../IconWrapper";
 import { ModalRefType } from "@/schema/modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setUpdatedFields } from "@/store/features/categorySlice";
+import {Dispatch,SetStateAction} from "react"
 
 interface Props {
     Image: string;
     setImage: (args: { url: string; file: File }) => void;
     MimeType: string;
     aspectRatio?: { width: number; height: number };
+    uploaded:boolean;
+    setUploaded:Dispatch<SetStateAction<boolean>>
 }
 
 function ImageUploader(
-    { Image, setImage, MimeType, aspectRatio }: Props,
+    { Image, setImage, MimeType, aspectRatio ,setUploaded,uploaded}: Props,
     ref: Ref<ModalRefType>
 ) {
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
@@ -44,12 +48,15 @@ function ImageUploader(
         setCroppedAreaPixels(croppedAreaPixels);
     };
 
-    const handleSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setZoom(Number(e.target.value));
+    const handleZoom = (e: unknown) => {
+        if (typeof e === "number") {
+            setZoom(e);
+        }
     };
-
-    const handleRotation = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRotation(Number(e.target.value));
+    const handleRotation = (e: unknown) => {
+        if (typeof e === "number") {
+            setRotation(e);
+        }
     };
 
     const showCroppedImage = async () => {
@@ -63,11 +70,11 @@ function ImageUploader(
 
             if (croppedImage) {
                 setImage(croppedImage);
+               setUploaded(true) 
                 if (!updated_fields.image) {
                     dispatch(setUpdatedFields("image"));
                 }
             }
-
         } catch (e) {
             console.log(e);
         }
@@ -86,6 +93,9 @@ function ImageUploader(
     return (
         <Modal
             isOpen={isOpen}
+            isDismissable={uploaded}
+            isKeyboardDismissDisabled={!uploaded}
+            hideCloseButton={!uploaded}
             onOpenChange={onOpenChange}
             classNames={{
                 closeButton: "z-10",
@@ -113,26 +123,30 @@ function ImageUploader(
                                     onZoomChange={setZoom}
                                 />
                             </div>
-                            <div className="range-slider gap-2 text-gray-500">
-                                <IconWrapper icon={<MdCropRotate />} />
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={360}
+                            <div className=" flex gap-2 flex-col text-gray-400 mx-1 mt-1">
+                                <Slider
+                                    startContent={
+                                        <IconWrapper icon={<MdCropRotate />} />
+                                    }
+                                    aria-label="crop slider"
+                                    size="sm"
+                                    minValue={0}
+                                    maxValue={360}
                                     step={1}
                                     value={rotation}
                                     onChange={handleRotation}
                                 />
-                            </div>
-                            <div className="range-slider gap-2 text-gray-500">
-                                <IconWrapper icon={<BsZoomIn />} />
-                                <input
-                                    type="range"
-                                    min={1}
-                                    max={3}
+                                <Slider
+                                    startContent={
+                                        <IconWrapper icon={<BsZoomIn />} />
+                                    }
+                                    aria-label="zoom slider"
+                                    size="sm"
+                                    minValue={1}
+                                    maxValue={3}
                                     step={0.1}
                                     value={zoom}
-                                    onChange={handleSlider}
+                                    onChange={handleZoom}
                                 />
                             </div>
                         </ModalBody>
@@ -143,7 +157,7 @@ function ImageUploader(
                                 className="text-white"
                                 onPress={onclose}
                             >
-                               Crop image
+                                Crop image
                             </Button>
                         </ModalFooter>
                     </>

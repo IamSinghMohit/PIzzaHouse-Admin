@@ -1,19 +1,35 @@
 import { AttributeSchemaType } from "@/modules/category/schema";
-import { useEffect, useRef, useMemo } from "react";
+import {
+    useEffect,
+    useRef,
+    useMemo,
+    forwardRef,
+    useImperativeHandle,
+    Ref,
+    Dispatch,
+    SetStateAction,
+} from "react";
 import { Input, Chip } from "@nextui-org/react";
-import {z} from "zod"
+import { PriceAttributesState } from "../schema";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { setProductAttributeState } from "@/store/features/productSlice";
 
 interface Props {
     data: AttributeSchemaType;
-    register:any
-    formState:any
+    showError: boolean;
+    setShowError:Dispatch<SetStateAction<boolean>>
 }
+export type InputMapperRefType = {
+    price: React.MutableRefObject<PriceAttributesState[]>;
+};
 
-function InputMapper({ data ,register,formState}: Props) {
+function InputMapper({ data, showError ,setShowError}: Props, ref: Ref<InputMapperRefType>) {
     const InputRef = useRef<{ [key: string]: HTMLInputElement | null }>({});
     const inputIdArrayRef = useRef<Array<string>>([]);
-    const memoizedData = useMemo(() => data, [data]);
-    const {errors} = formState
+    // const memoizedData = useMemo(() => data, [data]);
+    const priceRef = useRef<PriceAttributesState[]>([]);
+    const dispatch = useAppDispatch()
+    const {product_attributes} = useAppSelector((state) => state.product)
 
     function handleKeyDown(
         e: React.KeyboardEvent<HTMLInputElement>,
@@ -32,51 +48,83 @@ function InputMapper({ data ,register,formState}: Props) {
         }
     }
 
+    function handleInputChange(
+        e: React.ChangeEvent<HTMLInputElement>,
+        blockId: number,
+        attId: number
+    ) {
+        if(showError){
+           setShowError(false) 
+        }
+        dispatch(setProductAttributeState())
+        priceRef.current[paIndex].attributes[attIndex].value = parseInt(
+            e.target.value
+        );
+    }
+
     useEffect(() => {
         InputRef.current[inputIdArrayRef.current[0]]?.focus();
     }, [data[0]]);
 
+    useImperativeHandle(
+        ref,
+        () => {
+            return { price: priceRef};
+        },
+        []
+    );
+
     return (
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:w-full lg:gap-5 lg:flex-col my-1">
-            {memoizedData.map((d) => {
+            {product_attributes.map((d, blockIndex) => {
                 // after mapping on main category array
+                priceRef.current[blockIndex] = {
+                    attribute_title: d.attribute_title,
+                    attributes: [],
+                };
                 return (
                     <div className="flex gap-3 flex-col" key={d.id}>
                         <h1 className="font-bold">{d.attribute_title} :</h1>
                         <div className="flex flex-col gap-2 lg:flex-row lg:gap-3">
                             {/* mapping inside attribute sub array of main category array */}
 
-                            {d.attributes.map((a) => {
+                            {d.attributes.map((a, attIndex) => {
+                                // important refs on for navigating between input and another controlling the price
                                 inputIdArrayRef.current.push(a.id);
-                                const { ref, onBlur, onChange ,name} = register(
-                                    a.title,{
-                                        require:true,
-                                        required:`*required`
-                                    }
-                                );
+                                priceRef.current[blockIndex].attributes.push({
+                                    title: a.title,
+                                    value:0,
+                                    error: false,
+                                });
                                 return (
                                     <div className="flex" key={a.id}>
                                         <Chip className="h-[40px] bg-primaryOrange text-white rounded-none rounded-l-md pl-2 border-2 border-darkOrange">
                                             {a.title}
                                         </Chip>
                                         <Input
+                                            type="number"
                                             radius="none"
                                             ref={(e) => {
                                                 InputRef.current[a.id] = e;
-                                                ref(e);
                                             }}
                                             onKeyDown={(e) =>
                                                 handleKeyDown(e, a.id)
                                             }
-                                            onBlur={onBlur}
-                                            onChange={onChange}
-                                            name={name}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    blockIndex,
+                                                    attIndex
+                                                    )
+                                            }
                                             classNames={{
-                                                base: "w-[100px]",
-                                                inputWrapper: "rounded-r-md",
+                                                base: "w-[100px] h-[40px]",
+                                                inputWrapper:
+                                                    "rounded-r-md h-[40px]",
                                             }}
-                                            isInvalid={!!errors[a.title]}
-                                            errorMessage={errors[a.title]?.message} 
+                                            isInvalid={
+                                                showError && !InputRef.current[a.id]?.value
+                                            }
                                         />
                                     </div>
                                 );
@@ -89,4 +137,4 @@ function InputMapper({ data ,register,formState}: Props) {
     );
 }
 
-export default InputMapper;
+export default forwardRef(InputMapper);

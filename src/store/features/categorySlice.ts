@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Attribute, CategorySliceInitialState } from "@/schema/categorySlice";
 import { CategorySchemaType } from "@/modules/category/schema";
 
+type PayloadType = "REPLACE" | "PUSH";
+
 const initialState: CategorySliceInitialState = {
     category_attr_array: [],
     fetched_category_attr: [],
@@ -20,23 +22,23 @@ export const CategorySlice = createSlice({
     reducers: {
         setPriceAttribute(
             state,
-            action: PayloadAction<
-                Attribute | Attribute[] | ((arg: Attribute[]) => any)
-            >
+            action: PayloadAction<{
+                data: Attribute[] | Attribute;
+                type: PayloadType;
+            }>
         ) {
-            if (typeof action.payload == "function") {
-                state.category_attr_array = action.payload(
-                    state.category_attr_array
-                );
-            } else if (Array.isArray(action.payload)) {
+            if (
+                action.payload.type == "REPLACE" &&
+                Array.isArray(action.payload.data)
+            ) {
+                state.category_attr_array = action.payload.data;
+            } else if (
+                action.payload.type == "PUSH" &&
+                !Array.isArray(action.payload.data)
+            ) {
                 state.category_attr_array = [
                     ...state.category_attr_array,
-                    ...action.payload,
-                ];
-            } else {
-                state.category_attr_array = [
-                    ...state.category_attr_array,
-                    action.payload,
+                    action.payload.data,
                 ];
             }
         },
@@ -69,21 +71,6 @@ export const CategorySlice = createSlice({
             state.current_selected_category = action.payload;
         },
 
-        mutatePriceAttr(
-            state,
-            action: PayloadAction<
-                Attribute[] | ((arg: Attribute[]) => Attribute[])
-            >
-        ) {
-            if (typeof action.payload == "function") {
-                state.category_attr_array = action.payload(
-                    state.category_attr_array
-                );
-            } else {
-                state.category_attr_array = action.payload;
-            }
-        },
-
         setUpdatedFields(
             state,
             action: PayloadAction<"name" | "image" | "price_attributes">
@@ -112,7 +99,6 @@ export const {
     setPriceAttribute,
     updateAttribute,
     deleteAttribute,
-    mutatePriceAttr,
     setUpdatedFields,
     setTotalPages,
     setCurrentSelectedCategory,

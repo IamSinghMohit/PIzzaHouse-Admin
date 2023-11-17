@@ -3,7 +3,7 @@ import { useEffect, memo, useCallback } from "react";
 import CategoryTable from "./CategoryTable";
 import { errorToast } from "@/lib/toast";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setLoading } from "@/store/features/searchSlice";
+import { setLoadingCategory } from "@/store/features/searchSlice";
 import { useQueryClient } from "@tanstack/react-query";
 import { CategorySchemaType } from "../../schema";
 import { filterArrayById } from "@/utils";
@@ -29,10 +29,10 @@ function SearchCategoryTable({ text }: Props) {
     useEffect(() => {
         if (isError) {
             errorToast("failed to fetch from server");
-            dispatch(setLoading(false));
+            dispatch(setLoadingCategory(false));
         }
         if (data) {
-            dispatch(setLoading(false));
+            dispatch(setLoadingCategory(false));
         }
     }, [isError, data]);
 

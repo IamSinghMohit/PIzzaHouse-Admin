@@ -5,6 +5,8 @@ export interface Errors {
     att: string;
 }
 
+export const ApiResWrapper = z.object({});
+
 export const CategorySchema = z.object({
     id: z.string(),
     image: z.string(),
@@ -46,7 +48,6 @@ export const GetCategorySchema = z.object({
     data: z.array(CategorySchema),
 });
 
-export type GetCategorySchemaType
-    = TypeOf<typeof GetCategorySchema> 
-export type CategorySchemaType = TypeOf<typeof CategorySchema> 
-export type AttributeSchemaType = TypeOf<typeof AttributeSchema> 
+export type GetCategorySchemaType = TypeOf<typeof GetCategorySchema>;
+export type CategorySchemaType = TypeOf<typeof CategorySchema>;
+export type AttributeSchemaType = TypeOf<typeof AttributeSchema>;

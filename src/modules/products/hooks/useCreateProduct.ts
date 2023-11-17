@@ -1,10 +1,10 @@
 import axios from "@/lib/axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {  promiseToast } from "@/lib/toast";
 import { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { promiseToast } from "@/lib/toast";
 import { BackendError } from "@/schema/Error";
 
-async function createCategory(data: any): Promise<string> {
+async function createProduct(data: any): Promise<string> {
     const promise = axios
         .post("/category/create", data, {
             headers: {
@@ -16,19 +16,18 @@ async function createCategory(data: any): Promise<string> {
         promise,
         "creating category",
         "successfully created category",
-        (err:AxiosError<BackendError>) => `${err.response?.data.error}`
+        (err: AxiosError<BackendError>) => `${err.response?.data.error}`
     );
     return await promise;
 }
-
-export function useCreateCategory() {
+export function useCreateProduct() {
     const qeryClient = useQueryClient();
     return useMutation({
-        mutationKey: ["category", "create"],
-        mutationFn: createCategory,
+        mutationKey: ["product", "create"],
+        mutationFn: createProduct,
         onSuccess: () => {
             qeryClient.invalidateQueries({
-                queryKey: ["category"],
+                queryKey: ["product"],
             });
         },
     });

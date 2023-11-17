@@ -1,16 +1,18 @@
 export const CategoryColumns = [
     {
-        name:'IMAGE'
+        id: "PvbLAc2SsZQioCwUbuqN",
+        name: "IMAGE",
     },
     {
-        name:'CATEGORY NAME'
+        id: "WEPgDTWFYrVT10ak2T2a",
+        name: "CATEGORY NAME",
     },
     {
-        name:'CREATED DATE'
+        id: "Dz7i2fQDea8rw0XDreCV",
+        name: "CREATED DATE",
     },
     {
-        name:'ACTIONS'
+        id: "lyynEyJhFNL6VcITTfSW",
+        name: "ACTIONS",
     },
-]
-             
-                
+];

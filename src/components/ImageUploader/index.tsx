@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState ,Dispatch,SetStateAction} from "react";
+import React, {
+    useEffect,
+    useRef,
+    useState,
+    Dispatch,
+    SetStateAction,
+    memo
+} from "react";
 import uploadImage from "@/assets/upload.png";
 import { TbDragDrop } from "react-icons/tb";
 import { Button } from "@nextui-org/react";
@@ -11,24 +18,33 @@ interface Props {
     width?: string;
     height?: string;
     type: "product" | "category";
-    processedImage:{
-        file:unknown;
-        url:string
+    processedImage: {
+        file: unknown;
+        url: string;
     };
-    defaultImage?:string;
+    defaultImage?: string;
     aspectRatio?: { width: number; height: number };
-    setProcessedImage:Dispatch<SetStateAction<ProcessedImageType>>
+    setProcessedImage: Dispatch<SetStateAction<ProcessedImageType>>;
 }
 
-function ImageUploader({ width, height, type ,processedImage,setProcessedImage,aspectRatio,defaultImage}: Props) {
+function ImageUploader({
+    width,
+    height,
+    type,
+    processedImage,
+    setProcessedImage,
+    aspectRatio,
+    defaultImage,
+}: Props) {
     // this is for image element to change its content
     const ImageRef = useRef<HTMLImageElement | null>(null);
     // this is input ref with display none and type file to accept file from user upon click on the image
     const InputRef = useRef<HTMLInputElement | null>(null);
     // this ref is for modal
     const ModalRef = useRef<ModalRefType>(null);
+    const [uploaded, setUploaded] = useState(false);
     /*
-     * it is utility state using this i will be rendering grear icon and and it will be assinged a image url
+     * it is utility state using this will be rendering grear icon and and it will be assinged a image url
      * and i will be passsing this state to my ImageCropper component which will use image url for further processig
      */
     const [Image, setImage] = useState("");
@@ -43,7 +59,7 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
             const selectedFile = files[0]; // Assuming you're handling a single image
             const imageURL = URL.createObjectURL(selectedFile);
             setImage(imageURL);
-
+            setUploaded(false);
             if (ImageRef.current) {
                 ImageRef.current.src = imageURL;
                 ModalRef.current?.onOpen();
@@ -60,7 +76,7 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
             const selectedFile = files[0]; // Assuming you're handling a single image
             const imageURL = URL.createObjectURL(selectedFile);
             setImage(imageURL);
-
+            setUploaded(false);
             if (ImageRef.current) {
                 ImageRef.current.src = imageURL;
                 ModalRef.current?.onOpen();
@@ -77,15 +93,16 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
     }
 
     useEffect(() => {
-        if(defaultImage){
-            if(ImageRef.current) ImageRef.current.src = defaultImage
-            setImage(defaultImage)
+        if (defaultImage) {
+            if (ImageRef.current) ImageRef.current.src = defaultImage;
+            setImage(defaultImage);
         }
-    },[])
+    }, []);
 
     useEffect(() => {
         if (processedImage?.url) {
-            if (ImageRef.current) ImageRef.current.src = processedImage.url as string;
+            if (ImageRef.current)
+                ImageRef.current.src = processedImage.url as string;
         }
     }, [processedImage, processedImage?.url]);
 
@@ -111,7 +128,9 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
                     <img
                         src={defaultImage || uploadImage}
                         className={`${
-                            Image ? "w-full h-full" : "w-1/2 h-1/2 m-auto object-cover"
+                            Image
+                                ? "w-full h-full"
+                                : "w-1/2 h-1/2 m-auto object-cover"
                         }`}
                         alt="upload_image"
                         ref={ImageRef}
@@ -137,7 +156,7 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
                 {Image && (
                     <Button
                         isIconOnly
-                        className="absolute -top-0 -right-[40px] rounded-l-none text-2xl bg-primaryOrange text-white"
+                        className="absolute -top-[1px] -right-[40px] rounded-l-none text-2xl bg-primaryOrange text-white"
                         onClick={handleImageChange}
                     >
                         <PiGearSixLight />
@@ -152,6 +171,8 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
                 ref={InputRef}
             />
             <ImageCropper
+                uploaded={uploaded}
+                setUploaded={setUploaded}
                 ref={ModalRef}
                 Image={Image}
                 setImage={setProcessedImage}
@@ -162,4 +183,4 @@ function ImageUploader({ width, height, type ,processedImage,setProcessedImage,a
     );
 }
 
-export default ImageUploader;
+export default memo(ImageUploader)

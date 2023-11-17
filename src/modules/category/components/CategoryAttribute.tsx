@@ -10,7 +10,7 @@ import { FaCheck } from "react-icons/fa6";
 import { BsPlusSquareDotted } from "react-icons/bs";
 import IconWrapper from "@/components/IconWrapper";
 import { BiReset } from "react-icons/bi";
-import { useRef, useState, SetStateAction, Dispatch } from "react";
+import { useRef, useState, SetStateAction, Dispatch ,memo} from "react";
 import { uuid } from "@/utils/uuid";
 import {
     setPriceAttribute,
@@ -107,9 +107,12 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
 
         dispatch(
             setPriceAttribute({
-                id: `${uuid()}`,
-                attribute_title: title,
-                attributes: attributes,
+                data: {
+                    id: `${uuid()}`,
+                    attribute_title: title,
+                    attributes: attributes,
+                },
+                type: "PUSH",
             })
         );
         // updating the filds in reduxstore
@@ -217,4 +220,4 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
     );
 }
 
-export default CategoryAttribute;
+export default memo(CategoryAttribute)
