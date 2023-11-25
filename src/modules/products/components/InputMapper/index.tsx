@@ -103,10 +103,10 @@ function InputMapper({ showError, setShowError }: Props) {
     }, []);
 
     return (
-        <div className="max-w-[980px]">
+        <div className="max-w-[980px] mt-2">
             {product_attributes.map((d) => {
                 return (
-                    <div className="flex gap-3 flex-col" key={d.id}>
+                    <div className="flex gap-1 flex-col mt-1" key={d.id}>
                         <h1 className="font-bold">{d.attribute_title} :</h1>
                         <div className="flex gap-2 lg:gap-3 flex-wrap">
                             {/* mapping inside attribute sub array of main category array */}
