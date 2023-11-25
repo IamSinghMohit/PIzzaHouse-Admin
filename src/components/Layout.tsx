@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet,  useNavigate } from "react-router-dom";
 import { useUserAutoLogin } from "@/modules/auth/hooks/userUserAutoLogin";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setUser, setTriedToLogin } from "@/store/features/userSlice";
@@ -30,7 +30,7 @@ function Layout() {
             <Navbar />
             <div className="flex">
                 <TabList />
-                <div className="layout sm:h-full p-2 pt-1 pb-0 flex-grow">
+                <div className="layout bg-gray-100 p-2 py-1 flex-grow">
                     <BreadCrumbs />
                     <Outlet />
                 </div>

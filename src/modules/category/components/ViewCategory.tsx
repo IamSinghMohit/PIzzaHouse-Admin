@@ -1,4 +1,4 @@
-import { ModalRefType } from "@/schema/modal";
+import { ModalRefType } from "@/types/Modal";
 import { useEffect, useRef, Dispatch, SetStateAction } from "react";
 import UiModal from "@/ui/UiModal";
 import {

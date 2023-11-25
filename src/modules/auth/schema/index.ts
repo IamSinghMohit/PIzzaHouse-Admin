@@ -8,9 +8,5 @@ export const UserSchema = z.object({
     updatedAt:z.string()
 })
 
-export type LoginFormInput = {
-    email?: string;
-    password?: string;
-};
 
-export type User = TypeOf<typeof UserSchema>
+export type UserSchemaType = TypeOf<typeof UserSchema>

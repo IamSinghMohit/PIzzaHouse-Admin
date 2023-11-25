@@ -8,6 +8,7 @@ interface Props {
     size: "sm" | "md" | "lg";
     baseClassName?: string;
     className?: string;
+    isInvalid?:boolean;
 }
 
 function SelectCategory({
@@ -15,6 +16,7 @@ function SelectCategory({
     size,
     baseClassName,
     className,
+    isInvalid
 }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
@@ -34,8 +36,9 @@ function SelectCategory({
             placeholder="category"
             aria-label="category"
             className={className}
+            isInvalid={isInvalid}
             scrollRef={scrollerRef}
-            onChange={(e) => selectedKeys(e.target.value)}
+            onChange={(e) => selectedKeys(e.target.value)}   
             classNames={{
                 base: baseClassName,
                 selectorIcon: "text-primaryOrange",
@@ -43,7 +46,7 @@ function SelectCategory({
             }}
             onOpenChange={setIsOpen}
         >
-            {(cat) => <SelectItem key={cat.id}>{cat.name}</SelectItem>}
+            {(cat) => <SelectItem key={`${cat.name}:${cat.id}`}>{cat.name}</SelectItem>}
         </Select>
     );
 }

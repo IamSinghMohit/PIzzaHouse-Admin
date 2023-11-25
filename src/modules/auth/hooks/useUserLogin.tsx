@@ -1,8 +1,8 @@
 import axios from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoginFormInput } from "@/modules/auth/schema/user";
-import { User,UserSchema } from "@/modules/auth/schema/user";
+import { LoginFormInput } from "@/modules/auth/schema";
+import { User,UserSchema } from "@/modules/auth/schema";
 import { BackendError } from "@/schema/Error";
 
 interface QueryCallback {

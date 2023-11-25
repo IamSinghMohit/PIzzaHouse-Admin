@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
 import { useDeleteCategory } from "../../hooks";
+import AlertModelContent from "@/modules/shared/AlertModelContent";
 
 interface Props {
     data: CategorySchemaType[];
@@ -81,7 +82,7 @@ function CategoryTable({
                         : "No Category found create 🔥 one!"
                 }
                 isLoading={isLoading}
-                classsName="screen max-h-[330px] sm:max-h-[450px] md:max-h-[460px] lg:max-h-[520px]"
+                classsName="category-table-screen max-h-[330px] sm:max-h-[450px] md:max-h-[460px] lg:max-h-[520px]"
                 cbIntersectionObr={cbIntersectionObr}
                 observeLastBy={observeLastBy}
                 bottomContent={bottomContent}
@@ -93,13 +94,7 @@ function CategoryTable({
             <DeleteAlart
                 onClose={() => setDeleteModalOpen(false)}
                 open={deleteModalOpen}
-                content={(() => (
-                    <p className="text-[14px] mt-7 ml-7">
-                        Are you sure you want to delete{" "}
-                        <span className="font-bold">{category?.name}</span>{" "}
-                        category
-                    </p>
-                ))()}
+                content={<AlertModelContent main={category?.name || ''} suffix="category"/>}
                 onNoPress={() => setDeleteModalOpen(false)}
                 onYesPress={handleDelete}
             />

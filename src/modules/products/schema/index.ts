@@ -1,25 +1,34 @@
-export interface ProductSubAttrType {
-    title: string;
-    value: number;
-}
-export interface ProductAttrType {
-    attribute_title: string;
-    attributes: Array<ProductSubAttrType>;
-}
-export interface ProductTypeType {
-    name: string;
-    category: string;
-    price: number;
-    description: string;
-    status: "draf" | "published";
-    price_attributes: Array<ProductAttrType>;
-}
+import { BaseResponseWithNameAndImage } from "@/schema";
+import { z, TypeOf } from "zod";
+import { ProductStatusEnum } from "../types";
 
-export interface PriceAttributesState {
-    attribute_title: string;
-    attributes: Array<{
-        title: string;
-        value: number; 
-        error:boolean;
-    }>;
-}
+export const ProductSchema = z
+    .object({
+        price: z.number(),
+        description: z.string(),
+        featured: z.boolean(),
+        price_attributes: z.array(z.string()),
+        category: z.string(),
+        default_prices: z.string(),
+        status: z.enum([ProductStatusEnum.DRAFT, ProductStatusEnum.PUBLISHED], {
+            errorMap: (issue, ctx) => ({ message: "enum is not valid" }),
+        }),
+    })
+    .merge(BaseResponseWithNameAndImage);
+
+export const ProductDetailsSchema = z.object({
+    attributes: z.array(
+        z.object({
+            attribute_title: z.string(),
+            attributes: z.array(
+                z.object({
+                    title: z.string(),
+                    value: z.number(),
+                })
+            ),
+        })
+    ),
+    default_prices: z.record(z.string()),
+});
+
+export interface ProductSchemaType extends TypeOf<typeof ProductSchema> {}

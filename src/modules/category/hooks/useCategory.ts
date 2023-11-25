@@ -10,10 +10,9 @@ async function getCategories(page: number, limit: number):Promise<GetCategorySch
             return res.data;
         });
     try {
-        return await GetCategorySchema.parseAsync(result);
+        return GetCategorySchema.parse(result);
     } catch (error) {
         errorToast("received bad data from server");
-        console.log(error)
     }
 }
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attribute, CategorySliceInitialState } from "@/schema/categorySlice";
+import { Attribute,CategorySliceInitialState } from "@/types/slice/Category";
 import { CategorySchemaType } from "@/modules/category/schema";
 
 type PayloadType = "REPLACE" | "PUSH";

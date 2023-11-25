@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserSliceState } from "@/schema/userSlice";
-import { User } from "@/modules/auth/schema/user";
+import { UserSliceState } from "@/types/slice/User";
+import { UserSchemaType } from "@/modules/auth/schema";
 
 const initialState: UserSliceState = {
     user: null,
@@ -11,7 +11,7 @@ export const UserSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<User | undefined>) {
+        setUser(state, action: PayloadAction<UserSchemaType  | undefined>) {
             if (action.payload) {
                 state.user = action.payload;
             }

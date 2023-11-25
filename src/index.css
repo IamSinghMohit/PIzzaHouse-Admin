@@ -18,8 +18,8 @@ body {
 
 /* Chrome, Edge and Safari */
 *::-webkit-scrollbar {
-    height: 10px;
-    width: 10px;
+    height: 8px;
+    width: 8px;
 }
 *::-webkit-scrollbar-track {
     background-color: #dfe9eb;
@@ -49,64 +49,55 @@ body {
 @media (max-width: 800px) {
     *::-webkit-scrollbar {
         width: 4px;
+        height: 4px;
     }
 }
 /* ************************************ Scrollbar******/
 
-/* .highlight-tab  span[data-slot="cursor"] {
-    @apply bg-primaryOrange;
-} */
+/******************************************** table css *******/
+
+.category-table-screen {
+    width: calc(100vw - 16px);
+}
+
+@media (min-width: 638px) {
+    .category-table-screen {
+        width: calc(100vw - 146px);
+    }
+}
+@media (min-width: 900px) {
+    .category-table-screen {
+        width: auto;
+    }
+}
+
+.product-table-screen {
+    width: calc(100vw - 16px);
+}
+
+@media (min-width: 638px) {
+    .product-table-screen {
+        width: calc(100vw - 131px);
+    }
+}
+@media (min-width: 887px) {
+    .product-table-screen {
+        width: auto
+    }
+}
+
+/********************************************/
 .glass {
     background: rgba(255, 142, 13, 0.45);
     -webkit-backdrop-filter: blur(7px);
     backdrop-filter: blur(7px);
     border: 2px solid rgba(255, 142, 13, 0.225);
 }
-.screen {
-    width: calc(100vw - 16px);
-}
+
 .layout {
-    height: calc(100vh - 50px);
+    height: calc(100% - 50px);
 }
 
-@media (min-width: 638px) {
-    .screen {
-        width: calc(100vw - 146px);
-    }
-}
-@media (min-width: 900px) {
-    .screen {
-        width: auto;
-    }
-}
-
-.range-slider {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-}
-
-input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 5px;
-    background: #ccc;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #007bff;
-    border-radius: 50%;
-    cursor: pointer;
-}
-.screen-height{
+.screen-height {
     height: calc(100vh - 50px);
 }

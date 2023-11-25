@@ -1,50 +1,104 @@
 import SelectCategory from "@/components/SelectCategory";
-import { Switch,  Card, CardBody ,Input} from "@nextui-org/react";
+import {
+    Select,
+    SelectItem,
+    Card,
+    CardBody,
+    Input,
+    Slider,
+} from "@nextui-org/react";
 import CreateButton from "@/components/TopBar/CreateButton";
-import { useState } from "react";
-interface Props {}
+import { memo } from "react";
+import { SearchIcon } from "@/icons";
+import AppCheck from "@/modules/shared/AppCheck";
+import { useProductContext } from "../context";
 
-function ProductBar({}: Props) {
-    const [category, setCategory] = useState('');
-    const [search,setSearched] = useState('')
-
+function ProductBar() {
+    const {
+        search,
+        setCategory,
+        setSearch,
+        setSlider,
+        slider,
+        setShowFeatured,
+        showFeatured,
+        productType,
+        setProductType,
+    } = useProductContext();
     return (
         <Card className="mb-2" shadow="sm">
-            <CardBody>
-                <div className="flex flex-col justify-between gap-2 md:flex-row">
-
-                    <div className="flex flex-col gap-2 lg:flex-row lg:w-2/3">
-                    {/* <Input
-                        placeholder="Search by name"
-                        startContent={<SearchIcon />}
-                        className="max-w-[300px] sm:w-[290px]"
-                        value={search}
-                        onChange={handleSearching}
-                        size="sm"
-                    /> */}
+            <CardBody className="flex-row justify-between items-end flex-wrap gap-2">
+                <div className="flex justify-between gap-4 flex-wrap">
+                    <div className="flex flex-col gap-2">
+                        <Input
+                            placeholder="Search by name"
+                            startContent={<SearchIcon />}
+                            className="max-w-[300px] sm:w-[290px]"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            size="sm"
+                        />
                         <SelectCategory
                             size="sm"
-                            className="w-[200px]"
-                            selectedKeys={setCategory}
-                            baseClassName="max-w-[350px] h-[45px] lg:w-[240px]"
+                            selectedKeys={(e) => setCategory(e as string)}
                         />
                     </div>
-                    <div className="flex justify-between gap-2 md:flex-col lg:flex-row lg:w-auto">
-                        <Switch
-                            size="sm"
+                    <div className="flex flex-col gap-2 mt-1">
+                        <Select
+                            className="w-[160px] items-center ml-1"
+                            label="Show"
+                            labelPlacement="outside-left"
+                            defaultSelectedKeys={["10"]}
+                            radius="sm"
+                            variant="faded"
+                            selectedKeys={[productType]}
+                            onChange={(e) => {
+                                if (!e.target.value) return;
+                                setProductType(`${e.target.value}` as any);
+                            }}
                             classNames={{
-                                label: "text-[12px] text-primaryOrange lg:text-sm",
+                                selectorIcon: "text-primaryOrange",
+                                base: "p-0 h-[40px]",
+                                innerWrapper: "p-0 ",
+                                mainWrapper: "p-0 h-[40px]",
+                                label: "font-bold",
                             }}
                         >
-                            Show Only Published
-                        </Switch>
-                        <CreateButton buttonText="Create Product" />
+                            <SelectItem key={"All"} value={"All"}>
+                                All
+                            </SelectItem>
+                            <SelectItem key={"Published"} value={"Published"}>
+                                Published
+                            </SelectItem>
+                            <SelectItem key={"Draft"} value={"Draft"}>
+                                Draft
+                            </SelectItem>
+                        </Select>
+                        <AppCheck
+                            text="Featured(will only show featured)"
+                            checked={showFeatured}
+                            onValueChange={(e) => setShowFeatured(e)}
+                        />
+                        <Slider
+                            label="Price Range"
+                            className="mb-2"
+                            onChangeEnd={(e) => setSlider(e as number[])}
+                            size="sm"
+                            step={1}
+                            minValue={0}
+                            maxValue={20000}
+                            defaultValue={slider}
+                            formatOptions={{
+                                style: "currency",
+                                currency: "INR",
+                            }}
+                        />
                     </div>
-
                 </div>
+                <CreateButton buttonText="Create Product" />
             </CardBody>
         </Card>
     );
 }
 
-export default ProductBar;
+export default memo(ProductBar);

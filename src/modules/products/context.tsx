@@ -1,43 +1,50 @@
-import React, { createContext, useContext, useState } from "react";
-import { ProcessedImageType } from "@/schema/ImageUploader";
-import { ProductAttrType, ProductContextType } from "./schema";
-import { Selection } from "@nextui-org/react";
+import { createContext, useState, useContext } from "react";
+import { ProductContextType } from "./types/context";
 
-const ProductContext = createContext<Partial<ProductContextType>>({});
+interface Props {
+    children: React.ReactNode;
+}
 
-export const useProductContext = (): ProductContextType => {
-    return useContext(ProductContext) as ProductContextType;
-};
+export const ProductContext = createContext<ProductContextType>({
+    search: "",
+    setSearch: () => {},
+    slider: [200, 4000],
+    setSlider: () => {},
+    category: "",
+    setCategory: () => {},
+    setShowFeatured: () => {},
+    showFeatured: false,
+    setProductType: () => {},
+    productType:'All'
+});
 
-function ProductContextProvider({ children }: { children: React.ReactNode }) {
-    const [processedImage, setProcessedImage] = useState<ProcessedImageType>({
-        url: "",
-        file: "",
-    });
-    const [price, setPrice] = useState(0);
-    const [name, setName] = useState("");
-    const [category, setCategory] =useState(''); 
-    const [description, setDescription] = useState("");
-    // const [attributes,setAttributes] = useState<ProductAttrType>()
+export function useProductContext() {
+    return useContext(ProductContext);
+}
+
+export function ProductContextProvider({ children }: Props) {
+    const [search, setSearch] = useState("");
+    const [slider, setSlider] = useState<number[]>([200, 4000]);
+    const [category, setCategory] = useState("");
+    const [showFeatured, setShowFeatured] = useState(false);
+    const [productType, setProductType] = useState<'Draft' | 'Published'| 'All'>('All');
 
     return (
         <ProductContext.Provider
             value={{
-                processedImage,
-                setProcessedImage,
-                price,
-                setPrice,
-                name,
-                setName,
+                search,
+                setSearch,
+                slider,
+                setSlider,
                 category,
                 setCategory,
-                description,
-                setDescription,
+                showFeatured,
+                setShowFeatured,
+                setProductType,
+                productType,
             }}
         >
             {children}
         </ProductContext.Provider>
     );
 }
-
-export default ProductContextProvider;

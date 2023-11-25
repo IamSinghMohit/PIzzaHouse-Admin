@@ -2,11 +2,11 @@ import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { promiseToast } from "@/lib/toast";
-import { BackendError } from "@/schema/Error";
+import { BackendError } from "@/types/Error";
 
 async function createProduct(data: any): Promise<string> {
     const promise = axios
-        .post("/category/create", data, {
+        .post("/product/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -14,8 +14,8 @@ async function createProduct(data: any): Promise<string> {
         .then((res) => res.data);
     promiseToast(
         promise,
-        "creating category",
-        "successfully created category",
+        "creating product",
+        "successfully created product",
         (err: AxiosError<BackendError>) => `${err.response?.data.error}`
     );
     return await promise;

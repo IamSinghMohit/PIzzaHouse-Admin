@@ -9,7 +9,7 @@ import {
 import { Attribute } from "@/schema/categorySlice";
 import { useEffect, useCallback, useState, ChangeEvent } from "react";
 import { useCategoryAttributes, useUpdateCategory } from "../hooks";
-import { FormDataUpdate } from "@/utils";
+import { FormDataSend } from "@/utils";
 import { errorToast } from "@/lib/toast";
 import CategoryManagement from "../components/CategoryManagement";
 
@@ -47,7 +47,7 @@ function UpdateCategory() {
             if(attributes.length > 0){
                 return errorToast('please save attributes')
             }
-            FormDataUpdate(
+            FormDataSend(
                 {
                     id: category.id,
                     is_name_update: `${updated_fields.name}`,

@@ -1,20 +1,18 @@
 import ProductBar from "./components/ProductBar";
-import {Card,CardBody,Input} from "@nextui-org/react"
-import { SearchIcon } from "@/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import useDebounce from "@/hooks/useDebounce";
-import CreateButton from "@/components/TopBar/CreateButton";
-import { setLoadingProduct, setStartedSearchingProduct } from "@/store/features/searchSlice";
-import ProductPaginatedTable from "./components/tables/ProductPaginatedTable";
+import {
+    setLoadingProduct,
+    setStartedSearchingProduct,
+} from "@/store/features/searchSlice";
+import { ProductContextProvider, useProductContext } from "./context";
 import SearchProductTable from "./components/tables/SearchProductTable";
-import { useState } from "react";
 
 interface Props {}
 
 function Product({}: Props) {
-
+    const {search,setSearch} = useProductContext()
     const dispatch = useAppDispatch();
-    const [search, setSearch] = useState("");
     const { started_searching, isLoading } = useAppSelector(
         (state) => state.search.products
     );
@@ -39,9 +37,10 @@ function Product({}: Props) {
     }
 
     return (
-        <>
-            <ProductBar />
-
+        <ProductContextProvider>
+            <ProductBar
+            />
+            <SearchProductTable />
             {/* <Card className="mb-2" shadow="sm">
                 <CardBody className="flex-row justify-between gap-2 items-center flex-wrap">
                     <CreateButton
@@ -54,7 +53,7 @@ function Product({}: Props) {
             ) : (
                 <ProductPaginatedTable/ >
             )} */}
-        </>
+        </ProductContextProvider>
     );
 }
 

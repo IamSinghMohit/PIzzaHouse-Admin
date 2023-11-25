@@ -1,5 +1,5 @@
-import { FormDataUpdate } from "./FormDataUpdate";
+import { FormDataSend } from "./FormDataSend";
 import { getCurrentLimit } from "./getCurrentLimit";
 import { getCurrentWindow } from "./getCurrentWindow";
 import { filterArrayById } from "./FilterArrayById";
-export { FormDataUpdate,getCurrentLimit ,getCurrentWindow ,filterArrayById }
+export { FormDataSend ,getCurrentLimit ,getCurrentWindow ,filterArrayById }

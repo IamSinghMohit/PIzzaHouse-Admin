@@ -1,35 +1,33 @@
 import { AttributeSchemaType } from "@/modules/category/schema";
-import { ProductSubAttrType } from "@/modules/products/schema";
+import { ProductSchemaType } from "@/modules/products/schema";
 import {
-    ProductManagement,
-    ProductSliceInitialState,
-} from "@/schema/productSlice";
+    ProductManagementType,
+    ProductSliceInitialStateType,
+    ProductSubAttributesType,
+} from "@/types/slice/Product";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: ProductSliceInitialState = {
+const initialState: ProductSliceInitialStateType = {
     product_management: {
         product_name: "",
         product_category: "",
+        product_status: "Draft",
+        product_description: "",
+        product_featured: false,
         product_price: 0,
-        product_status: "draft",
-        featured: true,
     },
-    product_attributes: [
-        {
-            id: "",
-            attribute_title: "",
-            attributes: [{ title: "", value: 0, id: "", error: false }],
-        },
-    ],
+    product_attributes: [],
+    default_prices: {},
+    current_product: null
 };
 
 export const ProductSlice = createSlice({
     name: "product",
     initialState,
     reducers: {
-        manageProduct(
+        setProductState(
             state,
-            action: PayloadAction<Partial<ProductManagement>>
+            action: PayloadAction<Partial<ProductManagementType>>
         ) {
             state.product_management = {
                 ...state.product_management,
@@ -48,17 +46,18 @@ export const ProductSlice = createSlice({
                         return {
                             id: a.id,
                             title: a.title,
-                            value: 0,
+                            value: null,
                             error: false,
                         };
                     }),
                 };
             });
         },
+
         setProductAttributeState(
             state,
             action: PayloadAction<{
-                data: Partial<ProductSubAttrType>;
+                data: Partial<ProductSubAttributesType>;
                 blockId: string;
                 attId: string;
             }>
@@ -81,8 +80,27 @@ export const ProductSlice = createSlice({
                 return block;
             });
         },
+
+        setDefaultPriceInputs(
+            state,
+            action: PayloadAction<Record<string, string>>
+        ) {
+            state.default_prices = {
+                ...state.default_prices,
+                ...action.payload,
+            };
+        },
+
+        setCurrentProduct(state, action: PayloadAction<ProductSchemaType>) {
+            state.current_product = action.payload;
+        },
     },
 });
 
-export const { manageProduct, setProductAttributes, setProductAttributeState } =
-    ProductSlice.actions;
+export const {
+    setProductState,
+    setProductAttributes,
+    setProductAttributeState,
+    setDefaultPriceInputs,
+    setCurrentProduct,
+} = ProductSlice.actions;

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import { User } from "@/modules/auth/schema/user";
+import { User } from "@/modules/auth/schema";
 
 
 export function useUserAutoLogin(opts?:{}){

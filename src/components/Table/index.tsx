@@ -72,14 +72,14 @@ function AppTable({
                 loadingContent={<Spinner label="Loading..." />}
             >
                 {shouldRenderData &&
-                    data.map((cat, index) => (
-                        <TableRow key={cat.id}>
+                    data.map((item, index) => (
+                        <TableRow key={item.id}>
                             <TableCell>
-                                <Avatar src={cat.image} size="lg" radius="sm" />
+                                <Avatar src={item.image} size="lg" radius="sm" />
                             </TableCell>
-                            <TableCell>{cat.name}</TableCell>
+                            <TableCell>{item.name}</TableCell>
                             <TableCell>
-                                {dayjs(cat.created_at).format("YYYY-MM-DD")}
+                                {dayjs(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
                             <TableCell>
                                 <TableActions
@@ -91,13 +91,13 @@ function AppTable({
                                         }
                                     }}
                                     editIconEvents={{
-                                        onClick: () => onEditClick(cat),
+                                        onClick: () => onEditClick(item),
                                     }}
                                     deleteIconEvents={{
-                                        onClick: () => onDeleteClick(cat),
+                                        onClick: () => onDeleteClick(item),
                                     }}
                                     viewIconEvents={{
-                                        onClick: () => onViewClick(cat),
+                                        onClick: () => onViewClick(item),
                                     }}
                                 />
                             </TableCell>

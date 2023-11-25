@@ -1,53 +1,33 @@
 import axios from "@/lib/axios";
-import { errorToast } from "@/lib/toast";
 import { CategorySchemaType } from "@/modules/category/schema";
-import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+async function InfiniteCategoryScroll(
+    cursor?: string
+): Promise<CategorySchemaType[]> {
+    return await axios
+        .get(`/category/search?name&limit=10&cursor=${cursor}`)
+        .then((res) => res.data.data);
+}
 
 export function useCategoryScroll() {
-    const [items, setItems] = useState<CategorySchemaType[]>([]);
-    const [hasMore, setHasMore] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    let loaded = false;
-
-    const loadPokemon = async () => {
-        try {
-            setIsLoading(true);
-            let res = await axios.get<{ data: CategorySchemaType[] }>(
-                `/category/search?name=&limit=10&cursor=${
-                    items.length > 0 ? items[items.length - 1].id : ""
-                }`
-            );
-
-            if (!res.data) {
-                console.log(res.data);
-                throw new Error("Network response was not ok");
-            }
-            if (res.data.data.length <= 0) {
-                setHasMore(false);
-            }
-            setItems((prevItems) => [...prevItems, ...res.data.data]);
-        } catch (error) {
-            errorToast("Error while fetching category");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (!loaded) {
-            loadPokemon();
-            loaded = true;
-        }
-    }, []);
-
-    const onLoadMore = () => {
-        loadPokemon();
-    };
+    const { isLoading, fetchNextPage, data, hasNextPage } = useInfiniteQuery({
+        queryKey: ["category", "scroll"],
+        queryFn: async ({ pageParam }) =>
+            await InfiniteCategoryScroll(pageParam),
+        initialPageParam: "",
+        getNextPageParam: (lastePage) =>
+            lastePage.length >= 10
+                ? lastePage[lastePage.length - 1].id
+                : undefined,
+        refetchInterval: false,
+        refetchIntervalInBackground: false,
+    });
 
     return {
-        items,
-        hasMore,
+        items: data?.pages.flat() || [],
+        hasMore: hasNextPage,
         isLoading,
-        onLoadMore,
+        onLoadMore: fetchNextPage,
     };
 }
