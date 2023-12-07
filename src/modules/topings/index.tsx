@@ -1,6 +1,4 @@
-import AppTable from "@/components/Table";
-import TopingBar from "./TopingBar";
-import { TopingColumns } from "@/data/topings-table";
+import TopingBar from "./components/TopingBar";
 
 interface Props {}
 

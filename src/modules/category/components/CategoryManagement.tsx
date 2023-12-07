@@ -65,6 +65,7 @@ function CategoryManagement({
                                     type="category"
                                     processedImage={processedImage}
                                     setProcessedImage={setProcessedImage}
+                                    aspectRatio={{width:2,height:2}}
                                 />
                                 <Input
                                     size="sm"

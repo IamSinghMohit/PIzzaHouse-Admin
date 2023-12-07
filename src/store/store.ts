@@ -3,13 +3,15 @@ import { UserSlice } from "./features/userSlice";
 import { CategorySlice } from "./features/categorySlice";
 import SearchSlice from "./features/searchSlice";
 import { ProductSlice } from "./features/productSlice";
+import { TopingSlice } from "./features/topingSlice";
 
 const store = configureStore({
     reducer: {
         user: UserSlice.reducer,
         category: CategorySlice.reducer,
         search: SearchSlice.reducer,
-        product:ProductSlice.reducer
+        product:ProductSlice.reducer,
+        toping:TopingSlice.reducer,
     },
 });
 

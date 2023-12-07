@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import CreateProduct from "./modules/products/pages/CreateProduct";
 import { SocketContextProvider } from "./socketContext";
 import UpdateCategory from "./modules/category/pages/UpdateCategory";
+import CreateToping from "./modules/topings/pages/CreateToping";
 
 const App = () => {
     const router = createBrowserRouter([
@@ -50,6 +51,10 @@ const App = () => {
                 {
                     path: "topings",
                     element: <Topings />,
+                },
+                {
+                    path: "topings/create",
+                    element: <CreateToping />,
                 },
                 {
                     path: "orders",

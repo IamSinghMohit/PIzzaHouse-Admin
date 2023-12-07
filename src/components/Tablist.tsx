@@ -41,7 +41,7 @@ function TabList({}: Props) {
                 color="primary"
                 radius="none"
                 defaultSelectedKey={location.pathname.split("/")[1]}
-                className={` transition-all duration-400 animate-appearance-in glass fixed  rounded-none top-0 right-0 ${
+                className={`transition-all duration-400 animate-appearance-in glass fixed  rounded-none top-0 right-0 ${
                     !isNavOpen && "-right-full"
                 } pt-16 flex flex-col gap-5
                 sm:block sm:bg-white sm:static sm:pt-0 sm:border-none z-30 h-screen`}

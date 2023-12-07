@@ -17,7 +17,7 @@ async function getProducts(
 ): Promise<GetProductsSchemaType | undefined> {
     const result = await axios
         .get(
-            `/product?name=${opts.name}${
+            `/product/all?name=${opts.name}${
                 opts.featured ? `&featured=${opts.featured}` : ""
             }${opts.status !== "All" ? `&status=${opts.status}` : ""}${
                 opts.status === "All" ? "" : ""

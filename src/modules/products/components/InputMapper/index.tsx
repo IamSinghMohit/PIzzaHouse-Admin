@@ -6,7 +6,7 @@ import {
     setProductAttributeState,
     setProductState,
 } from "@/store/features/productSlice";
-import PriceInput from "./PriceInput";
+import PriceInput from "../../../shared/PriceInput";
 import { ProductSubAttributesType } from "@/types/slice/Product";
 
 interface Props {

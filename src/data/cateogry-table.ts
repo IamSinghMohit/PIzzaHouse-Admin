@@ -1,18 +1,18 @@
 export const CategoryColumns = [
     {
-        id: "PvbLAc2SsZQioCwUbuqN",
+        id: "39b13b39-dc3e-4105-9c7e-979e1b7ca662",
         name: "IMAGE",
     },
     {
-        id: "WEPgDTWFYrVT10ak2T2a",
+        id: "c926dec4-872c-4096-ba6a-deec78a098a7",
         name: "CATEGORY NAME",
     },
     {
-        id: "Dz7i2fQDea8rw0XDreCV",
+        id: "0c9ae981-8894-4243-9a8f-d4dd869706f6",
         name: "CREATED DATE",
     },
     {
-        id: "lyynEyJhFNL6VcITTfSW",
+        id: "a1421b4c-d761-4d38-9581-945a81dcca09",
         name: "ACTIONS",
     },
 ];

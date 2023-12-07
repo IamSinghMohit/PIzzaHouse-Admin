@@ -163,7 +163,7 @@ function CreateProduct({}: Props) {
                         type="product"
                         processedImage={processedImage}
                         setProcessedImage={setProcessedImage}
-                        aspectRatio={{ width: 2, height: 2 }}
+                        aspectRatio={{ width: 4, height: 3}}
                     />
                     <InputMapper
                         showError={showError}
