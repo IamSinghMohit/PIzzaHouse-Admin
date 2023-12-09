@@ -14,8 +14,8 @@ import {
 import Cropper, { Point, Area } from "react-easy-crop";
 import getCroppedImg from "@/components/ImageUploader/helper/getCroppedImage";
 import IconWrapper from "../IconWrapper";
-import { ModalRefType } from "@/schema/modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { ModalRefType } from "@/types/Modal";
 import { setUpdatedFields } from "@/store/features/categorySlice";
 import {Dispatch,SetStateAction} from "react"
 
@@ -23,13 +23,13 @@ interface Props {
     Image: string;
     setImage: (args: { url: string; file: File }) => void;
     MimeType: string;
-    aspectRatio?: { width: number; height: number };
-    uploaded:boolean;
-    setUploaded:Dispatch<SetStateAction<boolean>>
+    aspectRatio?: { x: number; y: number };
+    cropped:boolean;
+    setIsCropped:Dispatch<SetStateAction<boolean>>
 }
 
 function ImageUploader(
-    { Image, setImage, MimeType, aspectRatio ,setUploaded,uploaded}: Props,
+    { Image, setImage, MimeType, aspectRatio ,setIsCropped,cropped}: Props,
     ref: Ref<ModalRefType>
 ) {
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
@@ -48,17 +48,6 @@ function ImageUploader(
         setCroppedAreaPixels(croppedAreaPixels);
     };
 
-    const handleZoom = (e: unknown) => {
-        if (typeof e === "number") {
-            setZoom(e);
-        }
-    };
-    const handleRotation = (e: unknown) => {
-        if (typeof e === "number") {
-            setRotation(e);
-        }
-    };
-
     const showCroppedImage = async () => {
         try {
             const croppedImage = await getCroppedImg(
@@ -70,7 +59,7 @@ function ImageUploader(
 
             if (croppedImage) {
                 setImage(croppedImage);
-               setUploaded(true) 
+               setIsCropped(true) 
                 if (!updated_fields.image) {
                     dispatch(setUpdatedFields("image"));
                 }
@@ -93,9 +82,9 @@ function ImageUploader(
     return (
         <Modal
             isOpen={isOpen}
-            isDismissable={uploaded}
-            isKeyboardDismissDisabled={!uploaded}
-            hideCloseButton={!uploaded}
+            isDismissable={cropped}
+            isKeyboardDismissDisabled={!cropped}
+            hideCloseButton={!cropped}
             onOpenChange={onOpenChange}
             classNames={{
                 closeButton: "z-10",
@@ -113,8 +102,8 @@ function ImageUploader(
                                     zoom={zoom}
                                     aspect={
                                         aspectRatio
-                                            ? aspectRatio.width /
-                                              aspectRatio.height
+                                            ? aspectRatio.x /
+                                              aspectRatio.y
                                             : 4 / 3
                                     }
                                     onCropChange={setCrop}
@@ -134,7 +123,7 @@ function ImageUploader(
                                     maxValue={360}
                                     step={1}
                                     value={rotation}
-                                    onChange={handleRotation}
+                                    onChange={(e) => setRotation(e as number)}
                                 />
                                 <Slider
                                     startContent={
@@ -146,7 +135,7 @@ function ImageUploader(
                                     maxValue={3}
                                     step={0.1}
                                     value={zoom}
-                                    onChange={handleZoom}
+                                    onChange={(e) => setZoom(e as number)}
                                 />
                             </div>
                         </ModalBody>

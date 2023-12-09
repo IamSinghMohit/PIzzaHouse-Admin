@@ -1,13 +1,13 @@
-import { Card, CardBody, Input } from "@nextui-org/react";
-import CreateButton from "@/components/TopBar/CreateButton";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setPriceAttribute } from "@/store/features/categorySlice";
-import { SearchIcon } from "@/icons";
-import {setStartedSearchingCategory,setLoadingCategory} from "@/store/features/searchSlice";
+import {
+    setStartedSearchingCategory,
+    setLoadingCategory,
+} from "@/store/features/searchSlice";
 import SearchCategoryTable from "./components/tables/SearchTable";
 import { useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import PaginatedTable from "./components/tables/PaginatedTable";
+import SearchBar from "./components/SearchBar";
 
 interface Props {}
 
@@ -39,26 +39,7 @@ function Category({}: Props) {
 
     return (
         <>
-            <Card className="mb-2" shadow="sm">
-                <CardBody className="flex-row justify-between gap-2 items-center flex-wrap">
-                    <Input
-                        placeholder="Search by name"
-                        startContent={<SearchIcon />}
-                        className="max-w-[300px] sm:w-[290px]"
-                        value={search}
-                        onChange={handleSearching}
-                        size="sm"
-                    />
-                    <CreateButton
-                        buttonText="Create Category"
-                        onPress={() =>
-                            dispatch(
-                                setPriceAttribute({ data: [], type: "REPLACE" })
-                            )
-                        }
-                    />
-                </CardBody>
-            </Card>
+            <SearchBar />
             {started_searching ? (
                 <SearchCategoryTable text={debounceText} />
             ) : (

@@ -52,6 +52,7 @@ function AppTable({
     return (
         <Table
             isHeaderSticky
+            radius="sm"
             aria-label="Prodcut table"
             layout="auto"
             className={classsName}

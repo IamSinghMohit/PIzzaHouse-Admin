@@ -11,8 +11,8 @@ import { TbDragDrop } from "react-icons/tb";
 import { Button } from "@nextui-org/react";
 import { PiGearSixLight } from "react-icons/pi";
 import ImageCropper from "./ImageCropper";
-import { ModalRefType } from "@/schema/modal";
-import { ProcessedImageType } from "@/schema/ImageUploader";
+import { ModalRefType } from "@/types/Modal";
+import { ProcessedImageType } from "@/types/ImageUploader";
 
 interface Props {
     width?: string;
@@ -23,7 +23,7 @@ interface Props {
         url: string;
     };
     defaultImage?: string;
-    aspectRatio?: { width: number; height: number };
+    aspectRatio?: { x: number; y: number };
     setProcessedImage: Dispatch<SetStateAction<ProcessedImageType>>;
 }
 
@@ -42,7 +42,7 @@ function ImageUploader({
     const InputRef = useRef<HTMLInputElement | null>(null);
     // this ref is for modal
     const ModalRef = useRef<ModalRefType>(null);
-    const [uploaded, setUploaded] = useState(false);
+    const [isCropped, setIsCropped] = useState(false);
     /*
      * it is utility state using this will be rendering grear icon and and it will be assinged a image url
      * and i will be passsing this state to my ImageCropper component which will use image url for further processig
@@ -171,8 +171,8 @@ function ImageUploader({
                 ref={InputRef}
             />
             <ImageCropper
-                uploaded={uploaded}
-                setUploaded={setUploaded}
+                cropped={isCropped}
+                setIsCropped={setIsCropped}
                 ref={ModalRef}
                 Image={Image}
                 setImage={setProcessedImage}
