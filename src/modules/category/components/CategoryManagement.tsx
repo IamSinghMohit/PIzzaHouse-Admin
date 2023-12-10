@@ -1,9 +1,9 @@
 import { ProcessedImageType } from "@/schema/ImageUploader";
-import CategoryAttribute from "./CategoryAttribute";
+import CategoryAttribute from "./CategoryPriceSection";
 import ImageUploader from "@/components/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { Dispatch, SetStateAction, ChangeEvent } from "react";
-import RenderAttribute from "./RenderAttribute";
+import RenderAttribute from "./RenderPriceSection";
 import { SubAttribute } from "@/schema/categorySlice";
 
 import {

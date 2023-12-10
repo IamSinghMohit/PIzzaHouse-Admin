@@ -14,6 +14,7 @@ import {
     ModalFooter,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { FaPlusMinus } from "react-icons/fa6";
 
 interface Props {}
 
@@ -38,6 +39,8 @@ function SearchBar({}: Props) {
                 />
                 <Button
                     radius="sm"
+                    endContent={<FaPlusMinus />}
+                    className="bg-primaryOrange text-white"
                     // onPress={() =>
                     //     dispatch(
                     //         setPriceAttribute({ data: [], type: "REPLACE" })
@@ -56,11 +59,21 @@ function SearchBar({}: Props) {
                                 </ModalHeader>
                                 <ModalBody>
                                     <ImageUploader
-                                        type="category"
-                                        aspectRatio={{ width: 2, height: 2 }}
+                                        aspectRatio={{ x: 2, y: 2 }}
                                         processedImage={processedImage}
                                         setProcessedImage={setProcessedImage}
-                                    />
+                                    >
+                                        <ImageUploader.PlaceholderContainer
+                                            baseClassName="w-[100px] h-[100px]"
+                                            placeholderImage={
+                                                <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                            }
+                                            placeholderImageText={
+                                                <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1"/>
+                                            }
+                                        />
+                                    </ImageUploader>
+                                    <Input label="Name" radius="sm" size="sm" className="w-[200px]"/>
                                 </ModalBody>
                                 <ModalFooter className="px-6 py-2">
                                     <Button

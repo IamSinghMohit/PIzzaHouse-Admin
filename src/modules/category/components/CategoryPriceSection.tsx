@@ -10,7 +10,7 @@ import { FaCheck } from "react-icons/fa6";
 import { BsPlusSquareDotted } from "react-icons/bs";
 import IconWrapper from "@/components/IconWrapper";
 import { BiReset } from "react-icons/bi";
-import { useRef, useState, SetStateAction, Dispatch ,memo} from "react";
+import { useRef, useState, SetStateAction, Dispatch, memo } from "react";
 import { uuid } from "@/utils/uuid";
 import {
     setPriceAttribute,
@@ -26,7 +26,7 @@ interface Props {
     setAttributes: Dispatch<SetStateAction<SubAttribute[]>>;
 }
 
-function CategoryAttribute({ attributes, setAttributes }: Props) {
+function CategoryPriceSection({ attributes, setAttributes }: Props) {
     // this is for chip input tag
     const chipRef = useRef<HTMLInputElement>(null);
     const [chipText, setChipText] = useState("");
@@ -139,6 +139,7 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
                 <div className="flex justify-between items-baseline w-full">
                     <UiInput
                         variant="underlined"
+                        size="sm"
                         type="text"
                         label="TITLE"
                         value={title}
@@ -165,6 +166,7 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
                     <UiInput
                         variant="bordered"
                         radius="sm"
+                        size="sm"
                         onChange={(e) => {
                             setChipText(e.target.value);
                             setErrors((prev) => ({
@@ -183,6 +185,7 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
                     />
                     <div className="flex gap-1">
                         <Button
+                            radius="sm"
                             isIconOnly
                             onClick={handleClick}
                             ref={buttonRef}
@@ -191,6 +194,7 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
                             <IconWrapper icon={<BsPlusSquareDotted />} />
                         </Button>
                         <Button
+                            radius="sm"
                             isIconOnly
                             onClick={() => setAttributes([])}
                             className="bg-primaryOrange text-white"
@@ -220,4 +224,4 @@ function CategoryAttribute({ attributes, setAttributes }: Props) {
     );
 }
 
-export default memo(CategoryAttribute)
+export default memo(CategoryPriceSection);

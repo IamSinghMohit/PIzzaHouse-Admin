@@ -1,4 +1,8 @@
-import React, { useState, Ref, useImperativeHandle } from "react";
+import React, {
+    useState,
+    Ref,
+    useImperativeHandle,
+} from "react";
 import { Slider } from "@nextui-org/react";
 import { MdCropRotate } from "react-icons/md";
 import { BsZoomIn } from "react-icons/bs";
@@ -14,24 +18,21 @@ import {
 import Cropper, { Point, Area } from "react-easy-crop";
 import getCroppedImg from "@/components/ImageUploader/helper/getCroppedImage";
 import IconWrapper from "../IconWrapper";
-import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { ModalRefType } from "@/types/Modal";
-import { setUpdatedFields } from "@/store/features/categorySlice";
-import {Dispatch,SetStateAction} from "react"
+import { useImageUploaderContext } from "./context";
 
 interface Props {
-    Image: string;
-    setImage: (args: { url: string; file: File }) => void;
-    MimeType: string;
     aspectRatio?: { x: number; y: number };
-    cropped:boolean;
-    setIsCropped:Dispatch<SetStateAction<boolean>>
 }
 
-function ImageUploader(
-    { Image, setImage, MimeType, aspectRatio ,setIsCropped,cropped}: Props,
-    ref: Ref<ModalRefType>
-) {
+function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
+    const {
+        setIsCropped,
+        isCropped,
+        image,
+        mimeType,
+        setProcessedImage,
+    } = useImageUploaderContext();
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
@@ -41,8 +42,6 @@ function ImageUploader(
         x: 0,
         y: 0,
     });
-    const { updated_fields } = useAppSelector((state) => state.category);
-    const dispatch = useAppDispatch();
 
     const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -51,18 +50,15 @@ function ImageUploader(
     const showCroppedImage = async () => {
         try {
             const croppedImage = await getCroppedImg(
-                Image,
+                image,
                 croppedAreaPixels,
                 rotation,
-                MimeType
+                mimeType
             );
 
             if (croppedImage) {
-                setImage(croppedImage);
-               setIsCropped(true) 
-                if (!updated_fields.image) {
-                    dispatch(setUpdatedFields("image"));
-                }
+                setProcessedImage(croppedImage);
+                setIsCropped(true);
             }
         } catch (e) {
             console.log(e);
@@ -82,9 +78,10 @@ function ImageUploader(
     return (
         <Modal
             isOpen={isOpen}
-            isDismissable={cropped}
-            isKeyboardDismissDisabled={!cropped}
-            hideCloseButton={!cropped}
+            radius="sm"
+            isDismissable={isCropped}
+            isKeyboardDismissDisabled={!isCropped}
+            hideCloseButton={!isCropped}
             onOpenChange={onOpenChange}
             classNames={{
                 closeButton: "z-10",
@@ -96,14 +93,13 @@ function ImageUploader(
                         <ModalBody className="gap-1 relative p-7 pb-0 m-0">
                             <div className="w-full h-[200px] relative rounded-md overflow-hidden border">
                                 <Cropper
-                                    image={Image}
+                                    image={image}
                                     crop={crop}
                                     rotation={rotation}
                                     zoom={zoom}
                                     aspect={
                                         aspectRatio
-                                            ? aspectRatio.x /
-                                              aspectRatio.y
+                                            ? aspectRatio.x / aspectRatio.y
                                             : 4 / 3
                                     }
                                     onCropChange={setCrop}
