@@ -10,24 +10,20 @@ import { FaCheck } from "react-icons/fa6";
 import { BsPlusSquareDotted } from "react-icons/bs";
 import IconWrapper from "@/components/IconWrapper";
 import { BiReset } from "react-icons/bi";
-import { useRef, useState, SetStateAction, Dispatch, memo } from "react";
+import { useRef, useState} from "react";
 import { uuid } from "@/utils/uuid";
 import {
-    setPriceAttribute,
+    setCategorySections,
     setUpdatedFields,
 } from "@/store/features/categorySlice";
-import { SubAttribute } from "@/schema/categorySlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
 import { validateString } from "@/utils/ValidateString";
+import { TAttributes } from "@/types/slice/Category";
 
-interface Props {
-    attributes: SubAttribute[];
-    setAttributes: Dispatch<SetStateAction<SubAttribute[]>>;
-}
-
-function CategoryPriceSection({ attributes, setAttributes }: Props) {
+function CategoryPriceSection() {
     // this is for chip input tag
+    const [attributes,setAttributes] = useState<TAttributes[]>([])
     const chipRef = useRef<HTMLInputElement>(null);
     const [chipText, setChipText] = useState("");
     // this is for title of the category attribute
@@ -106,17 +102,18 @@ function CategoryPriceSection({ attributes, setAttributes }: Props) {
         }
 
         dispatch(
-            setPriceAttribute({
+            setCategorySections({
                 data: {
                     id: `${uuid()}`,
-                    attribute_title: title,
+                    title: title,
                     attributes: attributes,
                 },
                 type: "PUSH",
             })
         );
+
         // updating the filds in reduxstore
-        if (!updated_fields.price_attributes) {
+        if (!updated_fields.attributes) {
             dispatch(setUpdatedFields("price_attributes"));
         }
         setErrors({
@@ -154,7 +151,7 @@ function CategoryPriceSection({ attributes, setAttributes }: Props) {
                     />
                     <Button
                         isIconOnly
-                        radius="md"
+                        radius="sm"
                         className="mb-1 text-white bg-primaryOrange"
                         size="md"
                         onClick={handleRegisterClick}
@@ -205,7 +202,7 @@ function CategoryPriceSection({ attributes, setAttributes }: Props) {
                 </div>
             </CardHeader>
             <Divider />
-            <CardBody className="p-2 flex-wrap flex-row gap-2">
+            <CardBody className="p-2 flex-wrap flex-row gap-2 max-h-[100px] overflow-y-scroll">
                 {attributes.map((att) => (
                     <Chip
                         key={att.id}
@@ -224,4 +221,4 @@ function CategoryPriceSection({ attributes, setAttributes }: Props) {
     );
 }
 
-export default memo(CategoryPriceSection);
+export default CategoryPriceSection

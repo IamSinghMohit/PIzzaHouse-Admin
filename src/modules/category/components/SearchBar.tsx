@@ -15,6 +15,8 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlusMinus } from "react-icons/fa6";
+import CategoryPriceSection from "./CategoryPriceSection";
+import RenderCateogryPriceSection from "./RenderCategoryPriceSection";
 
 interface Props {}
 
@@ -50,30 +52,52 @@ function SearchBar({}: Props) {
                 >
                     Create Category
                 </Button>
-                <Modal size="5xl" isOpen={isOpen} onClose={onClose} radius="sm">
+                <Modal
+                    size="5xl"
+                    isOpen={isOpen}
+                    onClose={() => {
+                        onClose();
+                        setProcessedImage({ url: "", file: null });
+                    }}
+                    radius="sm"
+                    className="h-[530px]"
+                >
                     <ModalContent>
                         {(onClose) => (
                             <>
                                 <ModalHeader className="flex flex-col gap-1">
                                     Create Category
                                 </ModalHeader>
-                                <ModalBody>
-                                    <ImageUploader
-                                        aspectRatio={{ x: 2, y: 2 }}
-                                        processedImage={processedImage}
-                                        setProcessedImage={setProcessedImage}
-                                    >
-                                        <ImageUploader.PlaceholderContainer
-                                            baseClassName="w-[100px] h-[100px]"
-                                            placeholderImage={
-                                                <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                <ModalBody className="flex-row justify-between">
+                                    <div className="flex flex-col gap-3">
+                                        <ImageUploader
+                                            aspectRatio={{ x: 2, y: 2 }}
+                                            processedImage={processedImage}
+                                            setProcessedImage={
+                                                setProcessedImage
                                             }
-                                            placeholderImageText={
-                                                <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1"/>
-                                            }
+                                        >
+                                            <ImageUploader.PlaceholderContainer
+                                                baseClassName="w-[100px] h-[100px]"
+                                                placeholderImage={
+                                                    <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                                }
+                                                placeholderImageText={
+                                                    <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1" />
+                                                }
+                                            />
+                                        </ImageUploader>
+                                        <Input
+                                            label="Name"
+                                            radius="sm"
+                                            size="sm"
+                                            className="w-[200px]"
                                         />
-                                    </ImageUploader>
-                                    <Input label="Name" radius="sm" size="sm" className="w-[200px]"/>
+                                        <CategoryPriceSection />
+                                    </div>
+                                    <div className="overflow-y-scroll space-y-3 max-h-[400px]">
+                                        <RenderCateogryPriceSection />
+                                    </div>
                                 </ModalBody>
                                 <ModalFooter className="px-6 py-2">
                                     <Button
@@ -83,6 +107,13 @@ function SearchBar({}: Props) {
                                         onPress={onClose}
                                     >
                                         Close
+                                    </Button>
+                                    <Button
+                                        radius="sm"
+                                        color="primary"
+                                        className="text-white"
+                                    >
+                                        Create
                                     </Button>
                                 </ModalFooter>
                             </>

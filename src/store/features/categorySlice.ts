@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attribute,CategorySliceInitialState } from "@/types/slice/Category";
-import { CategorySchemaType } from "@/modules/category/schema";
+import { TCategorySection, TCategorySliceInitialState } from "@/types/slice/Category";
+import { TCategorySchema } from "@/modules/category/schema";
 
 type PayloadType = "REPLACE" | "PUSH";
 
-const initialState: CategorySliceInitialState = {
-    category_attr_array: [],
-    fetched_category_attr: [],
+const initialState: TCategorySliceInitialState = {
+    category_price_sec: [],
+    fetched_category_price_sec: [],
     current_selected_category: null,
     updated_fields: {
         name: false,
         image: false,
-        price_attributes: false,
+        attributes: false,
     },
     total_pages: 1,
 };
@@ -20,10 +20,10 @@ export const CategorySlice = createSlice({
     initialState,
     name: "category",
     reducers: {
-        setPriceAttribute(
+        setCategorySections(
             state,
             action: PayloadAction<{
-                data: Attribute[] | Attribute;
+                data:  TCategorySection[] |   TCategorySection;
                 type: PayloadType;
             }>
         ) {
@@ -31,42 +31,40 @@ export const CategorySlice = createSlice({
                 action.payload.type == "REPLACE" &&
                 Array.isArray(action.payload.data)
             ) {
-                state.category_attr_array = action.payload.data;
+                state.category_price_sec = action.payload.data;
             } else if (
                 action.payload.type == "PUSH" &&
                 !Array.isArray(action.payload.data)
             ) {
-                state.category_attr_array = [
-                    ...state.category_attr_array,
+                state.category_price_sec = [
+                    ...state.category_price_sec,
                     action.payload.data,
                 ];
             }
         },
-        updateAttribute(state, action: PayloadAction<Attribute>) {
-            state.category_attr_array = state.category_attr_array.map(
-                (item) => {
-                    if (item.id === action.payload.id) {
-                        // Update the properties of the matching item
-                        return {
-                            ...item,
-                            attribute_title: action.payload.attribute_title,
-                            attributes: action.payload.attributes,
-                        };
-                    }
-                    return item; // Keep other items as they are
+        updatePriceSection(state, action: PayloadAction<TCategorySection>) {
+            state.category_price_sec = state.category_price_sec.map((item) => {
+                if (item.id === action.payload.id) {
+                    // Update the properties of the matching item
+                    return {
+                        ...item,
+                        title: action.payload.title,
+                        attributes: action.payload.attributes,
+                    };
                 }
-            );
+                return item; // Keep other items as they are
+            });
         },
 
-        deleteAttribute(state, action: PayloadAction<string>) {
-            state.category_attr_array = state.category_attr_array.filter(
+        deletePriceSection(state, action: PayloadAction<string>) {
+            state.category_price_sec = state.category_price_sec.filter(
                 (item) => item.id != action.payload
             );
         },
 
         setCurrentSelectedCategory(
             state,
-            action: PayloadAction<CategorySchemaType | null>
+            action: PayloadAction<TCategorySchema | null>
         ) {
             state.current_selected_category = action.payload;
         },
@@ -83,7 +81,7 @@ export const CategorySlice = createSlice({
                     state.updated_fields.name = true;
                     break;
                 case "price_attributes":
-                    state.updated_fields.price_attributes = true;
+                    state.updated_fields.attributes = true;
                     break;
                 default:
                     null;
@@ -96,9 +94,9 @@ export const CategorySlice = createSlice({
 });
 
 export const {
-    setPriceAttribute,
-    updateAttribute,
-    deleteAttribute,
+    setCategorySections,
+    updatePriceSection,
+    deletePriceSection,
     setUpdatedFields,
     setTotalPages,
     setCurrentSelectedCategory,

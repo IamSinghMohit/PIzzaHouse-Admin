@@ -3,7 +3,7 @@ import CategoryAttribute from "./CategoryPriceSection";
 import ImageUploader from "@/components/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { Dispatch, SetStateAction, ChangeEvent } from "react";
-import RenderAttribute from "./RenderPriceSection";
+import RenderAttribute from "./RenderCategoryPriceSection";
 import { SubAttribute } from "@/schema/categorySlice";
 
 import {

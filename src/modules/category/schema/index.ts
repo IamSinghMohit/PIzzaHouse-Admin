@@ -29,6 +29,10 @@ export const AttributeSchema = z.array(
         ),
     })
 );
+export const CategoryPriceSectionSchema = z.object({
+    title: z.string().min(1,'Title must be valid').transform((data) => data.toUpperCase()),
+    text: z.string().min(1,'Text must be valid').transform((data) => data.toUpperCase()),
+});
 
 export const GetCategorySchema = z.object({
     page: z.union([z.number(), z.string()]).transform((data) => {
@@ -48,6 +52,7 @@ export const GetCategorySchema = z.object({
     data: z.array(CategorySchema),
 });
 
-export type GetCategorySchemaType = TypeOf<typeof GetCategorySchema>;
-export type CategorySchemaType = TypeOf<typeof CategorySchema>;
-export type AttributeSchemaType = TypeOf<typeof AttributeSchema>;
+export type TGetCategorySchema = TypeOf<typeof GetCategorySchema>;
+export type TCategorySchema = TypeOf<typeof CategorySchema>;
+export type TAttributeSchema = TypeOf<typeof AttributeSchema>;
+export type TCategoryPriceSectionSchema  = TypeOf<typeof CategoryPriceSectionSchema>

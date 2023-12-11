@@ -1,30 +1,30 @@
-import { AttributeSchemaType,CategorySchemaType } from "@/modules/category/schema";
+import { TAttributeSchema, TCategorySchema } from "@/modules/category/schema";
 
-export interface CategoryUpdatedFieldsType{
-    image:boolean;
-    name:boolean;
-    price_attributes:boolean;
+export interface TCategoryUpdatedFields {
+    image: boolean;
+    name: boolean;
+    attributes: boolean;
 }
 
-export interface CategorySubAttributeType {
+export interface TAttributes {
     id: string;
     title: string;
 }
-export interface CategoryTotalAttributesType {
+export interface TCategoryTotalAttributes {
     id: string;
     edited: boolean;
 }
 
-export interface Attribute {
+export interface TCategorySection {
     id: string;
-    attribute_title: string;
-    attributes:CategorySubAttributeType [];
+    title: string;
+    attributes: TAttributes[];
 }
 
-export interface CategorySliceInitialState {
-    category_attr_array: Attribute[];
-    fetched_category_attr:AttributeSchemaType;
-    current_selected_category:CategorySchemaType | null;
-    updated_fields: CategoryUpdatedFieldsType
-    total_pages:number;
+export interface TCategorySliceInitialState {
+    category_price_sec: TCategorySection[];
+    fetched_category_price_sec: TAttributeSchema;
+    current_selected_category: TCategorySchema | null;
+    updated_fields: TCategoryUpdatedFields;
+    total_pages: number;
 }
