@@ -9,27 +9,22 @@ import {
 import { deletePriceSection } from "@/store/features/categorySlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { DeleteIcon } from "@/icons";
-import { setUpdatedFields } from "@/store/features/categorySlice";
+import { shallowEqual } from "react-redux";
 
 function RenderCateogryPriceSection() {
     const dispatch = useAppDispatch();
-    const { updated_fields, category_price_sec } = useAppSelector(
-        (state) => state.category
-    );
+    const  category_price_sec  = useAppSelector((state) => state.category.category_price_sec,shallowEqual)
 
     function handleDeleteSection(id: string) {
         dispatch(deletePriceSection(id));
-        // updating the filds in reduxstore
-        if (!updated_fields.attributes) {
-            dispatch(setUpdatedFields("price_attributes"));
-        }
     }
+
 
     return category_price_sec.map((sec) => (
         <Card
             shadow="sm"
             className="max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange"
-            id={sec.id}
+            key={sec.id}
         >
             <CardHeader className="flex gap-2 p-0 justify-between bg-primaryOrange text-lg uppercase text-white">
                 <div className="flex m-1 justify-between w-full items-center text-[14px] lg:text-[16px]">

@@ -2,7 +2,7 @@ import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { promiseToast } from "@/lib/toast";
-import { BackendError } from "@/types/Error";
+import { BackendError } from "@/types/api";
 
 async function createProduct(data: any): Promise<string> {
     const promise = axios

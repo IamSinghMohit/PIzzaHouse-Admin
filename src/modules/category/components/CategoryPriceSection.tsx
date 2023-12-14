@@ -14,9 +14,8 @@ import { useRef, useState} from "react";
 import { uuid } from "@/utils/uuid";
 import {
     setCategorySections,
-    setUpdatedFields,
 } from "@/store/features/categorySlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { useAppDispatch} from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
 import { validateString } from "@/utils/ValidateString";
 import { TAttributes } from "@/types/slice/Category";
@@ -31,7 +30,6 @@ function CategoryPriceSection() {
     const titleRef = useRef<HTMLInputElement>(null);
     // Errors
     const [errors, setErrors] = useState({ title: "", att: "" });
-    const { updated_fields } = useAppSelector((state) => state.category);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const dispatch = useAppDispatch();
 
@@ -112,10 +110,6 @@ function CategoryPriceSection() {
             })
         );
 
-        // updating the filds in reduxstore
-        if (!updated_fields.attributes) {
-            dispatch(setUpdatedFields("price_attributes"));
-        }
         setErrors({
             att: "",
             title: "",

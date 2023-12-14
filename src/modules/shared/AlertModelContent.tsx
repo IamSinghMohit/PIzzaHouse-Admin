@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 interface Props {
     suffix: string;
     main: string;
@@ -14,4 +12,4 @@ function AlertModelContent({ main ,suffix}: Props) {
     );
 }
 
-export default memo(AlertModelContent);
+export default AlertModelContent

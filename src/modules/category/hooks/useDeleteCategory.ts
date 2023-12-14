@@ -4,7 +4,7 @@ import { promiseToast } from "@/lib/toast";
 
 async function deleteCategory(id: string): Promise<{ message: string }> {
     const promise = axios
-        .delete(`/category/delete/${id}`)
+        .delete(`/category/admin/delete/${id}`)
         .then((res) => res.data)
     promiseToast(
         promise,

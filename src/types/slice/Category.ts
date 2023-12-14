@@ -1,9 +1,9 @@
-import { TAttributeSchema, TCategorySchema } from "@/modules/category/schema";
+import { TCategorySchema } from "@/modules/category/schema";
 
 export interface TCategoryUpdatedFields {
     image: boolean;
     name: boolean;
-    attributes: boolean;
+    sections: boolean;
 }
 
 export interface TAttributes {
@@ -23,8 +23,10 @@ export interface TCategorySection {
 
 export interface TCategorySliceInitialState {
     category_price_sec: TCategorySection[];
-    fetched_category_price_sec: TAttributeSchema;
+    category_name: string;
+    category_search_name: string;
     current_selected_category: TCategorySchema | null;
     updated_fields: TCategoryUpdatedFields;
-    total_pages: number;
 }
+
+export type TUpdatedFields = "name" | "image" | "sections" | 'all'

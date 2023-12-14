@@ -12,7 +12,7 @@ import ImageUploader from "@/components/ImageUploader";
 import SelectCategory from "@/components/SelectCategory";
 import InputMapper from "../components/InputMapper";
 import { ProcessedImageType } from "@/types/ImageUploader";
-import { useCategoryAttributes } from "@/modules/category/hooks";
+import { useCategoryPriceSections } from "@/modules/category/hooks";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import {
     setProductAttributeState,
@@ -27,7 +27,7 @@ interface Props {}
 
 function CreateProduct({}: Props) {
     const [category, setCategory] = useState("");
-    const { data } = useCategoryAttributes(category.split(":")[1] || "");
+    const { data } = useCategoryPriceSections (category.split(":")[1] || "");
     const dispatch = useAppDispatch();
     const { product_attributes, product_management, default_prices } =
         useAppSelector((state) => state.product);

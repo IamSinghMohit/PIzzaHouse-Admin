@@ -2,7 +2,7 @@ import axios from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {  promiseToast } from "@/lib/toast";
 import { AxiosError } from "axios";
-import { BackendError } from "@/schema/Error";
+import { BackendError } from "@/types/api";
 
 async function createCategory(data: any): Promise<string> {
     const promise = axios

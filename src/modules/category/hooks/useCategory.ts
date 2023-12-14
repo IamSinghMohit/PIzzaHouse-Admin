@@ -1,11 +1,21 @@
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { GetCategorySchema, GetCategorySchemaType } from "../schema";
+import { GetCategorySchema, TGetCategorySchema } from "../schema";
 import { errorToast } from "@/lib/toast";
 
-async function getCategories(page: number, limit: number):Promise<GetCategorySchemaType | undefined> {
+type opts = {
+    page: number;
+    limit: number;
+    name: string;
+};
+
+async function getCategories(
+    page: number,
+    limit: number,
+    name: string
+): Promise<TGetCategorySchema | undefined> {
     const result = await axios
-        .get(`/category?page=${page}&limit=${limit}`)
+        .get(`/category/admin?page=${page}&limit=${limit}&name=${name}`)
         .then((res) => {
             return res.data;
         });
@@ -16,9 +26,9 @@ async function getCategories(page: number, limit: number):Promise<GetCategorySch
     }
 }
 
-export function useCategory(page: number, limit: number) {
+export function useCategory({ name, page, limit }: opts) {
     return useQuery({
-        queryKey: ["category", `page=${page}`, `limit=${limit}`],
-        queryFn: async () => getCategories(page, limit),
+        queryKey: ["category", `page=${page}`, `limit=${limit}`, `name${name}`],
+        queryFn: async () => getCategories(page, limit, name),
     });
 }

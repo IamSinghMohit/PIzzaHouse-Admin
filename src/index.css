@@ -82,7 +82,7 @@ body {
 }
 @media (min-width: 887px) {
     .product-table-screen {
-        width: auto
+        width: auto;
     }
 }
 
@@ -100,4 +100,17 @@ body {
 
 .screen-height {
     height: calc(100vh - 50px);
+}
+
+.modal-overlay {
+    background: rgba(255, 255, 255, 0.38);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1.9px);
+    -webkit-backdrop-filter: blur(1.9px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 50;
+}
+.category-modal-button {
+    z-index: 60;
 }

@@ -7,11 +7,9 @@ import Category from "./modules/category";
 import Product from "./modules/products";
 import Topings from "./modules/topings";
 import Orders from "./modules/orders";
-import CreateCategory from "./modules/category/pages/CreateCategory";
 import { Toaster } from "react-hot-toast";
 import CreateProduct from "./modules/products/pages/CreateProduct";
 import { SocketContextProvider } from "./socketContext";
-import UpdateCategory from "./modules/category/pages/UpdateCategory";
 import CreateToping from "./modules/topings/pages/CreateToping";
 
 const App = () => {
@@ -31,14 +29,6 @@ const App = () => {
                 {
                     path: "category",
                     element: <Category />,
-                },
-                {
-                    path: "category/create",
-                    element: <CreateCategory />,
-                },
-                {
-                    path: "category/update",
-                    element: <UpdateCategory />,
                 },
                 {
                     path: "products",

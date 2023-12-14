@@ -7,7 +7,7 @@ import {
     ModalFooter,
     useDisclosure,
 } from "@nextui-org/react";
-import { ModalRefType } from "@/schema/modal";
+import { TModalRef } from "@/types/Modal";
 
 interface Props {
     title?: string;
@@ -19,7 +19,7 @@ interface Props {
 }
 function UiModal(
     { title, children, footerContent, onClose, size, bodyClassName }: Props,
-    ref: Ref<ModalRefType>
+    ref: Ref<TModalRef>
 ) {
     const discloser = useDisclosure();
 
@@ -42,7 +42,7 @@ function UiModal(
                 isOpen={discloser.isOpen}
                 onOpenChange={discloser.onOpenChange}
                 scrollBehavior="inside"
-                // backdrop="blur"
+                radius="sm"
                 classNames={{
                     base:'w-auto'
                 }}

@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
 import TableActions from "@/components/Table/TableAction";
-import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { memo, useMemo } from "react";
 import { ProductColumns } from "@/data/product-table";
 import { ProductSchemaType } from "../../schema";
@@ -33,19 +32,13 @@ interface Props {
 function DumbProductTable({
     classsName,
     data,
-    onEditClick,
     onViewClick,
     onDeleteClick,
     isLoading,
-    cbIntersectionObr,
     isError,
 }: Props) {
     const shouldRenderData: any = data && !isLoading;
     const columns = useMemo(() => ProductColumns, []);
-    const lastProductRef = useIntersectionObserver(
-        cbIntersectionObr || (() => {}),
-        [isLoading, data.length]
-    );
     return (
         <Table
             isHeaderSticky
@@ -71,7 +64,7 @@ function DumbProductTable({
                 loadingContent={<Spinner label="Loading..." />}
             >
                 {shouldRenderData &&
-                    data.map((item, index) => (
+                    data.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
                                 <Avatar
@@ -132,15 +125,6 @@ function DumbProductTable({
                             </TableCell>
                             <TableCell>
                                 <TableActions
-                                    ref={(e) => {
-                                        if (e) {
-                                            index + 10 == data.length &&
-                                                lastProductRef(e);
-                                        }
-                                    }}
-                                    editIconEvents={{
-                                        onClick: () => onEditClick(item),
-                                    }}
                                     deleteIconEvents={{
                                         onClick: () => onDeleteClick(item),
                                     }}

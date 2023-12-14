@@ -1,55 +1,70 @@
-import UiModal from "@/ui/UiModal";
-import { ModalRefType } from "@/schema/modal";
-import { useEffect, useRef } from "react";
-import { Button } from "@nextui-org/react";
+import { Ref, useImperativeHandle ,forwardRef} from "react";
+import {
+    Modal,
+    ModalContent,
+    ModalBody,
+    ModalFooter,
+    Button,
+    useDisclosure,
+} from "@nextui-org/react";
+import { TModalRef } from "@/types/Modal";
 
 interface Props {
     onYesPress: () => void;
     onNoPress: () => void;
     content: React.ReactNode;
-    open: boolean;
-    onClose: () => void;
 }
 
-function DeleteAlart({ onYesPress, onNoPress, content, open, onClose }: Props) {
-    const ModalRef = useRef<ModalRefType>(null);
+function DeleteAlert(
+    { onYesPress, onNoPress, content }: Props,
+    ref: Ref<TModalRef>
+) {
+    const { onOpen, onClose, isOpen, onOpenChange } = useDisclosure();
 
-    useEffect(() => {
-        if (open) {
-            ModalRef.current?.onOpen();
-        }
-    }, [open]);
-
+    useImperativeHandle(
+        ref,
+        () => ({
+                onOpen,
+                isOpen,
+                onClose,
+        }),
+        []
+    );
     return (
-        <UiModal
-            ref={ModalRef}
-            onClose={onClose}
-            footerContent={
-                <>
-                    <Button
-                        className="text-white bg-primaryOrange"
-                        onPress={() => {
-                            ModalRef.current?.onClose();
-                            onYesPress();
-                        }}
-                    >
-                        Yes
-                    </Button>
-                    <Button
-                        className="bg-red-500 text-white"
-                        onPress={() => {
-                            onNoPress();
-                            ModalRef.current?.onClose();
-                        }}
-                    >
-                        No
-                    </Button>
-                </>
-            }
-        >
-            {content}
-        </UiModal>
+        <>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalBody>{content}</ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    onPress={() => {
+                                        onNoPress();
+                                        onClose();
+                                    }}
+                                >
+                                    No
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    className="text-white"
+                                    onPress={() => {
+                                        onYesPress();
+                                        onClose();
+                                    }}
+                                >
+                                    Yes
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
 
-export default DeleteAlart;
+export default forwardRef(DeleteAlert)
