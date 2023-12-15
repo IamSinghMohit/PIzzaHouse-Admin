@@ -1,9 +1,8 @@
-import { AttributeSchemaType } from "@/modules/category/schema";
-import { ProductSchemaType } from "@/modules/products/schema";
 import {
-    ProductManagementType,
     ProductSliceInitialStateType,
-    ProductSubAttributesType,
+    TFetchingStates,
+    TProductManagement,
+    TProductUpdatedFields,
 } from "@/types/slice/Product";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -16,9 +15,25 @@ const initialState: ProductSliceInitialStateType = {
         product_featured: false,
         product_price: 0,
     },
-    product_attributes: [],
+    product_price_sec: [],
     default_prices: {},
-    current_product: null
+    current_selected_product: null,
+    updated_fields: {
+        product_category: false,
+        product_description: false,
+        product_featured: false,
+        product_name: false,
+        product_price: false,
+        product_status: false,
+        product_image: false,
+    },
+    fetching_states: {
+        current_selected_category: '',
+        featured_status: false,
+        product_name: "",
+        product_status: "All",
+        range: [0, 15000],
+    },
 };
 
 export const ProductSlice = createSlice({
@@ -27,10 +42,41 @@ export const ProductSlice = createSlice({
     reducers: {
         setProductState(
             state,
-            action: PayloadAction<Partial<ProductManagementType>>
+            action: PayloadAction<Partial<TProductManagement>>
         ) {
             state.product_management = {
                 ...state.product_management,
+                ...action.payload,
+            };
+        },
+        setProductUpdatedFields(
+            state,
+            action: PayloadAction<{
+                type: keyof TProductUpdatedFields | "all";
+                value: boolean;
+            }>
+        ) {
+            switch (action.payload.type) {
+                case "all":
+                    const obj: any = {};
+                    for (let key in state.updated_fields) {
+                        obj[key] = action.payload.value;
+                    }
+                    state.updated_fields = obj;
+                    break;
+                default:
+                    state.updated_fields = {
+                        ...state.updated_fields,
+                        ...action.payload,
+                    };
+            }
+        },
+        setProductFetchingStates(
+            state,
+            action: PayloadAction<Partial<TFetchingStates>>
+        ) {
+            state.fetching_states = {
+                ...state.fetching_states,
                 ...action.payload,
             };
         },
@@ -38,7 +84,7 @@ export const ProductSlice = createSlice({
             state,
             action: PayloadAction<AttributeSchemaType>
         ) {
-            state.product_attributes = action.payload.map((att) => {
+            state.product_sections = action.payload.map((att) => {
                 return {
                     id: att.id,
                     attribute_title: att.attribute_title,
@@ -91,16 +137,21 @@ export const ProductSlice = createSlice({
             };
         },
 
-        setCurrentProduct(state, action: PayloadAction<ProductSchemaType>) {
-            state.current_product = action.payload;
+        setCurrentSelectedProduct(
+            state,
+            action: PayloadAction<ProductSchemaType>
+        ) {
+            state.current_selected_product = action.payload;
         },
     },
 });
 
 export const {
     setProductState,
+    setProductUpdatedFields,
+    setProductFetchingStates,
     setProductAttributes,
     setProductAttributeState,
     setDefaultPriceInputs,
-    setCurrentProduct,
+    setCurrentSelectedProduct,
 } = ProductSlice.actions;

@@ -1,7 +1,6 @@
-import { useEffect, memo } from "react";
+import {  memo } from "react";
 import { CategoryColumns } from "@/data/cateogry-table";
-import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { useDeleteCategory } from "../../hooks";
+import { useAppDispatch} from "@/hooks/state";
 import { Spinner } from "@nextui-org/spinner";
 import { Avatar } from "@nextui-org/avatar";
 import {
@@ -30,7 +29,6 @@ function CategoryTableRender({
     data,
     isLoading,
     isError,
-    onDelete,
     onViewClick,
     onDeleteClick,
 }: Props) {
@@ -54,7 +52,11 @@ function CategoryTableRender({
                 ))}
             </TableHeader>
             <TableBody
-                emptyContent={"No category found create one 🔥"}
+                emptyContent={
+                    !isLoading && isError
+                        ? "Some server occured ❌"
+                        : "No Category found create 🔥 one!"
+}
                 isLoading={isLoading}
                 loadingContent={<Spinner label="Loading..." />}
             >

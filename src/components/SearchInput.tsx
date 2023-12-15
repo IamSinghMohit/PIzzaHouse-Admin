@@ -1,24 +1,24 @@
 import { Button, Divider } from "@nextui-org/react";
 import { IconSearch } from "@tabler/icons-react";
+import { InputHTMLAttributes } from "react";
+
+interface ButtonProps {
+    onButtonPress: (...args: any) => void;
+    containerClassName?: string;
+}
+
+type SearchInputProps = ButtonProps & InputHTMLAttributes<HTMLInputElement>;
 
 function SearchInput({
     onButtonPress,
-    onKeyDown,
-    value,
-    onChange,
-}: {
-    onButtonPress: (...args: any) => void;
-    onKeyDown: (...args: any) => void;
-    onChange: (...args: any) => void;
-    value: string;
-}) {
+    containerClassName,
+    ...others
+}: SearchInputProps) {
     return (
-        <div className="flex items-center">
+        <div className={`flex items-center ${containerClassName}`}>
             <input
-                onKeyDown={onKeyDown}
-                onChange={onChange}
-                value={value}
-                className="bg-gray-100 text-black p-2 outline-none rounded-l-md"
+                {...others}
+                className="bg-gray-100 text-black p-2 outline-none rounded-l-md flex-grow"
                 placeholder="search..."
             />
             <Divider orientation="vertical" className="h-[40px] bg-gray-400" />

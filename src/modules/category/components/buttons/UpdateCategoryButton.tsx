@@ -1,4 +1,3 @@
-import { Button } from "@nextui-org/react";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useUpdateCategory, useCategoryPriceSections } from "../../hooks";
 import { Dispatch, SetStateAction, useEffect, memo } from "react";
@@ -6,6 +5,7 @@ import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setFetchedPriceSec } from "@/store/features/categorySlice";
 import { FormDataSend } from "@/utils";
+import ModalButton from "@/modules/shared/ModalButton";
 
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -50,15 +50,13 @@ function UpdateCategoryButton({ setIsLoading, processedImage }: Props) {
     }, [isPending]);
 
     return (
-        <Button
-            startContent={<IconPencilPlus width={20} />}
+        <ModalButton
             onPress={handleUpdateCategory}
             isLoading={isPending}
-            color="primary"
-            className="text-white category-modal-button"
+            icon={<IconPencilPlus width={20} />}
         >
-            Update
-        </Button>
+            Create
+        </ModalButton>
     );
 }
 

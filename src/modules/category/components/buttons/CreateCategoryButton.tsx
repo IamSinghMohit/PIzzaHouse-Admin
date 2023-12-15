@@ -1,10 +1,10 @@
-import { Button } from "@nextui-org/react";
 import { useCreateCategory } from "../../hooks";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { FormDataSend } from "@/utils";
 import { errorToast } from "@/lib/toast";
+import ModalButton from "@/modules/shared/ModalButton";
 
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -38,15 +38,9 @@ function CreateCategoryButton({ setIsLoading, processedImage }: Props) {
     }, [isPending]);
 
     return (
-        <Button
-            radius="sm"
-            isLoading={isPending}
-            color="primary"
-            className="text-white category-modal-button"
-            onPress={handleCreate}
-        >
+        <ModalButton isLoading={isPending} onPress={handleCreate}>
             Create
-        </Button>
+        </ModalButton>
     );
 }
 

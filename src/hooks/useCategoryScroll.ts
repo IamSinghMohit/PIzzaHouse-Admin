@@ -1,10 +1,10 @@
 import axios from "@/lib/axios";
-import { CategorySchemaType } from "@/modules/category/schema";
+import { TCategorySchema } from "@/modules/category/schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 async function InfiniteCategoryScroll(
     cursor?: string
-): Promise<CategorySchemaType[]> {
+): Promise<TCategorySchema[]> {
     return await axios
         .get(`/category/search?name&limit=10&cursor=${cursor}`)
         .then((res) => res.data.data);

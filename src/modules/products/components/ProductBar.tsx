@@ -1,100 +1,161 @@
-import SelectCategory from "@/components/SelectCategory";
-import {
-    Select,
-    SelectItem,
-    Card,
-    CardBody,
-    Input,
-    Slider,
-} from "@nextui-org/react";
+import { Select, SelectItem, Card, CardBody, Slider } from "@nextui-org/react";
 import CreateButton from "@/components/TopBar/CreateButton";
-import { memo } from "react";
-import { SearchIcon } from "@/icons";
+import { memo, useState } from "react";
 import AppCheck from "@/modules/shared/AppCheck";
-import { useProductContext } from "../context";
+import CategorySelector from "@/modules/shared/CategorySelector";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { setProductFetchingStates } from "@/store/features/productSlice";
+import SearchInput from "@/components/SearchInput";
+
+function ProductSearchInput() {
+    const [value, setValue] = useState("");
+    const dispatch = useAppDispatch();
+
+    const handleSearchClick = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            dispatch(
+                setProductFetchingStates({
+                    product_name: value,
+                })
+            );
+        }
+    };
+
+    return (
+        <SearchInput
+            value={value}
+            onChange={(e) => {
+                setValue(e.target.value);
+            }}
+            className="flex-grow"
+            containerClassName="w-[253px]"
+            onKeyDown={handleSearchClick}
+            onButtonPress={handleSearchClick}
+        />
+    );
+}
+
+function ProductStatusSelector() {
+    const status = useAppSelector(
+        (state) => state.product.fetching_states.product_status
+    );
+    const dispatch = useAppDispatch();
+    return (
+        <Select
+            className="w-[160px] items-center ml-1"
+            color="primary"
+            label="Show"
+            labelPlacement="outside-left"
+            radius="sm"
+            variant="faded"
+            selectedKeys={[status]}
+            onChange={(e) => {
+                if (!e.target.value) return;
+                dispatch(
+                    setProductFetchingStates({
+                        product_status: e.target.value as any,
+                    })
+                );
+            }}
+            classNames={{
+                selectorIcon: "text-primaryOrange",
+                base: "p-0 h-[40px]",
+                innerWrapper: "p-0 ",
+                mainWrapper: "p-0 h-[40px]",
+                label: "font-bold",
+            }}
+        >
+            <SelectItem key={"All"} value={"All"}>
+                All
+            </SelectItem>
+            <SelectItem key={"Published"} value={"Published"}>
+                Published
+            </SelectItem>
+            <SelectItem key={"Draft"} value={"Draft"}>
+                Draft
+            </SelectItem>
+        </Select>
+    );
+}
+
+function ProductCategorySelector() {
+    const current = useAppSelector(
+        (state) => state.product.fetching_states.current_selected_category
+    );
+    const dispatch = useAppDispatch();
+    return (
+        <CategorySelector
+            selectedCategory={current}
+            setSelectedCategory={(e) =>
+                dispatch(
+                    setProductFetchingStates({
+                        current_selected_category: e as string,
+                    })
+                )
+            }
+        />
+    );
+}
+
+function ProductPriceRange() {
+    const range = useAppSelector(
+        (state) => state.product.fetching_states.range
+    );
+    const dispatch = useAppDispatch();
+    return (
+        <Slider
+            label="Price"
+            className="mb-2 w-[200px]"
+            onChangeEnd={(e) =>
+                dispatch(
+                    setProductFetchingStates({ range: e as [number, number] })
+                )
+            }
+            size="sm"
+            step={1}
+            minValue={0}
+            maxValue={20000}
+            defaultValue={range}
+            formatOptions={{
+                style: "currency",
+                currency: "INR",
+            }}
+        />
+    );
+}
+function ProductCheck() {
+    const featured = useAppSelector(
+        (state) => state.product.fetching_states.featured_status
+    );
+    const dispatch = useAppDispatch();
+    return (
+        <AppCheck
+            text="Featured"
+            checked={featured}
+            onValueChange={(e) =>
+                dispatch(setProductFetchingStates({ featured_status: e }))
+            }
+        />
+    );
+}
 
 function ProductBar() {
-    const {
-        search,
-        setCategory,
-        setSearch,
-        setSlider,
-        slider,
-        setShowFeatured,
-        showFeatured,
-        productType,
-        setProductType,
-    } = useProductContext();
     return (
-        <Card className="mb-2" shadow="sm">
-            <CardBody className="flex-row justify-between items-end flex-wrap gap-2">
-                <div className="flex justify-between gap-4 flex-wrap">
-                    <div className="flex flex-col gap-2">
-                        <Input
-                            placeholder="Search by name"
-                            startContent={<SearchIcon />}
-                            className="max-w-[300px] sm:w-[290px]"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            size="sm"
-                        />
-                        <SelectCategory
-                            size="sm"
-                            selectedKeys={(e) => setCategory(e as string)}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2 mt-1">
-                        <Select
-                            className="w-[160px] items-center ml-1"
-                            label="Show"
-                            labelPlacement="outside-left"
-                            defaultSelectedKeys={["10"]}
-                            radius="sm"
-                            variant="faded"
-                            selectedKeys={[productType]}
-                            onChange={(e) => {
-                                if (!e.target.value) return;
-                                setProductType(`${e.target.value}` as any);
-                            }}
-                            classNames={{
-                                selectorIcon: "text-primaryOrange",
-                                base: "p-0 h-[40px]",
-                                innerWrapper: "p-0 ",
-                                mainWrapper: "p-0 h-[40px]",
-                                label: "font-bold",
-                            }}
-                        >
-                            <SelectItem key={"All"} value={"All"}>
-                                All
-                            </SelectItem>
-                            <SelectItem key={"Published"} value={"Published"}>
-                                Published
-                            </SelectItem>
-                            <SelectItem key={"Draft"} value={"Draft"}>
-                                Draft
-                            </SelectItem>
-                        </Select>
-                        <AppCheck
-                            text="Featured(will only show featured)"
-                            checked={showFeatured}
-                            onValueChange={(e) => setShowFeatured(e)}
-                        />
-                        <Slider
-                            label="Price Range"
-                            className="mb-2"
-                            onChangeEnd={(e) => setSlider(e as number[])}
-                            size="sm"
-                            step={1}
-                            minValue={0}
-                            maxValue={20000}
-                            defaultValue={slider}
-                            formatOptions={{
-                                style: "currency",
-                                currency: "INR",
-                            }}
-                        />
-                    </div>
-                </div>
+        <Card className="mb-2" shadow="sm" radius="sm">
+            <CardBody className="flex-row justify-between">
+                {/* <div className="flex gap-8 ">
+                    <div className="flex flex-col gap-2"> */}
+                        <ProductSearchInput />
+                        <ProductCategorySelector />
+                    {/* </div>
+                    <div className="flex items-start gap-3">
+                        <div className="flex flex-col gap-2"> */}
+                            <ProductStatusSelector />
+                            <ProductPriceRange />
+                        {/* </div> */}
+                        <ProductCheck />
+                    {/* </div> */}
+                {/* </div> */}
                 <CreateButton buttonText="Create Product" />
             </CardBody>
         </Card>

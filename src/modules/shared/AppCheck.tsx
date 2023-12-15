@@ -10,6 +10,7 @@ function AppCheck({ onValueChange, checked, text}: Props) {
     return (
         <Checkbox
             size="lg"
+            radius="sm"
             className="text-white"
             checked={checked}
             onValueChange={onValueChange}

@@ -111,6 +111,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
     z-index: 50;
 }
-.category-modal-button {
+.overlay-modal-button {
     z-index: 60;
 }
