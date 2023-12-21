@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/state"
 import Logo from "@/assets/logo.svg"
 import { FaHamburger } from "react-icons/fa";
-import { setNavOpen } from "@/store/features/userSlice";
+import { setNavOpen } from "@/store/slices/user";
 
 interface Props {
   

@@ -3,7 +3,7 @@ import { useUpdateCategory, useCategoryPriceSections } from "../../hooks";
 import { Dispatch, SetStateAction, useEffect, memo } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setFetchedPriceSec } from "@/store/features/categorySlice";
+import { setFetchedPriceSec } from "@/store/slices/category";
 import { FormDataSend } from "@/utils";
 import ModalButton from "@/modules/shared/ModalButton";
 
@@ -55,7 +55,7 @@ function UpdateCategoryButton({ setIsLoading, processedImage }: Props) {
             isLoading={isPending}
             icon={<IconPencilPlus width={20} />}
         >
-            Create
+            Update
         </ModalButton>
     );
 }

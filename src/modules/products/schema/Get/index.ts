@@ -1,14 +1,25 @@
 import { z, TypeOf } from "zod";
-import { ProductSchema, ProductDetailsSchema } from "..";
+import { ProductSchema } from "..";
 
-export const GetProductsSchema = z.object({
-    data: z.array(ProductSchema),
-});
-export const GetProductDetailsSchema = z.object({
-    data: ProductDetailsSchema,
-});
+export const GetProductsSchema = z.array(ProductSchema)
 
-export type GetProductsSchemaType = TypeOf<typeof GetProductsSchema>;
-export type GetProductDetailsSchemaType = TypeOf<
-    typeof GetProductDetailsSchema
+export const GetProductPriceSectionSchema = z.object({
+    sections: z.array(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            attributes: z.array(
+                z.object({
+                    id: z.string(),
+                    attribute_title: z.string(),
+                    value: z.number(),
+                })
+            ),
+        })
+    ),
+    default_attributes: z.record(z.string()),
+});
+export type TGetProductsSchema = TypeOf<typeof GetProductsSchema>;
+export type TGetProductPriceSectionSchema = TypeOf<
+    typeof GetProductPriceSectionSchema
 >;

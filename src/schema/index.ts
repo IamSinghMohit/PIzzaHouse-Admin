@@ -16,3 +16,7 @@ export const BaseResponseWithNameAndImage = z
         image: z.string(),
     })
     .merge(BaseResponse);
+
+export const BackendResponseSchema = z.object({
+    success:z.boolean(),
+})

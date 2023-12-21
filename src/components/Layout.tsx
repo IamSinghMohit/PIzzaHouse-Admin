@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet,  useNavigate } from "react-router-dom";
 import { useUserAutoLogin } from "@/modules/auth/hooks/userUserAutoLogin";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setUser, setTriedToLogin } from "@/store/features/userSlice";
+import { setUser, setTriedToLogin } from "@/store/slices/user";
 import TabList from "./Tablist";
 import BreadCrumbs from "./BreadCrumbs";
 import Navbar from "./Navbar";

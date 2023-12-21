@@ -5,3 +5,7 @@ export interface BackendError {
         message: string;
     };
 }
+export interface BackendSuccess<T> {
+    success: boolean;
+    data: T;
+}

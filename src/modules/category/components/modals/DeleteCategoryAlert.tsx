@@ -4,7 +4,7 @@ import { useDeleteCategory } from "../../hooks";
 import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import AlertModelContent from "@/modules/shared/AlertModelContent";
-import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
+import { setCurrentSelectedCategory } from "@/store/slices/category";
 
 interface Props {}
 
@@ -23,7 +23,6 @@ function DeleteCategoryAlert({}: Props, ref: Ref<TModalRef>) {
     return (
         <DeleteAlert
             onYesPress={handleYesPress}
-            onNoPress={() => {}}
             content={
                 <AlertModelContent
                     main={currentCategory?.name || "!"}

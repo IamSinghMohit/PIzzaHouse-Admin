@@ -14,11 +14,11 @@ import { useRef, useState} from "react";
 import { uuid } from "@/utils/uuid";
 import {
     setCategorySections,
-} from "@/store/features/categorySlice";
+} from "@/store/slices/category";
 import { useAppDispatch} from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
 import { validateString } from "@/utils/ValidateString";
-import { TAttributes } from "@/types/slice/Category";
+import { TAttributes } from "@/store/slices/category/types";
 
 function CategoryPriceSection() {
     // this is for chip input tag
@@ -45,7 +45,7 @@ function CategoryPriceSection() {
             ...prev,
             {
                 id: `${uuid()}`,
-                title: chipText.toUpperCase(),
+                name: chipText.toUpperCase(),
             },
         ]);
         setChipText("");
@@ -103,7 +103,7 @@ function CategoryPriceSection() {
             setCategorySections({
                 data: {
                     id: `${uuid()}`,
-                    title: title,
+                    name: title,
                     attributes: attributes,
                 },
                 type: "PUSH",
@@ -207,7 +207,7 @@ function CategoryPriceSection() {
                         }}
                         radius="sm"
                     >
-                        {att.title}
+                        {att.name}
                     </Chip>
                 ))}
             </CardBody>

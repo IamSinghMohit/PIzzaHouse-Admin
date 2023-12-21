@@ -13,15 +13,17 @@ import * as dayjs from "dayjs";
 import TableActions from "@/components/Table/TableAction";
 import { memo, useMemo } from "react";
 import { ProductColumns } from "@/data/product-table";
-import { ProductSchemaType } from "../../schema";
 import { FaCrown } from "react-icons/fa6";
 import { TbCrownOff } from "react-icons/tb";
 import IconWrapper from "@/components/IconWrapper";
+import { useAppDispatch } from "@/hooks/state";
+import { TProductSchema } from "../../schema";
+import { setDefaultProductPrices, setProductState } from "@/store/slices/product";
 
 interface Props {
-    data: ProductSchemaType[];
-    onViewClick: (cat: ProductSchemaType) => void;
-    onDeleteClick: (cat: ProductSchemaType) => void;
+    data: TProductSchema[];
+    onViewClick: () => void;
+    onDeleteClick: () => void;
     isLoading: boolean;
     isError: boolean;
 }
@@ -33,7 +35,9 @@ function ProductTableRender({
     isLoading,
     isError,
 }: Props) {
+    console.log("table rendered");
     const columns = useMemo(() => ProductColumns, []);
+    const dispatch = useAppDispatch();
     return (
         <Table
             isHeaderSticky
@@ -115,10 +119,40 @@ function ProductTableRender({
                         <TableCell>
                             <TableActions
                                 deleteIconEvents={{
-                                    onClick: () => onDeleteClick(item),
+                                    onClick: () => {
+                                        dispatch(
+                                            setProductState({
+                                                product_id: item.id,
+                                                product_category: item.category,
+                                                product_description:
+                                                    item.description,
+                                                product_featured: item.featured,
+                                                product_name: item.name,
+                                                product_price: item.price,
+                                                product_status: item.status,
+                                                product_image: item.image,
+                                            })
+                                        );
+                                        onDeleteClick();
+                                    },
                                 }}
                                 viewIconEvents={{
-                                    onClick: () => onViewClick(item),
+                                    onClick: () => {
+                                        dispatch(
+                                            setProductState({
+                                                product_id: item.id,
+                                                product_category: item.category,
+                                                product_description:
+                                                    item.description,
+                                                product_featured: item.featured,
+                                                product_name: item.name,
+                                                product_price: item.price,
+                                                product_status: item.status,
+                                                product_image: item.image,
+                                            })
+                                        );
+                                        onViewClick();
+                                    },
                                 }}
                             />
                         </TableCell>

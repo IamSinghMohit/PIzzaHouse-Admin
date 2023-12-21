@@ -114,3 +114,15 @@ body {
 .overlay-modal-button {
     z-index: 60;
 }
+
+/* for hiding arrows in input element */
+.price-input::-webkit-outer-spin-button,
+.price-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.price-input[type=number] {
+  -moz-appearance: textfield;
+}

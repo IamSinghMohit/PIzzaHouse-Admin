@@ -27,7 +27,7 @@ import {
     setCategorySections,
     setCurrentSelectedCategory,
     setUpdatedFields,
-} from "@/store/features/categorySlice";
+} from "@/store/slices/category";
 import UpdateCategoryButton from "../buttons/UpdateCategoryButton";
 import useDebounce from "@/hooks/useDebounce";
 
@@ -62,7 +62,7 @@ interface Props {
 }
 
 function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose ,onOpenChange} = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
@@ -96,6 +96,7 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
             isOpen={isOpen}
             isDismissable={!isLoading}
             isKeyboardDismissDisabled={!isLoading}
+            onOpenChange={onOpenChange}
             hideCloseButton={isLoading}
             onClose={() => {
                 setProcessedImage({ url: "", file: null });

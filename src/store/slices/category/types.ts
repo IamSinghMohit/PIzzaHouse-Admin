@@ -1,32 +1,32 @@
 import { TCategorySchema } from "@/modules/category/schema";
 
-export interface TCategoryUpdatedFields {
+export type TCategoryUpdatedFields = {
     image: boolean;
     name: boolean;
     sections: boolean;
-}
+};
 
-export interface TAttributes {
+export type TAttributes = {
     id: string;
-    title: string;
-}
-export interface TCategoryTotalAttributes {
+    name: string;
+};
+export type TCategoryTotalAttributes = {
     id: string;
     edited: boolean;
-}
+};
 
-export interface TCategorySection {
+export type TCategorySection = {
     id: string;
-    title: string;
+    name: string;
     attributes: TAttributes[];
-}
+};
 
-export interface TCategorySliceInitialState {
+export type TCategorySliceInitialState = {
     category_price_sec: TCategorySection[];
     category_name: string;
     category_search_name: string;
     current_selected_category: TCategorySchema | null;
     updated_fields: TCategoryUpdatedFields;
-}
+};
 
-export type TUpdatedFields = "name" | "image" | "sections" | 'all'
+export type TUpdatedFields = "name" | "image" | "sections" | "all";

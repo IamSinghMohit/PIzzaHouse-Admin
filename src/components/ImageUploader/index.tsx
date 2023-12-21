@@ -12,8 +12,8 @@ import { Button } from "@nextui-org/react";
 import { PiGearSixLight } from "react-icons/pi";
 import ImageCropper from "./ImageCropper";
 import ImageUploaderContext, { useImageUploaderContext } from "./context";
-import { ModalRefType } from "@/types/Modal";
-import { ProcessedImageType } from "@/types/ImageUploader";
+import { TProcessedImage } from "@/types/ImageUploader";
+import { TModalRef } from "@/types/Modal";
 
 function PlaceholderContainer({
     baseClassName,
@@ -121,7 +121,7 @@ interface Props {
     };
     defaultImage?: string;
     aspectRatio?: { x: number; y: number };
-    setProcessedImage: Dispatch<SetStateAction<ProcessedImageType>>;
+    setProcessedImage: Dispatch<SetStateAction<TProcessedImage>>;
     children: ReactNode;
 }
 
@@ -137,7 +137,7 @@ function ImageUploader({
     // this is input ref with display none and type file to accept file from user upon click on the image
     const InputRef = useRef<HTMLInputElement | null>(null);
     // this ref is for modal
-    const ModalRef = useRef<ModalRefType>(null);
+    const ModalRef = useRef<TModalRef>(null);
     const [isCropped, setIsCropped] = useState(false);
     /*
      * it is utility state using this will be rendering grear icon and and it will be assinged a image url

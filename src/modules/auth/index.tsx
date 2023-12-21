@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch ,useAppSelector } from "@/hooks/state";
-import { setTriedToLogin ,setUser } from "@/store/features/userSlice";
+import { setTriedToLogin ,setUser} from "@/store/slices/user";
 import { useUserAutoLogin } from "@/modules/auth/hooks/userUserAutoLogin";
 import { useUserLogin } from "@/modules/auth/hooks/useUserLogin";
 

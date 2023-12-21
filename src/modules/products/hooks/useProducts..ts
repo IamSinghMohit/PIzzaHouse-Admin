@@ -1,7 +1,7 @@
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { errorToast } from "@/lib/toast";
-import { GetProductsSchema, GetProductsSchemaType } from "../schema/Get";
+import { GetProductsSchema, TGetProductsSchema} from "../schema/Get";
 
 type getProductsType = {
     name: string;
@@ -14,24 +14,26 @@ type getProductsType = {
 
 async function getProducts(
     opts: getProductsType
-): Promise<GetProductsSchemaType | undefined> {
-    const result = await axios
-        .get(
-            `/product/all?name=${opts.name}${
-                opts.featured ? `&featured=${opts.featured}` : ""
-            }${opts.status !== "All" ? `&status=${opts.status}` : ""}${
-                opts.status === "All" ? "" : ""
-            }&min=${opts.min}&max=${opts.max}${
-                opts.category ? `&category=${opts.category}` : ""
-            }`
-        )
-        .then((res) => {
-            return res.data;
-        });
+): Promise<TGetProductsSchema> {
+    let url = `/product/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}`;
+
+    if (opts.featured !== undefined) {
+        url += `&featured=${opts.featured}`;
+    }
+
+    if (opts.status && opts.status !== "All") {
+        url += `&status=${opts.status}`;
+    }
+
+    if (opts.category) {
+        url += `&category=${opts.category}`;
+    }
+    const result = await axios.get(url).then((res) => res.data);
     try {
-        return await GetProductsSchema.parseAsync(result);
+        return GetProductsSchema.parse(result.data);
     } catch (error) {
         errorToast("received bad data from server");
+        return []
     }
 }
 

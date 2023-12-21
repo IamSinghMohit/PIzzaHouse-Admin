@@ -1,5 +1,4 @@
 import {
-    bindActionCreators,
     createSlice,
     PayloadAction,
 } from "@reduxjs/toolkit";
@@ -7,13 +6,14 @@ import {
     TCategorySection,
     TCategorySliceInitialState,
     TUpdatedFields,
-} from "@/types/slice/Category";
+} from "./types";
 import {
     TCategorySchema,
     TGetCategorySections,
 } from "@/modules/category/schema";
 
 type PayloadType = "REPLACE" | "PUSH";
+
 
 const initialState: TCategorySliceInitialState = {
     category_price_sec: [],
@@ -62,7 +62,7 @@ export const CategorySlice = createSlice({
                     // Update the properties of the matching item
                     return {
                         ...item,
-                        title: action.payload.title,
+                        name: action.payload.name,
                         attributes: action.payload.attributes,
                     };
                 }
@@ -129,7 +129,7 @@ export const CategorySlice = createSlice({
             state.category_price_sec = action.payload.map((cat) => {
                 return {
                     id: cat.id,
-                    title: cat.title,
+                    name: cat.title,
                     attributes: cat.attributes,
                 };
             });

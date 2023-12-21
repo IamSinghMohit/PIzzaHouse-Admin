@@ -6,7 +6,7 @@ import { BackendError } from "@/types/api";
 
 async function createProduct(data: any): Promise<string> {
     const promise = axios
-        .post("/product/create", data, {
+        .post("/product/admin/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

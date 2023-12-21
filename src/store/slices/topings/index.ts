@@ -1,4 +1,4 @@
-import { TopingSliceInitialState } from "@/types/slice/topingSlice";
+import { TopingSliceInitialState } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: TopingSliceInitialState = {

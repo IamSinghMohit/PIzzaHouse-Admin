@@ -6,7 +6,7 @@ import {
     Chip,
     Divider,
 } from "@nextui-org/react";
-import { deletePriceSection } from "@/store/features/categorySlice";
+import { deletePriceSection } from "@/store/slices/category";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { DeleteIcon } from "@/icons";
 import { shallowEqual } from "react-redux";
@@ -28,7 +28,7 @@ function RenderCateogryPriceSection() {
         >
             <CardHeader className="flex gap-2 p-0 justify-between bg-primaryOrange text-lg uppercase text-white">
                 <div className="flex m-1 justify-between w-full items-center text-[14px] lg:text-[16px]">
-                    <span className="ml-2">{sec.title}</span>
+                    <span className="ml-2">{sec.name}</span>
                     <Button
                         className="rounded-lg text-white text-lg bg-darkOrange p-[5px]"
                         isIconOnly
@@ -49,7 +49,7 @@ function RenderCateogryPriceSection() {
                         }}
                         radius="sm"
                     >
-                        {att.title}
+                        {att.name}
                     </Chip>
                 ))}
             </CardBody>

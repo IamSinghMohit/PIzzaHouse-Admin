@@ -4,11 +4,11 @@ import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { Key, useState } from "react";
 
 interface Props {
-    selectedCategory: string;
-    setSelectedCategory: (e:Key) => void;
+    setSelectedCategory: (e: Key) => void;
+    className?: string;
 }
 
-function CategorySelector({ selectedCategory, setSelectedCategory }: Props) {
+function CategorySelector({ setSelectedCategory, className }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
 
@@ -21,23 +21,28 @@ function CategorySelector({ selectedCategory, setSelectedCategory }: Props) {
 
     return (
         <Autocomplete
-            className="max-w-[252px]"
+            className={`max-w-[252px] ${className}`}
             variant="bordered"
             isLoading={isLoading}
+            aria-label="cateogry selector input"
             defaultItems={items}
             size="sm"
             color="primary"
-            selectedKey={selectedCategory}
             radius="sm"
             onSelectionChange={setSelectedCategory}
             scrollRef={scrollerRef}
             onOpenChange={setIsOpen}
         >
-            {(item) => (
-                <AutocompleteItem key={item.name} className="capitalize">
-                    {item.name}
-                </AutocompleteItem>
-            )}
+            {(item) => {
+                return (
+                    <AutocompleteItem
+                        key={`${item.id}:${item.name}`}
+                        className="capitalize"
+                    >
+                        {item.name}
+                    </AutocompleteItem>
+                );
+            }}
         </Autocomplete>
     );
 }

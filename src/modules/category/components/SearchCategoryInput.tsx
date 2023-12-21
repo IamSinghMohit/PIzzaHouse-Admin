@@ -1,6 +1,6 @@
 import SearchInput from "@/components/SearchInput";
 import { useAppDispatch } from "@/hooks/state";
-import { setCategorySearchName } from "@/store/features/categorySlice";
+import { setCategorySearchName } from "@/store/slices/category";
 import { useState } from "react";
 
 interface Props {}

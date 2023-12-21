@@ -14,7 +14,7 @@ import {
 import { TCategorySchema } from "../../schema";
 import * as dayjs from "dayjs";
 import TableAction from "@/components/Table/TableAction";
-import { setCurrentSelectedCategory } from "@/store/features/categorySlice";
+import { setCurrentSelectedCategory } from "@/store/slices/category";
 
 interface Props {
     data: TCategorySchema[];

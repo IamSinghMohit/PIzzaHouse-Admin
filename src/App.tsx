@@ -8,7 +8,6 @@ import Product from "./modules/products";
 import Topings from "./modules/topings";
 import Orders from "./modules/orders";
 import { Toaster } from "react-hot-toast";
-import CreateProduct from "./modules/products/pages/CreateProduct";
 import { SocketContextProvider } from "./socketContext";
 import CreateToping from "./modules/topings/pages/CreateToping";
 
@@ -34,18 +33,14 @@ const App = () => {
                     path: "products",
                     element: <Product />,
                 },
-                {
-                    path: "products/create",
-                    element: <CreateProduct />,
-                },
-                {
-                    path: "topings",
-                    element: <Topings />,
-                },
-                {
-                    path: "topings/create",
-                    element: <CreateToping />,
-                },
+                // {
+                //     path: "topings",
+                //     element: <Topings />,
+                // },
+                // {
+                //     path: "topings/create",
+                //     element: <CreateToping />,
+                // },
                 {
                     path: "orders",
                     element: <Orders />,

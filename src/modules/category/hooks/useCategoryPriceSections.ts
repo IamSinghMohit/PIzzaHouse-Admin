@@ -10,7 +10,7 @@ async function getSections(id: string): Promise<TGetCategorySections> {
 }
 export function useCategoryPriceSections(id: string) {
     return useQuery({
-        queryKey: ["category", "section", id],
+        queryKey: ["category", "sections", id],
         queryFn: () => getSections(id),
         enabled: !!id,
     });

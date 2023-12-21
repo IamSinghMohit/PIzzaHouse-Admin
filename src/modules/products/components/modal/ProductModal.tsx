@@ -7,6 +7,7 @@ import {
     ModalContent,
     useDisclosure,
     ModalFooter,
+    Divider,
 } from "@nextui-org/react";
 import {
     forwardRef,
@@ -18,22 +19,29 @@ import {
 import { TProcessedImage } from "@/types/ImageUploader";
 import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { ProductDescriptionInput, ProductNameInput } from "../ProductForm";
-import { setProductUpdatedFields } from "@/store/features/productSlice";
+import {
+    ProductCategorySelector,
+    ProductCheck,
+    ProductDescriptionInput,
+    ProductNameInput,
+    ProductPrice,
+} from "../ProductForm";
+import { setProductUpdatedFields } from "@/store/slices/product";
 import CreateProductButton from "../button/CreateProductButton";
 import UpdateProductButton from "../button/UpdateProductButton";
+import ProductPriceSectionRender from "../ProductPriceSectionRender";
 
 interface Props {
     type: "Create" | "Update";
 }
 
 function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
-        (state) => state.category.current_selected_category?.image
-    );
+        (state) => state.product.product_management.product_image   //  here will be product
+    )
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
         file: null,
@@ -64,6 +72,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
             isDismissable={!isLoading}
             isKeyboardDismissDisabled={!isLoading}
             hideCloseButton={isLoading}
+            onOpenChange={onOpenChange}
             onClose={() => {
                 setProcessedImage({ url: "", file: null });
                 // dispatch(setCurrentSelectedCategory(null));
@@ -81,41 +90,45 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                             <div className="modal-overlay w-full h-[530px] absolute"></div>
                         )}
                         <ModalHeader className="flex flex-col gap-1">
-                            {type} Category
+                            {type} Product
                         </ModalHeader>
-                        <ModalBody className="flex-row justify-between">
-                            <div className="flex flex-col gap-3">
+                        <ModalBody className="flex-row gap-8">
+                            <div className="flex flex-col gap-3 min-w-[450px]">
                                 <ImageUploader
                                     aspectRatio={{ x: 4, y: 3 }}
                                     processedImage={processedImage}
                                     setProcessedImage={setProcessedImage}
                                     defaultImage={
                                         type == "Update"
-                                            ? defaultImage
+                                            ? defaultImage // still left to modify
                                             : undefined
                                     }
                                 >
                                     <ImageUploader.PlaceholderContainer
-                                        baseClassName="w-[100px] h-[100px]"
+                                        baseClassName="w-[250px] h-[188px] mx-auto"
                                         placeholderImage={
-                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[100px] h-[100px]" />
                                         }
                                         placeholderImageText={
-                                            <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1" />
+                                            <ImageUploader.PlaceholderImageText baseClassName="text-[16px] flex gap-1" />
                                         }
                                     />
                                 </ImageUploader>
-                                <div>
-                                    <ProductNameInput />
+
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex gap-2">
+                                        <ProductNameInput />
+                                        <ProductCategorySelector />
+                                    </div>
                                     <ProductDescriptionInput />
                                 </div>
-                                <div>
-                                    Rendering product form(input desc..)
+                                <div className="flex items-center gap-3">
+                                    <ProductPrice />
+                                    <ProductCheck />
                                 </div>
                             </div>
-                            <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
-                                Rendering product sectoins
-                            </div>
+                            <Divider orientation="vertical" />
+                            <ProductPriceSectionRender type={type} />
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
                             <Button

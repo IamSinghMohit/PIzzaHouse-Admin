@@ -11,12 +11,11 @@ import { TModalRef } from "@/types/Modal";
 
 interface Props {
     onYesPress: () => void;
-    onNoPress: () => void;
     content: React.ReactNode;
 }
 
 function DeleteAlert(
-    { onYesPress, onNoPress, content }: Props,
+    { onYesPress,  content }: Props,
     ref: Ref<TModalRef>
 ) {
     const { onOpen, onClose, isOpen, onOpenChange } = useDisclosure();
@@ -42,7 +41,6 @@ function DeleteAlert(
                                     color="danger"
                                     variant="light"
                                     onPress={() => {
-                                        onNoPress();
                                         onClose();
                                     }}
                                 >

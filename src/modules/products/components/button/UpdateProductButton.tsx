@@ -1,15 +1,17 @@
 import ModalButton from "@/modules/shared/ModalButton";
 import { TProcessedImage } from "@/types/ImageUploader";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useProductPriceSection } from "../../hooks/useProductPriceSection";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { setProductPriceSectionAttribute } from "@/store/features/productSlice";
 
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
 }
 
-
-
 function UpdateProductButton({}: Props) {
+
     return (
         <ModalButton isLoading={false} onPress={() => {}}>
             Update
