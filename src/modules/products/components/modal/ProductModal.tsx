@@ -25,8 +25,14 @@ import {
     ProductDescriptionInput,
     ProductNameInput,
     ProductPrice,
+    ProductStatusSelector,
 } from "../ProductForm";
-import { setProductUpdatedFields } from "@/store/slices/product";
+import {
+    setDefaultProductPrices,
+    setProductPriceSectionAttribute,
+    setProductState,
+    setProductUpdatedFields,
+} from "@/store/slices/product";
 import CreateProductButton from "../button/CreateProductButton";
 import UpdateProductButton from "../button/UpdateProductButton";
 import ProductPriceSectionRender from "../ProductPriceSectionRender";
@@ -40,8 +46,8 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
-        (state) => state.product.product_management.product_image   //  here will be product
-    )
+        (state) => state.product.product_management.product_image, //  here will be product
+    );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
         file: null,
@@ -54,13 +60,13 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
             onClose,
             onOpen,
         }),
-        []
+        [],
     );
 
     useEffect(() => {
         if (processedImage.file) {
             dispatch(
-                setProductUpdatedFields({ type: "product_image", value: true })
+                setProductUpdatedFields({ type: "product_image", value: true }),
             );
         }
     }, [processedImage.file]);
@@ -75,10 +81,28 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
             onOpenChange={onOpenChange}
             onClose={() => {
                 setProcessedImage({ url: "", file: null });
-                // dispatch(setCurrentSelectedCategory(null));
-                // dispatch(setCategorySections({ data: [], type: "REPLACE" }));
-                // dispatch(setUpdatedFields({ type: "all", value: false }));
-                // onClose();
+                dispatch(
+                    setProductState({
+                        product_id: "",
+                        product_name: "",
+                        product_image: "",
+                        product_category: "",
+                        product_featured: false,
+                        product_status: "Draft",
+                        product_price: 0,
+                        product_description: "",
+                    }),
+                );
+                dispatch(
+                    setProductPriceSectionAttribute({ type: "SET", data: [] }),
+                );
+                dispatch(
+                    setDefaultProductPrices({ type: "SET", data: [] }),
+                );
+                dispatch(
+                    setProductUpdatedFields({ type: "all", value: false }),
+                );
+                onClose();
             }}
             radius="sm"
             className="h-[530px]"
@@ -125,6 +149,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                 <div className="flex items-center gap-3">
                                     <ProductPrice />
                                     <ProductCheck />
+                                    <ProductStatusSelector />
                                 </div>
                             </div>
                             <Divider orientation="vertical" />

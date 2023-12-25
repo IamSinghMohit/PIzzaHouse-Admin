@@ -32,9 +32,8 @@ import UpdateCategoryButton from "../buttons/UpdateCategoryButton";
 import useDebounce from "@/hooks/useDebounce";
 
 function CategoryInput() {
-    const [value, setValue] = useState("");
-    const currentCategory = useAppSelector(
-        (state) => state.category.current_selected_category
+    const [value, setValue] = useState(
+        useAppSelector((state) => state.category.current_selected_category?.name) || ""
     );
     const dispatch = useAppDispatch();
     const debounce = useDebounce(value, 300);
@@ -51,7 +50,7 @@ function CategoryInput() {
             radius="sm"
             size="sm"
             className="w-[200px]"
-            value={value ? value : currentCategory?.name}
+            value={value}
             onChange={(e) => setValue(e.target.value)}
         />
     );
@@ -62,11 +61,11 @@ interface Props {
 }
 
 function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
-    const { isOpen, onOpen, onClose ,onOpenChange} = useDisclosure();
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
-        (state) => state.category.current_selected_category?.image
+        (state) => state.category.current_selected_category?.image,
     );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
@@ -80,7 +79,7 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
             onClose,
             onOpen,
         }),
-        []
+        [],
     );
 
     useEffect(() => {

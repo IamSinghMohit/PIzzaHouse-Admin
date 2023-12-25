@@ -1,7 +1,7 @@
 import { z, TypeOf } from "zod";
 import { ProductSchema } from "..";
 
-export const GetProductsSchema = z.array(ProductSchema)
+export const GetProductsSchema = z.array(ProductSchema);
 
 export const GetProductPriceSectionSchema = z.object({
     sections: z.array(
@@ -11,13 +11,19 @@ export const GetProductPriceSectionSchema = z.object({
             attributes: z.array(
                 z.object({
                     id: z.string(),
-                    attribute_title: z.string(),
+                    name: z.string(),
                     value: z.number(),
-                })
+                }),
             ),
-        })
+        }),
     ),
-    default_attributes: z.record(z.string()),
+    default_attributes: z.array(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            section: z.string(),
+        }),
+    ),
 });
 export type TGetProductsSchema = TypeOf<typeof GetProductsSchema>;
 export type TGetProductPriceSectionSchema = TypeOf<

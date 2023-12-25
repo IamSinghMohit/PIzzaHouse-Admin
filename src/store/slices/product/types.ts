@@ -3,7 +3,7 @@ import { TProductSchema } from "@/modules/products/schema";
 import { TGetProductPriceSectionSchema } from "@/modules/products/schema/Get";
 
 export type TSetProductPriceSectoinAttributeData = {
-    title: string;
+    name: string;
     value: string;
     error: boolean;
     section: string;
@@ -49,9 +49,24 @@ export type TSetProductPriceSectoinAttribute =
           data: Record<string, TSetProductPriceSectoinAttributeData>;
       }
     | {
-          type: "SET_FETCHED";
+          type: "SET_WITH_VALUE";
           data: TGetProductPriceSectionSchema["sections"];
       };
+
+export type TSetProductDefaultPrices =
+    | {
+          type: "UPDATE";
+          data: {
+              section: string;
+              name: string;
+              id: string;
+          };
+      }
+    | {
+          type: "SET";
+          data: TGetProductPriceSectionSchema['default_attributes']
+      };
+
 export type TProductUtilityStates = {
     featured_status: boolean;
 };
@@ -67,5 +82,5 @@ export type TProductSliceInitialStateType = {
     >;
     updated_fields: Omit<TProductUpdatedFields, "product_id">;
     fetching_states: TFetchingStates;
-    current_category_id: string;
+    current_selections: TCurrentSelections;
 };

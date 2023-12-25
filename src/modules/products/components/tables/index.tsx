@@ -7,9 +7,8 @@ import { useCallback, useRef } from "react";
 import { TModalRef } from "@/types/Modal";
 import { shallowEqual } from "react-redux";
 
-interface Props {}
 
-function ProductTable({}: Props) {
+function ProductTable() {
     const ProductMoalRef = useRef<TModalRef>(null);
     const DeleteModalRef = useRef<TModalRef>(null);
     const {
@@ -18,8 +17,9 @@ function ProductTable({}: Props) {
         product_name,
         product_status,
         range,
-    } = useAppSelector((state) => state.product.fetching_states);
-    const { data, isError, isLoading } = useProducts({
+    } = useAppSelector((state) => state.product.fetching_states,shallowEqual);
+
+    const { data = [], isError, isLoading } = useProducts({
         max: range[1],
         min: range[0],
         name: product_name,
@@ -35,10 +35,11 @@ function ProductTable({}: Props) {
     const handleViewClick = useCallback(() => {
         ProductMoalRef.current?.onOpen();
     }, []);
+
     return (
         <>
             <ProductTableRender
-                data={data || []}
+                data={data}
                 isError={isError}
                 isLoading={isLoading}
                 onDeleteClick={handleDeleteClick}

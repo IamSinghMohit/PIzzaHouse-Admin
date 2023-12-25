@@ -18,7 +18,7 @@ import { TbCrownOff } from "react-icons/tb";
 import IconWrapper from "@/components/IconWrapper";
 import { useAppDispatch } from "@/hooks/state";
 import { TProductSchema } from "../../schema";
-import { setDefaultProductPrices, setProductState } from "@/store/slices/product";
+import {  setProductState } from "@/store/slices/product";
 
 interface Props {
     data: TProductSchema[];

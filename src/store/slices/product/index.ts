@@ -5,9 +5,9 @@ import {
     TProductUpdatedFields,
     TSetProductPriceSectoinAttribute,
     TSetProductPriceSectoinAttributeData,
+    TSetProductDefaultPrices,
 } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { calculateProductPrice } from "./helper";
 
 const initialState: TProductSliceInitialStateType = {
     product_management: {
@@ -38,7 +38,10 @@ const initialState: TProductSliceInitialStateType = {
         product_status: "All",
         range: [0, 15000],
     },
-    current_category_id: "",
+    current_selections: {
+        current_category_id: "",
+        current_selected_product: null,
+    },
 };
 
 export const ProductSlice = createSlice({
@@ -47,19 +50,28 @@ export const ProductSlice = createSlice({
     reducers: {
         setProductState(
             state,
-            action: PayloadAction<Partial<TProductManagement>>
+            action: PayloadAction<Partial<TProductManagement>>,
         ) {
             state.product_management = {
                 ...state.product_management,
                 ...action.payload,
             };
+            const keys = Object.keys(action.payload) as Array<
+                keyof TProductManagement
+            >;
+            keys.forEach((key) => {
+                if (key != "product_id") {
+                    state.updated_fields[key] = true;
+                }
+            });
         },
+
         setProductUpdatedFields(
             state,
             action: PayloadAction<{
                 type: keyof TProductUpdatedFields | "all";
                 value: boolean;
-            }>
+            }>,
         ) {
             switch (action.payload.type) {
                 case "all":
@@ -76,9 +88,10 @@ export const ProductSlice = createSlice({
                     };
             }
         },
+
         setProductFetchingStates(
             state,
-            action: PayloadAction<Partial<TFetchingStates>>
+            action: PayloadAction<Partial<TFetchingStates>>,
         ) {
             state.fetching_states = {
                 ...state.fetching_states,
@@ -86,13 +99,13 @@ export const ProductSlice = createSlice({
             };
         },
 
-        setCurrentCategoryId(state, action: PayloadAction<string>) {
-            state.current_category_id = action.payload;
+        setCurrentSelections(state, action: PayloadAction<string>) {
+            state.current_selections.current_category_id = action.payload;
         },
 
         setProductPriceSectionAttribute(
             state,
-            action: PayloadAction<TSetProductPriceSectoinAttribute>
+            action: PayloadAction<TSetProductPriceSectoinAttribute>,
         ) {
             switch (action.payload.type) {
                 case "SET": {
@@ -103,10 +116,10 @@ export const ProductSlice = createSlice({
                     action.payload.data.forEach((sec) => {
                         sec.attributes.forEach((att) => {
                             obj[att.id] = {
-                                title: att.title,
-                                value: undefined as unknown as any,
+                                name: att.name,
+                                value: "",
                                 error: false,
-                                section: sec.title,
+                                section: sec.name,
                             };
                         });
                     });
@@ -118,11 +131,20 @@ export const ProductSlice = createSlice({
                         ...state.product_price_section_attribute,
                         ...action.payload.data,
                     };
-                    const price = calculateProductPrice(state)
+                    const keys = Object.keys(state.default_prices);
+                    let price = 0;
+                    keys.forEach((key) => {
+                        const attkey = state.default_prices[key].id;
+                        price +=
+                            parseInt(
+                                state.product_price_section_attribute[attkey]
+                                    .value,
+                            ) || 0;
+                    });
                     state.product_management.product_price = price;
                     break;
                 }
-                case "SET_FETCHED": {
+                case "SET_WITH_VALUE": {
                     const obj: Record<
                         string,
                         TSetProductPriceSectoinAttributeData
@@ -132,7 +154,7 @@ export const ProductSlice = createSlice({
                             obj[att.id] = {
                                 error: false,
                                 section: sec.name,
-                                title: att.attribute_title,
+                                name: att.name,
                                 value: `${att.value}`,
                             };
                         });
@@ -144,45 +166,63 @@ export const ProductSlice = createSlice({
 
         setDefaultProductPrices(
             state,
-            action: PayloadAction<{
-                type: "SET" | "UPDATE";
-                data: {
-                    section: string;
-                    attribute_name: string;
-                    id: string;
-                    value: string;
-                };
-            }>
+            action: PayloadAction<TSetProductDefaultPrices>,
         ) {
             switch (action.payload.type) {
                 case "UPDATE": {
                     if (
-                        state.default_prices[action.payload.data.section].id ===
-                        action.payload.data.id
+                        state.default_prices[action.payload.data.section]
+                            ?.id === action.payload.data.id
                     ) {
                         const obj = { ...state.default_prices };
                         delete obj[action.payload.data.section];
                         state.default_prices = obj;
-                        const price = calculateProductPrice(state)
-                        state.product_management.product_price = price;
+                        const att =
+                            state.product_price_section_attribute[
+                                action.payload.data.id
+                            ];
+                        state.product_management.product_price =
+                            state.product_management.product_price -
+                            parseInt(att.value);
                         return;
                     }
-
                     state.default_prices = {
                         ...state.default_prices,
                         ...{
-                            [action.payload.data.section]:{
-                               id:action.payload.data.id,
-                               section:action.payload.data.section,
-                               name:action.payload.data.attribute_name
-                            }
+                            [action.payload.data.section]: {
+                                id: action.payload.data.id,
+                                section: action.payload.data.section,
+                                name: action.payload.data.name,
+                            },
                         },
                     };
-                    const price = calculateProductPrice(state)
+                    const keys = Object.keys(state.default_prices);
+                    let price = 0;
+                    keys.forEach((key) => {
+                        const attkey = state.default_prices[key].id;
+                        price +=
+                            parseInt(
+                                state.product_price_section_attribute[attkey]
+                                    .value,
+                            ) || 0;
+                    });
                     state.product_management.product_price = price;
                     break;
                 }
                 case "SET": {
+                    const obj:any = {};
+                    action.payload.data.forEach((item) => {
+                        obj[item.section] = {
+                            id: item.id,
+                            section: item.section,
+                            name: item.name,
+                        };
+                    });
+                    state.default_prices = obj;
+                    break;
+                }
+                default: {
+                    state.default_prices = {};
                 }
             }
         },
@@ -194,6 +234,6 @@ export const {
     setProductUpdatedFields,
     setProductFetchingStates,
     setProductPriceSectionAttribute,
-    setCurrentCategoryId,
+    setCurrentSelections,
     setDefaultProductPrices,
 } = ProductSlice.actions;

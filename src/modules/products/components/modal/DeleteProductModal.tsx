@@ -3,31 +3,27 @@ import { useAppSelector } from "@/hooks/state";
 import AlertModelContent from "@/modules/shared/AlertModelContent";
 import { useDeleteProduct } from "../../hooks/useDeleteProduct";
 import { TModalRef } from "@/types/Modal";
-import {forwardRef,Ref} from "react"
+import { forwardRef, Ref } from "react";
 
 interface Props {}
 
-function DeleteProductModal({}: Props,ref:Ref<TModalRef>) {
-    const product = useAppSelector(
-        (state) => state.product.product_management
+function DeleteProductModal({}: Props, ref: Ref<TModalRef>) {
+    const id = useAppSelector((state) => state.product.product_management.product_id);
+    const name = useAppSelector(
+        (state) => state.product.product_management.product_name,
     );
     const { mutate } = useDeleteProduct();
-    console.log(product.product_id)
+    console.log(id);
     const handleDeleteProduct = () => {
-        mutate(product.product_id || "");
+        mutate(id || "");
     };
     return (
         <DeleteAlert
-            content={
-                <AlertModelContent
-                    main={product.product_name || "!"}
-                    suffix="product"
-                />
-            }
+            content={<AlertModelContent main={name || "!"} suffix="product" />}
             onYesPress={handleDeleteProduct}
             ref={ref}
         />
     );
 }
 
-export default forwardRef(DeleteProductModal)
+export default forwardRef(DeleteProductModal);

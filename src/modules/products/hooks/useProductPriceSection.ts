@@ -19,7 +19,7 @@ async function getProductPriceSections(
         return GetProductPriceSectionSchema.parse(result.data);
     } catch (error) {
         console.log(error)
-        errorToast("recieved bad data");
+        errorToast("recieved bad data from server");
         return undefined
     }
 }

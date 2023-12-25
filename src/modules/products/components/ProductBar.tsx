@@ -4,11 +4,10 @@ import { useRef } from "react";
 import { TModalRef } from "@/types/Modal";
 import ProductModal from "./modal/ProductModal";
 import {
+    FetchingProductStatusSelector,
     ProductCategorySelector,
-    ProductCheck,
     ProductPriceRange,
     ProductSearchInput,
-    ProductStatusSelector,
 } from "./ProductForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setProductFetchingStates } from "@/store/slices/product";
@@ -22,7 +21,7 @@ function ProductSearchCheck() {
     return (
         <AppCheck
             text="Featured"
-            checked={featured}
+            isSelected={featured}
             onValueChange={(e) =>
                 dispatch(setProductFetchingStates({ product_featured: e }))
             }
@@ -42,7 +41,7 @@ function ProductBar() {
                     </div>
                     <div className="flex gap-2 flex-col">
                         <div className="flex gap-2 items-start">
-                            <ProductStatusSelector />
+                            <FetchingProductStatusSelector/>
                             <ProductSearchCheck />
                         </div>
                         <ProductPriceRange />

@@ -6,9 +6,10 @@ import { Key, useState } from "react";
 interface Props {
     setSelectedCategory: (e: Key) => void;
     className?: string;
+    selectedKey?:string;
 }
 
-function CategorySelector({ setSelectedCategory, className }: Props) {
+function CategorySelector({ setSelectedCategory, className ,selectedKey}: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
 
@@ -24,11 +25,13 @@ function CategorySelector({ setSelectedCategory, className }: Props) {
             className={`max-w-[252px] ${className}`}
             variant="bordered"
             isLoading={isLoading}
+            placeholder="Category"
             aria-label="cateogry selector input"
             defaultItems={items}
             size="sm"
             color="primary"
             radius="sm"
+            selectedKey={selectedKey}
             onSelectionChange={setSelectedCategory}
             scrollRef={scrollerRef}
             onOpenChange={setIsOpen}

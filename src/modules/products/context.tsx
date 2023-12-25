@@ -1,4 +1,4 @@
-import { RefObject, createContext, useContext, useRef } from "react";
+import { createContext, useContext, useRef } from "react";
 
 type ProductContextValue = {
     InputRef: React.MutableRefObject<{

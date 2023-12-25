@@ -14,17 +14,18 @@ interface Props {
 
 function CreateProductButton({ setIsLoading, processedImage }: Props) {
     const { mutate, isPending } = useCreateProduct();
-    const {
-        product_price_section_attribute,
-        product_management,
-        default_prices,
-    } = useAppSelector((state) => state.product);
+    const { product_management, default_prices } = useAppSelector(
+        (state) => state.product,
+    );
+    const product_price_section_attribute = useAppSelector(
+        (state) => state.product.product_price_section_attribute,
+    );
     const product_featured = useAppSelector(
-        (state) => state.product.product_management.product_featured
+        (state) => state.product.product_management.product_featured,
     );
     const dispatch = useAppDispatch();
     const category = useAppSelector(
-        (state) => state.product.current_category_id
+        (state) => state.product.current_selections.current_category_id,
     );
 
     function handleCreate() {
@@ -38,12 +39,10 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
 
         let error = false;
         //       validation kicks in
-        const DefaultPriceObject: any = {};
+        const DefaultPriceAttributesArray: any =[];
         const sections: any = [];
-
         for (let key in product_price_section_attribute) {
             const attribute = product_price_section_attribute[key];
-
             if (!attribute.value) {
                 if (!error) {
                     errorToast("Fill in all the fields");
@@ -58,34 +57,37 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
                                 error: true,
                             },
                         },
-                    })
+                    }),
                 );
             }
-
-            if (default_prices[attribute.section] === key && !error) {
-                DefaultPriceObject[attribute.section] = attribute.title;
+            if (default_prices[attribute.section].id === key && !error) {
+                DefaultPriceAttributesArray.push({
+                    name: attribute.name,
+                    id: key,
+                    section: attribute.section,
+                });
             }
 
             if (!error) {
                 // Check if a section with the given title already exists in sections
                 const existingSection = sections.find(
-                    (s: any) => s.title === attribute.section
+                    (s: any) => s.name === attribute.section,
                 );
 
                 if (existingSection) {
                     existingSection.attributes.push({
                         value: parseInt(attribute.value),
-                        attribute_title: attribute.title,
+                        name: attribute.name,
                         id: key,
                     });
                 } else {
                     // If the section doesn't exist, create a new section
                     sections.push({
-                        title: attribute.section,
+                        name: attribute.section,
                         attributes: [
                             {
                                 value: parseInt(attribute.value),
-                                attribute_title: attribute.title,
+                                name: attribute.name,
                                 id: key,
                             },
                         ],
@@ -97,7 +99,6 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
         if (error) {
             return;
         }
-
         FormDataSend(
             {
                 name: product_management.product_name,
@@ -108,13 +109,17 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
                 image: processedImage.file,
                 price: product_management.product_price,
                 featured: product_featured,
-                default_attributes_json: JSON.stringify(DefaultPriceObject),
+                default_attributes_json: JSON.stringify(DefaultPriceAttributesArray),
             },
-            mutate
+            mutate,
         );
     }
     useEffect(() => {
-        setIsLoading(isPending);
+        if (isPending) {
+            setIsLoading(true);
+        } else if (!isPending) {
+            setIsLoading(false);
+        }
     }, [isPending]);
 
     return (

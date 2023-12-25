@@ -20,11 +20,11 @@ export const GetCategorySectionsSchema = z
         data: z.array(
             z.object({
                 id: z.string(),
-                title: z.string(),
+                name: z.string(),
                 attributes: z.array(
                     z.object({
                         id: z.string(),
-                        title: z.string(),
+                        name: z.string(),
                     })
                 ),
             })

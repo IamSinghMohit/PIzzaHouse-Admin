@@ -3,27 +3,20 @@ import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import useDebounce from "@/hooks/useDebounce";
 import AppCheck from "@/modules/shared/AppCheck";
 import CategorySelector from "@/modules/shared/CategorySelector";
+import StatusSelector from "@/modules/shared/StatusSelector";
 import {
-    setCurrentCategoryId,
+    setCurrentSelections,
     setProductFetchingStates,
     setProductState,
 } from "@/store/slices/product";
-import {
-    Button,
-    Input,
-    Select,
-    SelectItem,
-    Slider,
-    Textarea,
-} from "@nextui-org/react";
+import { Button, Input, Slider, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export function ProductNameInput() {
     const [value, setValue] = useState(
         useAppSelector(
-            (state) =>
-                state.product.product_management.product_name
-        ) || ""
+            (state) => state.product.product_management.product_name,
+        ) || "",
     );
     const dispatch = useAppDispatch();
     const debounce = useDebounce(value, 300);
@@ -50,9 +43,8 @@ export function ProductDescriptionInput() {
     const dispatch = useAppDispatch();
     const [value, setValue] = useState(
         useAppSelector(
-            (state) =>
-                state.product.product_management.product_description
-        ) || ""
+            (state) => state.product.product_management.product_description,
+        ) || "",
     );
     const [error, setError] = useState("");
     const debounce = useDebounce(value, 300);
@@ -91,7 +83,9 @@ export function ProductDescriptionInput() {
 }
 
 export function ProductPrice() {
-    const {product_price:price} = useAppSelector((state) => state.product.product_management);
+    const { product_price: price } = useAppSelector(
+        (state) => state.product.product_management,
+    );
     return (
         <div className={`flex`}>
             <Button
@@ -116,13 +110,14 @@ export function ProductPrice() {
 
 export function ProductCheck() {
     const featured = useAppSelector(
-        (state) => state.product.product_management.product_featured
+        (state) => state.product.product_management.product_featured,
     );
+    console.log(featured, "inside check");
     const dispatch = useAppDispatch();
     return (
         <AppCheck
             text="Featured"
-            checked={featured}
+            isSelected={featured}
             onValueChange={(e) =>
                 dispatch(setProductState({ product_featured: e }))
             }
@@ -139,7 +134,7 @@ export function ProductSearchInput() {
             dispatch(
                 setProductFetchingStates({
                     product_name: value,
-                })
+                }),
             );
         }
     };
@@ -158,58 +153,85 @@ export function ProductSearchInput() {
     );
 }
 
-export function ProductStatusSelector() {
+const statuses = [
+    {
+        key: "All",
+        value: "All",
+    },
+    {
+        key: "Draft",
+        value: "Draft",
+    },
+    {
+        key: "Published",
+        value: "Published",
+    },
+];
+export function FetchingProductStatusSelector() {
     const status = useAppSelector(
-        (state) => state.product.fetching_states.product_status
+        (state) => state.product.fetching_states.product_status,
     );
     const dispatch = useAppDispatch();
     return (
-        <Select
-            className="w-[160px] items-center ml-1"
-            color="primary"
-            label="Show"
-            labelPlacement="outside-left"
-            radius="sm"
-            variant="faded"
-            selectedKeys={[status]}
+        <StatusSelector
             onChange={(e) => {
                 if (!e.target.value) return;
                 dispatch(
                     setProductFetchingStates({
                         product_status: e.target.value as any,
-                    })
+                    }),
                 );
             }}
-            classNames={{
-                selectorIcon: "text-primaryOrange",
-                base: "p-0 h-[40px]",
-                innerWrapper: "p-0 ",
-                mainWrapper: "p-0 h-[40px]",
-                label: "font-bold",
+            label="Show"
+            selectedKeys={[status]}
+            items={statuses}
+        />
+    );
+}
+
+const productStatuses = [
+    {
+        key: "Draft",
+        value: "Draft",
+    },
+    {
+        key: "Published",
+        value: "Published",
+    },
+];
+export function ProductStatusSelector() {
+    const status = useAppSelector(
+        (state) => state.product.product_management.product_status,
+    );
+    const dispatch = useAppDispatch();
+    return (
+        <StatusSelector
+            items={productStatuses}
+            label="status"
+            selectedKeys={[status]}
+            onChange={(e) => {
+                if (!e.target.value) return;
+                dispatch(
+                    setProductState({
+                        product_status: e.target.value as any,
+                    }),
+                );
             }}
-        >
-            <SelectItem key={"All"} value={"All"}>
-                All
-            </SelectItem>
-            <SelectItem key={"Published"} value={"Published"}>
-                Published
-            </SelectItem>
-            <SelectItem key={"Draft"} value={"Draft"}>
-                Draft
-            </SelectItem>
-        </Select>
+        />
     );
 }
 
 export function ProductCategorySelector() {
     const dispatch = useAppDispatch();
+    const category = useAppSelector(
+        (state) => state.product.product_management.product_category,
+    );
     return (
         <CategorySelector
+            selectedKey={category ? category : undefined}
             setSelectedCategory={(e) => {
                 console.log(e);
-                dispatch(
-                    setCurrentCategoryId(e as string)
-                );
+                dispatch(setCurrentSelections(e as string));
             }}
         />
     );
@@ -217,7 +239,7 @@ export function ProductCategorySelector() {
 
 export function ProductPriceRange() {
     const range = useAppSelector(
-        (state) => state.product.fetching_states.range
+        (state) => state.product.fetching_states.range,
     );
     const dispatch = useAppDispatch();
     return (
@@ -226,7 +248,7 @@ export function ProductPriceRange() {
             className="mb-2"
             onChangeEnd={(e) =>
                 dispatch(
-                    setProductFetchingStates({ range: e as [number, number] })
+                    setProductFetchingStates({ range: e as [number, number] }),
                 )
             }
             size="sm"

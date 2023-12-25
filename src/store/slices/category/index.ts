@@ -129,7 +129,7 @@ export const CategorySlice = createSlice({
             state.category_price_sec = action.payload.map((cat) => {
                 return {
                     id: cat.id,
-                    name: cat.title,
+                    name: cat.name,
                     attributes: cat.attributes,
                 };
             });
