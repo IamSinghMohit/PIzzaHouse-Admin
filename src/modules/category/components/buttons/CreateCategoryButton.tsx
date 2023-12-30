@@ -4,7 +4,7 @@ import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { FormDataSend } from "@/utils";
 import { errorToast } from "@/lib/toast";
-import ModalButton from "@/modules/shared/ModalButton";
+import ModalButton from "@/modules/commponents/ModalButton";
 
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;

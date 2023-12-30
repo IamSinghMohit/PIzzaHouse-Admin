@@ -30,6 +30,7 @@ function AppPagination({
             <Select
                 className="w-[140px] items-center ml-1"
                 label="Limit"
+                color="primary"
                 labelPlacement="outside-left"
                 defaultSelectedKeys={["10"]}
                 radius="sm"

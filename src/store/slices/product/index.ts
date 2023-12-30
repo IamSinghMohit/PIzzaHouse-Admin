@@ -29,19 +29,17 @@ const initialState: TProductSliceInitialStateType = {
         product_name: false,
         product_price: false,
         product_status: false,
+        product_default_attributes: false,
         product_image: false,
     },
     fetching_states: {
-        current_selected_category: "",
+        product_category: "",
         product_featured: false,
         product_name: "",
         product_status: "All",
-        range: [0, 15000],
+        range: [0, 10],
     },
-    current_selections: {
-        current_category_id: "",
-        current_selected_product: null,
-    },
+    current_category: "",
 };
 
 export const ProductSlice = createSlice({
@@ -50,31 +48,61 @@ export const ProductSlice = createSlice({
     reducers: {
         setProductState(
             state,
-            action: PayloadAction<Partial<TProductManagement>>,
+            action: PayloadAction<{
+                type: "UPDATE" | "SET";
+                data: Partial<TProductManagement>;
+            }>,
         ) {
-            state.product_management = {
-                ...state.product_management,
-                ...action.payload,
-            };
-            const keys = Object.keys(action.payload) as Array<
-                keyof TProductManagement
-            >;
-            keys.forEach((key) => {
-                if (key != "product_id") {
-                    state.updated_fields[key] = true;
+            switch (action.payload.type) {
+                case "UPDATE":
+                    const keys = Object.keys(action.payload.data) as Array<
+                        keyof TProductManagement
+                    >;
+                    const obj: Record<string, boolean> = {};
+                    keys.forEach((key) => {
+                        if (key != "product_id") {
+                            obj[key] = true;
+                        }
+                    });
+                    state.updated_fields = {
+                        ...state.updated_fields,
+                        ...obj,
+                    };
+                    state.product_management = {
+                        ...state.product_management,
+                        ...action.payload.data,
+                    };
+                    break;
+                case "SET":
+                    state.product_management = {
+                        ...state.product_management,
+                        ...action.payload.data,
+                    };
+                    break;
+                default: {
+                    state.product_management = {
+                        product_image: "",
+                        product_id: "",
+                        product_name: "",
+                        product_category: "",
+                        product_status: "Draft",
+                        product_description: "",
+                        product_price: 0,
+                        product_featured: false,
+                    };
                 }
-            });
+            }
         },
 
         setProductUpdatedFields(
             state,
             action: PayloadAction<{
-                type: keyof TProductUpdatedFields | "all";
+                type: keyof TProductUpdatedFields | "ALL";
                 value: boolean;
             }>,
         ) {
             switch (action.payload.type) {
-                case "all":
+                case "ALL":
                     const obj: any = {};
                     for (let key in state.updated_fields) {
                         obj[key] = action.payload.value;
@@ -84,7 +112,7 @@ export const ProductSlice = createSlice({
                 default:
                     state.updated_fields = {
                         ...state.updated_fields,
-                        ...action.payload,
+                        [action.payload.type]: action.payload.value,
                     };
             }
         },
@@ -99,8 +127,11 @@ export const ProductSlice = createSlice({
             };
         },
 
-        setCurrentSelections(state, action: PayloadAction<string>) {
-            state.current_selections.current_category_id = action.payload;
+        setCurrentProductCategory(state, action: PayloadAction<string>) {
+            state.current_category = action.payload;
+            state.product_management.product_category =
+                action.payload.split(":")[1];
+            state.updated_fields.product_category = true;
         },
 
         setProductPriceSectionAttribute(
@@ -170,6 +201,11 @@ export const ProductSlice = createSlice({
         ) {
             switch (action.payload.type) {
                 case "UPDATE": {
+                    state.updated_fields = {
+                        ...state.updated_fields,
+                        product_price: true,
+                        product_default_attributes: true,
+                    };
                     if (
                         state.default_prices[action.payload.data.section]
                             ?.id === action.payload.data.id
@@ -210,7 +246,7 @@ export const ProductSlice = createSlice({
                     break;
                 }
                 case "SET": {
-                    const obj:any = {};
+                    const obj: any = {};
                     action.payload.data.forEach((item) => {
                         obj[item.section] = {
                             id: item.id,
@@ -234,6 +270,6 @@ export const {
     setProductUpdatedFields,
     setProductFetchingStates,
     setProductPriceSectionAttribute,
-    setCurrentSelections,
+    setCurrentProductCategory,
     setDefaultProductPrices,
 } = ProductSlice.actions;

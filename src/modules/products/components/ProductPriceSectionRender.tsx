@@ -3,6 +3,7 @@ import { useCategoryPriceSections } from "@/modules/category/hooks";
 import {
     setDefaultProductPrices,
     setProductPriceSectionAttribute,
+    setProductState,
 } from "@/store/slices/product";
 import { useEffect } from "react";
 import { ProductContextProvider } from "../context";
@@ -45,10 +46,8 @@ function DummyPriceSectionRenderer({
 
 function ProductPriceSectionCreate() {
     const dispatch = useAppDispatch();
-    const id = useAppSelector(
-        (state) => state.product.current_selections.current_category_id,
-    );
-    const { data } = useCategoryPriceSections(id.split(":")[0]);
+    const category = useAppSelector((state) => state.product.current_category);
+    const { data } = useCategoryPriceSections(category.split(":")[0]);
 
     useEffect(() => {
         if (data) {
@@ -65,10 +64,14 @@ function ProductPriceSectionCreate() {
 }
 
 function ProductPriceSectionUpdate() {
-    const id = useAppSelector(
+    const category = useAppSelector((state) => state.product.current_category);
+    const productId = useAppSelector(
         (state) => state.product.product_management.product_id,
     );
-    const { data } = useProductPriceSection(id || "");
+    const { data } = useProductPriceSection(productId || "");
+    const { data: categorySection } = useCategoryPriceSections(
+        category.split(":")[0],
+    );
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -88,7 +91,22 @@ function ProductPriceSectionUpdate() {
         }
     }, [data]);
 
-    return <DummyPriceSectionRenderer data={data?.sections || []} />;
+    useEffect(() => {
+        if (categorySection) {
+            dispatch(
+                setProductPriceSectionAttribute({
+                    type: "SET",
+                    data: categorySection.data,
+                }),
+            );
+            dispatch(setDefaultProductPrices({ type: "SET", data: [] }));
+            dispatch(
+                setProductState({ type: "UPDATE", data: { product_price: 0 } }),
+            );
+        }
+    }, [categorySection]);
+    const propData = categorySection ? categorySection.data : data?.sections;
+    return <DummyPriceSectionRenderer data={propData || []} />;
 }
 
 function ProductPriceSectionRender({ type }: { type: "Update" | "Create" }) {

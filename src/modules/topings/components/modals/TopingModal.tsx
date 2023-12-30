@@ -7,7 +7,6 @@ import {
     ModalContent,
     useDisclosure,
     ModalFooter,
-    Divider,
 } from "@nextui-org/react";
 import {
     forwardRef,
@@ -20,29 +19,21 @@ import { TProcessedImage } from "@/types/ImageUploader";
 import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import {
-    ProductCategorySelector,
-    ProductCheck,
-    ProductDescriptionInput,
-    ProductNameInput,
-    ProductPrice,
-    ProductStatusSelector,
-} from "../ProductForm";
-import {
-    setCurrentProductCategory,
-    setDefaultProductPrices,
-    setProductPriceSectionAttribute,
-    setProductState,
-    setProductUpdatedFields,
-} from "@/store/slices/product";
-import CreateProductButton from "../button/CreateProductButton";
-import UpdateProductButton from "../button/UpdateProductButton";
-import ProductPriceSectionRender from "../ProductPriceSectionRender";
+    TopingCategorySelector,
+    TopingNameInput,
+    TopingPrice,
+    TopingStatusSelector,
+} from "../TopingForm";
+import { GiCrossFlare } from "react-icons/gi";
+import { setTopingState, setTopingUpdatedFields } from "@/store/slices/topings";
+import CreateTopingButton from "../button/CreateTopingButton";
+import UpdateTopingButton from "../button/UpdateTopingButton";
 
 interface Props {
     type: "Create" | "Update";
 }
 
-function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
+function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
@@ -66,15 +57,13 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
 
     useEffect(() => {
         if (processedImage.file) {
-            dispatch(
-                setProductUpdatedFields({ type: "product_image", value: true }),
-            );
+            dispatch(setTopingUpdatedFields({ type: "image", value: true }));
         }
     }, [processedImage.file]);
 
     return (
         <Modal
-            size="5xl"
+            size="xl"
             isOpen={isOpen}
             isDismissable={!isLoading}
             isKeyboardDismissDisabled={!isLoading}
@@ -83,32 +72,22 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
             onClose={() => {
                 setProcessedImage({ url: "", file: null });
                 dispatch(
-                    setProductState({
+                    setTopingState({
                         type: "SET",
                         data: {
-                            product_id: "",
-                            product_name: "",
-                            product_image: "",
-                            product_category: "",
-                            product_featured: false,
-                            product_status: "Draft",
-                            product_price: 0,
-                            product_description: "",
+                            id: "",
+                            image: "",
+                            name: "",
+                            category: "",
+                            status: "Draft",
+                            price: 0,
                         },
                     }),
                 );
-                dispatch(
-                    setProductPriceSectionAttribute({ type: "SET", data: [] }),
-                );
-                dispatch(setCurrentProductCategory(''))
-                dispatch(setDefaultProductPrices({ type: "SET", data: [] }));
-                dispatch(
-                    setProductUpdatedFields({ type: "ALL", value: false }),
-                );
+                dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
                 onClose();
             }}
             radius="sm"
-            className="h-[530px]"
         >
             <ModalContent className="relative">
                 {(onClose) => (
@@ -117,12 +96,12 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                             <div className="modal-overlay w-full h-[530px] absolute"></div>
                         )}
                         <ModalHeader className="flex flex-col gap-1">
-                            {type} Product
+                            {type} Toping
                         </ModalHeader>
-                        <ModalBody className="flex-row gap-8">
-                            <div className="flex flex-col gap-3 min-w-[450px]">
+                        <ModalBody className="flex-row gap-8 justify-between">
+                            <div className="flex flex-col gap-3 items-center">
                                 <ImageUploader
-                                    aspectRatio={{ x: 4, y: 3 }}
+                                    aspectRatio={{ x: 2, y: 2 }}
                                     processedImage={processedImage}
                                     setProcessedImage={setProcessedImage}
                                     defaultImage={
@@ -132,31 +111,23 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                     }
                                 >
                                     <ImageUploader.PlaceholderContainer
-                                        baseClassName="w-[250px] h-[188px] mx-auto"
+                                        baseClassName="w-[100px] h-[100px]"
                                         placeholderImage={
-                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[100px] h-[100px]" />
+                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
                                         }
                                         placeholderImageText={
-                                            <ImageUploader.PlaceholderImageText baseClassName="text-[16px] flex gap-1" />
+                                            <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1" />
                                         }
                                     />
                                 </ImageUploader>
 
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex gap-2">
-                                        <ProductNameInput />
-                                        <ProductCategorySelector />
-                                    </div>
-                                    <ProductDescriptionInput />
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <ProductPrice />
-                                    <ProductCheck />
-                                    <ProductStatusSelector />
-                                </div>
+                                <TopingNameInput />
+                                <TopingCategorySelector />
                             </div>
-                            <Divider orientation="vertical" />
-                            <ProductPriceSectionRender type={type} />
+                            <div className="flex items-center gap-3 flex-col">
+                                <TopingPrice />
+                                <TopingStatusSelector />
+                            </div>
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
                             <Button
@@ -168,12 +139,12 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                 Close
                             </Button>
                             {type == "Create" ? (
-                                <CreateProductButton
+                                <CreateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
                                 />
                             ) : (
-                                <UpdateProductButton
+                                <UpdateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
                                 />
@@ -186,4 +157,4 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
     );
 }
 
-export default forwardRef(ProductModal);
+export default forwardRef(TopingModal);

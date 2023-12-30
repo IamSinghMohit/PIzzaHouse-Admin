@@ -1,18 +1,19 @@
 import DeleteAlert from "@/components/DeleteAlert";
 import { useAppSelector } from "@/hooks/state";
 import AlertModelContent from "@/modules/commponents/AlertModelContent";
-import { useDeleteProduct } from "../../hooks/useDeleteProduct";
 import { TModalRef } from "@/types/Modal";
 import { forwardRef, Ref } from "react";
+import { useDeleteToping } from "../../hooks/useDeleteTopoing";
 
-function DeleteProductModal({}, ref: Ref<TModalRef>) {
+function DeleteTopinModal({}, ref: Ref<TModalRef>) {
+    const {mutate} = useDeleteToping()
     const id = useAppSelector(
-        (state) => state.product.product_management.product_id,
+        (state) => state.toping.toping_management.id,
     );
     const name = useAppSelector(
-        (state) => state.product.product_management.product_name,
+        (state) => state.toping.toping_management.name,
     );
-    const { mutate } = useDeleteProduct();
+    // const { mutate } = useDeleteProduct();
     const handleDeleteProduct = () => {
         mutate(id || "");
     };
@@ -26,4 +27,4 @@ function DeleteProductModal({}, ref: Ref<TModalRef>) {
     );
 }
 
-export default forwardRef(DeleteProductModal);
+export default forwardRef( DeleteTopinModal);

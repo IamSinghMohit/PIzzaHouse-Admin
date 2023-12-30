@@ -6,10 +6,10 @@ import { Key, useState } from "react";
 interface Props {
     setSelectedCategory: (e: Key) => void;
     className?: string;
-    selectedKey?:string;
+    inputValue?:string;
 }
 
-function CategorySelector({ setSelectedCategory, className ,selectedKey}: Props) {
+function CategorySelector({ setSelectedCategory, className ,inputValue}: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
 
@@ -22,16 +22,16 @@ function CategorySelector({ setSelectedCategory, className ,selectedKey}: Props)
 
     return (
         <Autocomplete
-            className={`max-w-[252px] ${className}`}
+            className={`max-w-[252px] ${className} normal-case`}
             variant="bordered"
             isLoading={isLoading}
             placeholder="Category"
             aria-label="cateogry selector input"
             defaultItems={items}
+            defaultInputValue={inputValue}
             size="sm"
             color="primary"
             radius="sm"
-            selectedKey={selectedKey}
             onSelectionChange={setSelectedCategory}
             scrollRef={scrollerRef}
             onOpenChange={setIsOpen}

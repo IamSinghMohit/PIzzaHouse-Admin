@@ -5,11 +5,10 @@ import Dashboard from "./modules/home";
 import { RouterProvider } from "react-router-dom";
 import Category from "./modules/category";
 import Product from "./modules/products";
-import Topings from "./modules/topings";
 import Orders from "./modules/orders";
 import { Toaster } from "react-hot-toast";
 import { SocketContextProvider } from "./socketContext";
-import CreateToping from "./modules/topings/pages/CreateToping";
+import Topings from "./modules/topings";
 
 const App = () => {
     const router = createBrowserRouter([
@@ -33,14 +32,10 @@ const App = () => {
                     path: "products",
                     element: <Product />,
                 },
-                // {
-                //     path: "topings",
-                //     element: <Topings />,
-                // },
-                // {
-                //     path: "topings/create",
-                //     element: <CreateToping />,
-                // },
+                {
+                    path: "topings",
+                    element: <Topings />,
+                },
                 {
                     path: "orders",
                     element: <Orders />,

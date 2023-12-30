@@ -3,7 +3,7 @@ import { forwardRef, Ref } from "react";
 import { useDeleteCategory } from "../../hooks";
 import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import AlertModelContent from "@/modules/shared/AlertModelContent";
+import AlertModelContent from "@/modules/commponents/AlertModelContent";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
 
 interface Props {}

@@ -1,4 +1,4 @@
-import ModalButton from "@/modules/shared/ModalButton";
+import ModalButton from "@/modules/commponents/ModalButton";
 import { useCreateProduct } from "../../hooks/useCreateProduct";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { FormDataSend } from "@/utils";
@@ -20,13 +20,7 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
     const product_price_section_attribute = useAppSelector(
         (state) => state.product.product_price_section_attribute,
     );
-    const product_featured = useAppSelector(
-        (state) => state.product.product_management.product_featured,
-    );
     const dispatch = useAppDispatch();
-    const category = useAppSelector(
-        (state) => state.product.current_selections.current_category_id,
-    );
 
     function handleCreate() {
         if (!processedImage.file) {
@@ -102,13 +96,13 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
         FormDataSend(
             {
                 name: product_management.product_name,
-                category: category.split(":")[1],
+                category: product_management.product_category,
                 description: product_management.product_description,
                 status: product_management.product_status,
                 sections_json: JSON.stringify(sections),
                 image: processedImage.file,
                 price: product_management.product_price,
-                featured: product_featured,
+                featured: product_management.product_featured,
                 default_attributes_json: JSON.stringify(DefaultPriceAttributesArray),
             },
             mutate,

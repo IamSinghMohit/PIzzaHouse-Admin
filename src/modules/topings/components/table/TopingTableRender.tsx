@@ -12,16 +12,13 @@ import {
 import * as dayjs from "dayjs";
 import TableActions from "@/components/Table/TableAction";
 import { memo, useMemo } from "react";
-import { ProductColumns } from "@/data/product-table";
-import { FaCrown } from "react-icons/fa6";
-import { TbCrownOff } from "react-icons/tb";
-import IconWrapper from "@/components/IconWrapper";
 import { useAppDispatch } from "@/hooks/state";
-import { TProductSchema } from "../../schema";
-import { setProductState } from "@/store/slices/product";
+import { TTopingSchema } from "../../schema";
+import { TopingColumns } from "@/data/topings-table";
+import { setTopingState } from "@/store/slices/topings";
 
 interface Props {
-    data: TProductSchema[];
+    data: TTopingSchema[];
     onViewClick: () => void;
     onDeleteClick: () => void;
     isLoading: boolean;
@@ -35,35 +32,32 @@ function ProductTableRender({
     isLoading,
     isError,
 }: Props) {
-    console.log("table rendered");
-    const columns = useMemo(() => ProductColumns, []);
+    const columns = useMemo(() => TopingColumns, []);
     const dispatch = useAppDispatch();
 
-    function handleOnViewClick(item: TProductSchema) {
+    function handleOnViewClick(item: TTopingSchema) {
         dispatch(
-            setProductState({
+            setTopingState({
                 type: "SET",
                 data: {
-                    product_id: item.id,
-                    product_category: item.category,
-                    product_description: item.description,
-                    product_featured: item.featured,
-                    product_name: item.name,
-                    product_price: item.price,
-                    product_status: item.status,
-                    product_image: item.image,
+                    id: item.id,
+                    category: item.category,
+                    name: item.name,
+                    price: item.price,
+                    status: item.status,
+                    image: item.image,
                 },
             }),
         );
         onViewClick();
     }
-    function handleDeleteClick(item: TProductSchema) {
+    function handleDeleteClick(item: TTopingSchema) {
         dispatch(
-            setProductState({
+            setTopingState({
                 type: "SET",
                 data: {
-                    product_id: item.id,
-                    product_name: item.name,
+                    id: item.id,
+                    name: item.name,
                 },
             }),
         );
@@ -117,37 +111,6 @@ function ProductTableRender({
                             {dayjs(item.created_at).format("YYYY-MM-DD")}
                         </TableCell>
                         <TableCell>{item.price}</TableCell>
-                        <TableCell>
-                            {item.featured ? (
-                                <Chip
-                                    radius="sm"
-                                    color="primary"
-                                    variant="bordered"
-                                    startContent={
-                                        <IconWrapper
-                                            icon={<FaCrown />}
-                                            className="text-[18px]"
-                                        />
-                                    }
-                                >
-                                    Yes
-                                </Chip>
-                            ) : (
-                                <Chip
-                                    radius="sm"
-                                    color="secondary"
-                                    variant="bordered"
-                                    startContent={
-                                        <IconWrapper
-                                            icon={<TbCrownOff />}
-                                            className="text-[18px]"
-                                        />
-                                    }
-                                >
-                                    No
-                                </Chip>
-                            )}
-                        </TableCell>
                         <TableCell>
                             <TableActions
                                 deleteIconEvents={{

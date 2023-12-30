@@ -1,7 +1,7 @@
 import ImageUploader from "@/components/ImageUploader";
 import SelectCategory from "@/components/SelectCategory";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import PriceInput from "@/modules/shared/PriceInput";
+import PriceInput from "@/modules/commponents/PriceInput";
 import { setTopingName, setTopingPrice } from "@/store/features/topingSlice";
 import { ProcessedImageType } from "@/types/ImageUploader";
 import { FormDataSend } from "@/utils";

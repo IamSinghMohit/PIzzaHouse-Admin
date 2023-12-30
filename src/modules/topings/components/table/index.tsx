@@ -1,36 +1,34 @@
 import { useAppSelector } from "@/hooks/state";
-import { useProducts } from "../../hooks/useProducts";
-import ProductTableRender from "./ProductTableRender";
-import DeleteProductModal from "../modal/DeleteProductModal";
-import ProductModal from "../modal/ProductModal";
 import { useCallback, useRef, useState } from "react";
 import { TModalRef } from "@/types/Modal";
 import { shallowEqual } from "react-redux";
 import AppPagination from "@/components/AppPagination";
+import { useTopings } from "../../hooks/useTopings";
+import TopingTableRender from "./TopingTableRender";
+import TopingModal from "../modals/TopingModal";
+import DeleteTopingModal from "../modals/DeleteTopingModal";
 
-function ProductTable() {
+function TopingTable() {
     const ProductMoalRef = useRef<TModalRef>(null);
     const DeleteModalRef = useRef<TModalRef>(null);
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState('10');
+    const [limit, setLimit] = useState("10");
     const {
-        product_category,
-        product_featured,
-        product_name,
-        product_status,
+        name,
+        category:topingCategory,
+        status,
         range,
-    } = useAppSelector((state) => state.product.fetching_states, shallowEqual);
-    const category = product_category ? product_category.split(":")[1] : "";
+    } = useAppSelector((state) => state.toping.fetching_states, shallowEqual);
+    const category = topingCategory ? topingCategory.split(":")[1] : "";
 
-    const { data, isError, isLoading } = useProducts({
+    const { data, isError, isLoading } = useTopings({
         max: range[1],
         min: range[0],
-        name: product_name,
+        name: name,
         category: category,
-        featured: product_featured,
-        status: product_status,
-        limit:limit,
-        page:page
+        status: status,
+        limit: limit,
+        page: page,
     });
 
     const handleDeleteClick = useCallback(() => {
@@ -43,8 +41,8 @@ function ProductTable() {
 
     return (
         <>
-            <ProductTableRender
-                data={data?.products || []}
+            <TopingTableRender
+                data={data?.topings || []}
                 isError={isError}
                 isLoading={isLoading}
                 onDeleteClick={handleDeleteClick}
@@ -57,10 +55,10 @@ function ProductTable() {
                 selected={limit}
                 setSelected={setLimit}
             />
-            <ProductModal type="Update" ref={ProductMoalRef} />
-            <DeleteProductModal ref={DeleteModalRef} />
+            <TopingModal type="Update" ref={ProductMoalRef} />
+            <DeleteTopingModal ref={DeleteModalRef} />
         </>
     );
 }
 
-export default ProductTable;
+export default  TopingTable;

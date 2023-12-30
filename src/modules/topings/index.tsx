@@ -1,12 +1,13 @@
 import TopingBar from "./components/TopingBar";
+import TopingTable from "./components/table";
 
 interface Props {}
 
 function Topings({}: Props) {
     return (
         <>
-            <TopingBar/>
-            {/* <AppTable columns={TopingColumns} classsName="screen"/> */}
+            <TopingBar />
+            <TopingTable/>   
         </>
     );
 }

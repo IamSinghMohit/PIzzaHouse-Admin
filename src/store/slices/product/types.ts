@@ -1,6 +1,7 @@
 import { TGetCategorySections } from "@/modules/category/schema";
 import { TProductSchema } from "@/modules/products/schema";
 import { TGetProductPriceSectionSchema } from "@/modules/products/schema/Get";
+import { TitemStatus } from "@/modules/types/inex";
 
 export type TSetProductPriceSectoinAttributeData = {
     name: string;
@@ -15,12 +16,12 @@ export type ProductSubAttributesType = {
     error: boolean;
 };
 export type TProductUpdatedFields = Record<
-    keyof TProductManagement | "product_featured",
+    keyof TProductManagement | "product_featured" | "product_default_attributes" ,
     boolean
 >;
 export type TFetchingStates = {
-    current_selected_category: string;
-    product_status: "All" | "Draft" | "Published";
+    product_category: string;
+    product_status:TitemStatus; 
     product_featured: boolean;
     product_name: string;
     range: [number, number];
@@ -82,5 +83,5 @@ export type TProductSliceInitialStateType = {
     >;
     updated_fields: Omit<TProductUpdatedFields, "product_id">;
     fetching_states: TFetchingStates;
-    current_selections: TCurrentSelections;
+    current_category:string;
 };

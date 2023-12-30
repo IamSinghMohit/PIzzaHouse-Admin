@@ -1,11 +1,15 @@
 export const TopingColumns = [
     {
-        id:'655510bd1e2da48a28041597',
-        name:'TOPING NAME'
+        id:'658ec01391462083a9feb125',
+        name:'IMAGE'
     },
     {
-        id:'655510c61e2da48a28041598',
-        name:'PRICE'
+        id:'655510bd1e2da48a28041597',
+        name:'NAME'
+    },
+    {
+        id:'658fa7763f5e0cf9ee68c337"',
+        name:'CATEGORY'
     },
     {
         id:'655510cf1e2da48a28041599',
@@ -14,6 +18,10 @@ export const TopingColumns = [
     {
         id:'655510d71e2da48a2804159a',
         name:'CREATED AT'
+    },
+    {
+        id:'655510c61e2da48a28041598',
+        name:'PRICE'
     },
     {
         id:'655510df1e2da48a2804159b',

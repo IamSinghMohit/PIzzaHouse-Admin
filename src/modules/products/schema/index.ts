@@ -1,6 +1,6 @@
+import { StatusEnum } from "@/modules/types/inex";
 import { BaseResponseWithNameAndImage } from "@/schema";
 import { z, TypeOf } from "zod";
-import { ProductStatusEnum } from "../types";
 
 export const ProductSchema = z
     .object({
@@ -10,7 +10,7 @@ export const ProductSchema = z
         sections: z.array(z.string()),
         category: z.string(),
         default_attributes: z.string(),
-        status: z.enum([ProductStatusEnum.DRAFT, ProductStatusEnum.PUBLISHED], {
+        status: z.enum([StatusEnum.DRAFT, StatusEnum.PUBLISHED], {
             errorMap: (issue, ctx) => ({ message: "enum is not valid" }),
         }),
     })
