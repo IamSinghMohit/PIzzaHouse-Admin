@@ -14,17 +14,17 @@ export function SocketContextProvider({
     children: React.ReactNode;
 }) {
     const socketRef = useRef<Socket | null>(null);
-    // useEffect(() => {
-    //     async function init() {
-    //         socketRef.current = await initSocket() as unknown as Socket;
-    //         socketRef.current.emit("join");
-    //     }
-    //     init();
-    //     return () => {
-    //         socketRef.current?.disconnect();
-    //         socketRef.current = null;
-    //     };
-    // }, []);
+    useEffect(() => {
+        async function init() {
+            socketRef.current = await initSocket() as unknown as Socket;
+            socketRef.current.emit("join");
+        }
+        init();
+        return () => {
+            socketRef.current?.disconnect();
+            socketRef.current = null;
+        };
+    }, []);
 
     return (
         <socketContext.Provider value={socketRef.current}>

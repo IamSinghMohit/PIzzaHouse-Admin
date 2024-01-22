@@ -7,7 +7,6 @@ import SearchCategoryInput from "./SearchCategoryInput";
 
 function SearchBar() {
     const ModalRef = useRef<TModalRef | null>(null);
-
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
             <CardBody className="flex-row justify-between gap-2 items-center flex-wrap">
