@@ -118,11 +118,43 @@ body {
 /* for hiding arrows in input element */
 .price-input::-webkit-outer-spin-button,
 .price-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
-.price-input[type=number] {
-  -moz-appearance: textfield;
+.price-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* loading effects */
+
+.shimmer {
+    @apply  bg-gray-200 overflow-hidden relative rounded-md  
+}
+.shimmer::after {
+    background: rgb(241, 245, 249);
+    rotate: 45deg;
+    position: absolute;
+    content: "";
+    top: -50%;
+    left: 0;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        rgba(241, 245, 249, 0.024054690235469134) 13%,
+        rgba(241, 245, 249, 1) 50%,
+        rgba(241, 245, 249, 0) 84%
+    );
+    animation: moveShimmer 0.8s linear infinite;
+}
+
+@keyframes moveShimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }

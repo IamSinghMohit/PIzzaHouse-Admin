@@ -50,17 +50,15 @@ function PlaceholderContainer({
 
     return (
         <div
-            className={
-                `border-2 rounded-md ${
-                    !image && "p-2"
-                } relative rounded-tr-none ` + baseClassName
-            }
+            className={`relative ` + baseClassName}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
         >
             <label
                 htmlFor="image-upload"
-                className="flex flex-col items-center justify-between h-full"
+                className={`flex flex-col items-center justify-between h-full border-2 rounded-md rounded-tr-none overflow-hidden ${
+                    !image && "p-2"
+                } `}
             >
                 {placeholderImage}
                 {!image && placeholderImageText}
@@ -68,7 +66,7 @@ function PlaceholderContainer({
             {image && (
                 <Button
                     isIconOnly
-                    className="absolute -top-[1px] -right-[40px] rounded-l-none text-2xl bg-primaryOrange text-white"
+                    className="absolute top-0 -right-[39px] rounded-l-none text-2xl bg-primaryOrange text-white"
                     onClick={handleImageChange}
                 >
                     <PiGearSixLight />
@@ -89,8 +87,8 @@ function PlaceholderImage({
     return (
         <img
             src={image}
-            className={image ? imageAfterClassName : imageBeforeClassName}
-            alt="upload_image"
+            className={`${image ? imageAfterClassName : imageBeforeClassName}`}
+            alt="upload image"
             ref={ImageRef}
         />
     );
@@ -148,7 +146,7 @@ function ImageUploader({
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
-        console.log('inside function')
+        console.log("inside function");
         const { files } = event.target;
 
         if (files && files.length > 0) {
@@ -209,7 +207,7 @@ function ImageUploader({
                     onChange={handleInputChange}
                     ref={InputRef}
                 />
-                <ImageCropper aspectRatio={aspectRatio} ref={ModalRef}/>
+                <ImageCropper aspectRatio={aspectRatio} ref={ModalRef} />
             </div>
         </ImageUploaderContext.Provider>
     );

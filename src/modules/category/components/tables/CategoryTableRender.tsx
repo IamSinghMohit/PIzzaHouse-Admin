@@ -1,7 +1,6 @@
-import {  memo } from "react";
+import { memo } from "react";
 import { CategoryColumns } from "@/data/cateogry-table";
-import { useAppDispatch} from "@/hooks/state";
-import { Spinner } from "@nextui-org/spinner";
+import { useAppDispatch } from "@/hooks/state";
 import { Avatar } from "@nextui-org/avatar";
 import {
     Table,
@@ -15,6 +14,7 @@ import { TCategorySchema } from "../../schema";
 import * as dayjs from "dayjs";
 import TableAction from "@/components/Table/TableAction";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
+import TableLoader from "@/modules/Loader";
 
 interface Props {
     data: TCategorySchema[];
@@ -32,7 +32,6 @@ function CategoryTableRender({
     onViewClick,
     onDeleteClick,
 }: Props) {
-
     const disaptch = useAppDispatch();
     const shouldRenderData: any = data && !isLoading;
 
@@ -43,7 +42,7 @@ function CategoryTableRender({
             aria-label="category table"
             layout="auto"
             classNames={{
-                table: `${isLoading && "h-[520px]"}`,
+                table: `${isLoading && "h-[500px]"}`,
             }}
         >
             <TableHeader>
@@ -56,9 +55,9 @@ function CategoryTableRender({
                     !isLoading && isError
                         ? "Some server occured ❌"
                         : "No Category found create 🔥 one!"
-}
+                }
                 isLoading={isLoading}
-                loadingContent={<Spinner label="Loading..." />}
+                loadingContent={<TableLoader />}
             >
                 {shouldRenderData &&
                     data.map((item) => (
@@ -79,7 +78,9 @@ function CategoryTableRender({
                                     deleteIconEvents={{
                                         onClick: () => {
                                             disaptch(
-                                                setCurrentSelectedCategory(item)
+                                                setCurrentSelectedCategory(
+                                                    item,
+                                                ),
                                             ),
                                                 onDeleteClick();
                                         },
@@ -87,7 +88,9 @@ function CategoryTableRender({
                                     viewIconEvents={{
                                         onClick: () => {
                                             disaptch(
-                                                setCurrentSelectedCategory(item)
+                                                setCurrentSelectedCategory(
+                                                    item,
+                                                ),
                                             );
                                             onViewClick();
                                         },

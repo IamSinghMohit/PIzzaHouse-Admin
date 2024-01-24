@@ -1,6 +1,5 @@
 import ImageUploader from "@/components/ImageUploader";
 import {
-    Input,
     Modal,
     ModalHeader,
     ModalBody,
@@ -10,7 +9,6 @@ import {
     ModalFooter,
 } from "@nextui-org/react";
 import CategoryPriceSection from "../CategoryPriceSection";
-import RenderCateogryPriceSection from "../RenderCategoryPriceSection";
 import {
     forwardRef,
     Ref,
@@ -21,52 +19,20 @@ import {
 import { TProcessedImage } from "@/types/ImageUploader";
 import { TModalRef } from "@/types/Modal";
 import CreateCategoryButton from "../buttons/CreateCategoryButton";
-import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import { useAppDispatch} from "@/hooks/state";
 import {
-    setCategoryName,
+    setCategoryImageUpdated,
     setCategorySections,
     setCurrentSelectedCategory,
-    setUpdatedFields,
 } from "@/store/slices/category";
-import UpdateCategoryButton from "../buttons/UpdateCategoryButton";
-import useDebounce from "@/hooks/useDebounce";
+import { CategoryInput } from "../../CategoryForm";
 
-function CategoryInput() {
-    const [value, setValue] = useState(
-        useAppSelector((state) => state.category.current_selected_category?.name) || ""
-    );
-    const dispatch = useAppDispatch();
-    const debounce = useDebounce(value, 300);
+type Props = {};
 
-    useEffect(() => {
-        if (debounce) {
-            dispatch(setCategoryName(debounce));
-        }
-    }, [debounce]);
-
-    return (
-        <Input
-            label="Name"
-            radius="sm"
-            size="sm"
-            className="w-[200px]"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-        />
-    );
-}
-
-interface Props {
-    type: "Create" | "Update";
-}
-
-function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
+function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
-    const defaultImage = useAppSelector(
-        (state) => state.category.current_selected_category?.image,
-    );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
         file: null,
@@ -84,11 +50,11 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
 
     useEffect(() => {
         if (processedImage.file) {
-            dispatch(setUpdatedFields({ type: "image", value: true }));
+            dispatch(setCategoryImageUpdated(false));
         }
     }, [processedImage.file]);
 
-    console.log("model itself rendered");
+    console.log("create modalrendered");
     return (
         <Modal
             size="5xl"
@@ -101,7 +67,7 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
                 setProcessedImage({ url: "", file: null });
                 dispatch(setCurrentSelectedCategory(null));
                 dispatch(setCategorySections({ data: [], type: "REPLACE" }));
-                dispatch(setUpdatedFields({ type: "all", value: false }));
+                dispatch(setCategoryImageUpdated(false));
                 onClose();
             }}
             radius="sm"
@@ -114,7 +80,7 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
                             <div className="modal-overlay w-full h-[530px] absolute"></div>
                         )}
                         <ModalHeader className="flex flex-col gap-1">
-                            {type} Category
+                            Create Category
                         </ModalHeader>
                         <ModalBody className="flex-row justify-between">
                             <div className="flex flex-col gap-3">
@@ -122,27 +88,19 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
                                     aspectRatio={{ x: 2, y: 2 }}
                                     processedImage={processedImage}
                                     setProcessedImage={setProcessedImage}
-                                    defaultImage={
-                                        type == "Update"
-                                            ? defaultImage
-                                            : undefined
-                                    }
                                 >
                                     <ImageUploader.PlaceholderContainer
-                                        baseClassName="w-[100px] h-[100px]"
+                                        baseClassName="w-[150px] h-[150px]"
                                         placeholderImage={
-                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[80px] h-[80px]" />
                                         }
                                         placeholderImageText={
-                                            <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1" />
+                                            <ImageUploader.PlaceholderImageText baseClassName="text-[16px] flex gap-1" />
                                         }
                                     />
                                 </ImageUploader>
                                 <CategoryInput />
                                 <CategoryPriceSection />
-                            </div>
-                            <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
-                                <RenderCateogryPriceSection />
                             </div>
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
@@ -154,17 +112,10 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
                             >
                                 Close
                             </Button>
-                            {type == "Create" ? (
-                                <CreateCategoryButton
-                                    setIsLoading={setIsLoading}
-                                    processedImage={processedImage}
-                                />
-                            ) : (
-                                <UpdateCategoryButton
-                                    setIsLoading={setIsLoading}
-                                    processedImage={processedImage}
-                                />
-                            )}
+                            <CreateCategoryButton
+                                setIsLoading={setIsLoading}
+                                processedImage={processedImage}
+                            />
                         </ModalFooter>
                     </>
                 )}
@@ -173,4 +124,4 @@ function CategoryModal({ type }: Props, ref: Ref<TModalRef>) {
     );
 }
 
-export default forwardRef(CategoryModal);
+export default forwardRef(CreateCategoryModal)

@@ -2,15 +2,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import DeleteCategoryAlert from "../modals/DeleteCategoryAlert";
 import CategoryTableRender from "./CategoryTableRender";
 import { TModalRef } from "@/types/Modal";
-import CategoryModal from "../modals/CategoryModal";
 import AppPagination from "@/components/AppPagination";
 import { useCategory } from "../../hooks";
 import { useAppSelector } from "@/hooks/state";
+import ViewCategoryModal from "../modals/ViewCategoryModal";
 interface Props {}
 
 function CategoryTable({}: Props) {
     const DeleteModalRef = useRef<TModalRef | null>(null);
-    const CategoryModalRef = useRef<TModalRef | null>(null);
+    const ViewCategoryModalRef = useRef<TModalRef | null>(null);
     const [limit, setLimit] = useState("10");
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
@@ -21,7 +21,7 @@ function CategoryTable({}: Props) {
     }, []);
 
     const handleViewClick = useCallback(() => {
-        CategoryModalRef.current?.onOpen();
+        ViewCategoryModalRef.current?.onOpen();
     }, []);
 
     const { data, isLoading, isError } = useCategory({
@@ -31,15 +31,15 @@ function CategoryTable({}: Props) {
     });
 
     useEffect(() => {
-        setPages(data?.data.pages || 1);
+        setPages(data?.pages || 1);
     }, [data]);
 
     return (
         <>
             <DeleteCategoryAlert ref={DeleteModalRef} />
-            <CategoryModal type="Update" ref={CategoryModalRef} />
+            <ViewCategoryModal ref={ViewCategoryModalRef} />
             <CategoryTableRender
-                data={data?.data.categories || []}
+                data={data?.categories || []}
                 onDeleteClick={handleDeleteClick}
                 onViewClick={handleViewClick}
                 isLoading={isLoading}

@@ -1,12 +1,12 @@
 import axios from "@/lib/axios";
 import { successToast ,errorToast} from "@/lib/toast";
-import { BackendError } from "@/schema/Error";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { BackendError } from "@/types/api";
 
 async function updateCategory(data: any): Promise<string> {
     return await axios
-        .put("/category/update", data, {
+        .patch("/category/admin/update", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -27,7 +27,7 @@ export function useUpdateCategory() {
         },
         onError:(err:AxiosError<BackendError>) =>  {
             if (err.response) {
-                errorToast(err.response.data.error);
+                errorToast(err.response.data.error.message);
             }
         }
     });

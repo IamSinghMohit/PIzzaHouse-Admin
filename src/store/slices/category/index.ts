@@ -1,30 +1,20 @@
-import {
-    createSlice,
-    PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     TCategorySection,
     TCategorySliceInitialState,
-    TUpdatedFields,
 } from "./types";
 import {
     TCategorySchema,
-    TGetCategorySections,
 } from "@/modules/category/schema";
 
 type PayloadType = "REPLACE" | "PUSH";
-
 
 const initialState: TCategorySliceInitialState = {
     category_price_sec: [],
     category_name: "",
     category_search_name: "",
     current_selected_category: null,
-    updated_fields: {
-        name: false,
-        image: false,
-        sections: false,
-    },
+    is_image_updated: false,
 };
 
 export const CategorySlice = createSlice({
@@ -36,7 +26,7 @@ export const CategorySlice = createSlice({
             action: PayloadAction<{
                 data: TCategorySection[] | TCategorySection;
                 type: PayloadType;
-            }>
+            }>,
         ) {
             if (
                 action.payload.type == "REPLACE" &&
@@ -51,9 +41,6 @@ export const CategorySlice = createSlice({
                     ...state.category_price_sec,
                     action.payload.data,
                 ];
-            }
-            if (!state.updated_fields.sections) {
-                state.updated_fields.sections = true;
             }
         },
         updatePriceSection(state, action: PayloadAction<TCategorySection>) {
@@ -72,67 +59,24 @@ export const CategorySlice = createSlice({
 
         deletePriceSection(state, action: PayloadAction<string>) {
             state.category_price_sec = state.category_price_sec.filter(
-                (item) => item.id != action.payload
+                (item) => item.id != action.payload,
             );
-            if (!state.updated_fields.sections) {
-                state.updated_fields.sections = true;
-            }
         },
 
         setCurrentSelectedCategory(
             state,
-            action: PayloadAction<TCategorySchema | null>
+            action: PayloadAction<TCategorySchema | null>,
         ) {
             state.current_selected_category = action.payload;
         },
         setCategoryName(state, action: PayloadAction<string>) {
             state.category_name = action.payload;
-            if (!state.updated_fields.name) {
-                state.updated_fields.name = true;
-            }
         },
-        setUpdatedFields(
-            state,
-            action: PayloadAction<{
-                type: TUpdatedFields;
-                value: boolean;
-            }>
-        ) {
-            switch (action.payload.type) {
-                case "image":
-                    state.updated_fields.image = action.payload.value;
-                    break;
-                case "name":
-                    state.updated_fields.name = action.payload.value;
-                    break;
-                case "sections":
-                    state.updated_fields.sections = action.payload.value;
-                    break;
-                case "all":
-                    const obj: any = {};
-                    for (let key in state.updated_fields) {
-                        obj[key] = action.payload.value;
-                    }
-                    state.updated_fields = obj;
-                    break;
-                default:
-                    null;
-            }
+        setCategoryImageUpdated(state, action: PayloadAction<boolean>) {
+            state.is_image_updated = action.payload;
         },
         setCategorySearchName(state, action: PayloadAction<string>) {
             state.category_search_name = action.payload;
-        },
-        setFetchedPriceSec(
-            state,
-            action: PayloadAction<TGetCategorySections["data"]>
-        ) {
-            state.category_price_sec = action.payload.map((cat) => {
-                return {
-                    id: cat.id,
-                    name: cat.name,
-                    attributes: cat.attributes,
-                };
-            });
         },
     },
 });
@@ -140,9 +84,8 @@ export const CategorySlice = createSlice({
 export const {
     setCategorySections,
     updatePriceSection,
-    setFetchedPriceSec,
     deletePriceSection,
-    setUpdatedFields,
+    setCategoryImageUpdated,
     setCategorySearchName,
     setCategoryName,
     setCurrentSelectedCategory,

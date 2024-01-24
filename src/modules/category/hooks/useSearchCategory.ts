@@ -1,13 +1,13 @@
 import axios from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCurrentWindow } from "@/utils";
-import { CategorySchemaType } from "../schema";
+import { TCategorySchema } from "../schema";
 
 async function searchCategory(
     text: string,
     limit: number,
     cursor?: string
-): Promise<CategorySchemaType[]> {
+): Promise<TCategorySchema[]> {
     return await axios
         .get(`/category/search?name=${text}&limit=${limit}&cursor=${cursor}`)
         .then((res) => res.data.data);

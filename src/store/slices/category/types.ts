@@ -1,10 +1,5 @@
 import { TCategorySchema } from "@/modules/category/schema";
 
-export type TCategoryUpdatedFields = {
-    image: boolean;
-    name: boolean;
-    sections: boolean;
-};
 
 export type TAttributes = {
     id: string;
@@ -26,7 +21,7 @@ export type TCategorySliceInitialState = {
     category_name: string;
     category_search_name: string;
     current_selected_category: TCategorySchema | null;
-    updated_fields: TCategoryUpdatedFields;
+    is_image_updated:boolean;
 };
 
 export type TUpdatedFields = "name" | "image" | "sections" | "all";

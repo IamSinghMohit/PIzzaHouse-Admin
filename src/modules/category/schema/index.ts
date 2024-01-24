@@ -1,4 +1,3 @@
-import { ApiResWrapper } from "@/schema";
 import { z, TypeOf } from "zod";
 
 export interface Errors {
@@ -17,6 +16,7 @@ export const CategorySchema = z.object({
 
 export const GetCategorySectionsSchema = z
     .object({
+        success: z.boolean(),
         data: z.array(
             z.object({
                 id: z.string(),
@@ -25,34 +25,32 @@ export const GetCategorySectionsSchema = z
                     z.object({
                         id: z.string(),
                         name: z.string(),
-                    })
+                    }),
                 ),
-            })
+            }),
         ),
     })
-    .merge(ApiResWrapper);
 
-export const GetCategorySchema = z
-    .object({
-        data: z.object({
-            page: z.union([z.number(), z.string()]).transform((data) => {
-                if (typeof data == "string") {
-                    return parseInt(data);
-                } else {
-                    return data;
-                }
-            }),
-            pages: z.union([z.number(), z.string()]).transform((data) => {
-                if (typeof data == "string") {
-                    return parseInt(data);
-                } else {
-                    return data;
-                }
-            }),
-            categories: z.array(CategorySchema),
+export const GetCategorySchema = z.object({
+    success: z.boolean(),
+    data: z.object({
+        page: z.union([z.number(), z.string()]).transform((data) => {
+            if (typeof data == "string") {
+                return parseInt(data);
+            } else {
+                return data;
+            }
         }),
-    })
-    .merge(ApiResWrapper);
+        pages: z.union([z.number(), z.string()]).transform((data) => {
+            if (typeof data == "string") {
+                return parseInt(data);
+            } else {
+                return data;
+            }
+        }),
+        categories: z.array(CategorySchema),
+    }),
+});
 
 export type TGetCategorySchema = TypeOf<typeof GetCategorySchema>;
 export type TCategorySchema = TypeOf<typeof CategorySchema>;

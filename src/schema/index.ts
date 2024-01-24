@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-export const ApiResWrapper = z.object({
-    success: z.boolean(),
-});
-
 export const BaseResponse = z.object({
     id: z.string(),
     created_at: z.string(),
@@ -17,6 +13,3 @@ export const BaseResponseWithNameAndImage = z
     })
     .merge(BaseResponse);
 
-export const BackendResponseSchema = z.object({
-    success:z.boolean(),
-})
