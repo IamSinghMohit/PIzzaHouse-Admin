@@ -12,7 +12,7 @@ function ProductTable() {
     const ProductMoalRef = useRef<TModalRef>(null);
     const DeleteModalRef = useRef<TModalRef>(null);
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState('10');
+    const [limit, setLimit] = useState("10");
     const {
         product_category,
         product_featured,
@@ -29,8 +29,8 @@ function ProductTable() {
         category: category,
         featured: product_featured,
         status: product_status,
-        limit:limit,
-        page:page
+        limit: limit,
+        page: page,
     });
 
     const handleDeleteClick = useCallback(() => {

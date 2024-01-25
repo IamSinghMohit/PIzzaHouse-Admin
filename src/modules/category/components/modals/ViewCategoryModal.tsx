@@ -120,7 +120,7 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
                                     />
                                     <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
                                         <CategoryPriceSectionRenderer
-                                            categoryPriceSec={data}
+                                            priceSections={data}
                                             renderDeleteButton={false}
                                         />
                                     </div>
@@ -138,6 +138,7 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
                             </Button>
                             {processedImage.url && (
                                 <UpdateCategoryButton
+                                    onClose={onClose}
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
                                 />

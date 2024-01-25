@@ -73,7 +73,7 @@ export function ProductDescriptionInput() {
     return (
         <Textarea
             placeholder="Enter your description"
-            size="lg"
+            // size="lg"
             radius="sm"
             value={value}
             onChange={(e) => {

@@ -21,7 +21,7 @@ function CreateCategoryPage({}: Props) {
         return <Navigate to={"/category"}/>
     }
     return (
-        <Card>
+        <Card radius="sm">
             <CardHeader>Create Category</CardHeader>
             <CardBody className="flex flex-col justify-center items-center gap-3">
                 <ImageUploader

@@ -8,12 +8,14 @@ import { Toaster } from "react-hot-toast";
 import { SocketContextProvider } from "./socketContext";
 import CategoryLoader from "./modules/category/CategoryLoader";
 import CreateCategoryPage from "./modules/category/CreateCategoryPage";
+import ProductLoader from "./modules/products/ProductLoader";
+import CreateProductPage from "./modules/products/CreateProductPage";
 
 const Category = lazy(() => import("./modules/category"));
-// import create categoy page here
 const Product = lazy(() => import("./modules/products"));
 const Orders = lazy(() => import("./modules/orders"));
 const Topings = lazy(() => import("./modules/topings"));
+
 const App = () => {
     const router = createBrowserRouter([
         {
@@ -38,11 +40,19 @@ const App = () => {
                 },
                 {
                     path: "category/create",
-                    element: <CreateCategoryPage/>,
+                    element: <CreateCategoryPage />,
                 },
                 {
                     path: "products",
-                    element: <Product />,
+                    element: (
+                        <Suspense fallback={<ProductLoader />}>
+                            <Product />
+                        </Suspense>
+                    ),
+                },
+                {
+                    path:"products/create",
+                    element:<CreateProductPage/>
                 },
                 {
                     path: "topings",

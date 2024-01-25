@@ -19,13 +19,14 @@ import {
 import { TProcessedImage } from "@/types/ImageUploader";
 import { TModalRef } from "@/types/Modal";
 import CreateCategoryButton from "../buttons/CreateCategoryButton";
-import { useAppDispatch} from "@/hooks/state";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import {
     setCategoryImageUpdated,
     setCategorySections,
     setCurrentSelectedCategory,
 } from "@/store/slices/category";
 import { CategoryInput } from "../../CategoryForm";
+import CategoryPriceSectionRenderer from "../CategoryPriceSectionRenderer";
 
 type Props = {};
 
@@ -102,6 +103,9 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                 <CategoryInput />
                                 <CategoryPriceSection />
                             </div>
+                            <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
+                                <CreateCategoryModalPriceSectionRenderer />
+                            </div>
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
                             <Button
@@ -113,6 +117,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                 Close
                             </Button>
                             <CreateCategoryButton
+                                onClose={onClose}
                                 setIsLoading={setIsLoading}
                                 processedImage={processedImage}
                             />
@@ -124,4 +129,16 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
     );
 }
 
-export default forwardRef(CreateCategoryModal)
+export default forwardRef(CreateCategoryModal);
+
+function CreateCategoryModalPriceSectionRenderer() {
+    const priceSections = useAppSelector(
+        (state) => state.category.category_price_sec,
+    );
+    return (
+        <CategoryPriceSectionRenderer
+            renderDeleteButton={true}
+            priceSections={priceSections}
+        />
+    );
+}

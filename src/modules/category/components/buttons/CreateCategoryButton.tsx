@@ -9,12 +9,17 @@ import ModalButton from "@/modules/commponents/ModalButton";
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
+    onClose: () => void;
 }
 
-function CreateCategoryButton({ setIsLoading, processedImage }: Props) {
-    const { mutate, isPending } = useCreateCategory();
+function CreateCategoryButton({
+    setIsLoading,
+    processedImage,
+    onClose,
+}: Props) {
+    const { mutate, isPending, data } = useCreateCategory();
     const { category_price_sec, category_name } = useAppSelector(
-        (state) => state.category
+        (state) => state.category,
     );
 
     function handleCreate() {
@@ -29,12 +34,15 @@ function CreateCategoryButton({ setIsLoading, processedImage }: Props) {
                 name: category_name,
                 json: JSON.stringify(category_price_sec),
             },
-            mutate
+            mutate,
         );
     }
 
     useEffect(() => {
         setIsLoading(isPending);
+        if (data) {
+            onClose();
+        }
     }, [isPending]);
 
     return (

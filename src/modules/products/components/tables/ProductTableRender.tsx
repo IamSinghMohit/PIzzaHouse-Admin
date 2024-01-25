@@ -75,6 +75,7 @@ function ProductTableRender({
             isHeaderSticky
             aria-label="Prodcut table"
             layout="auto"
+            radius="sm"
             classNames={{
                 table: `${isLoading && "h-[520px]"}`,
             }}

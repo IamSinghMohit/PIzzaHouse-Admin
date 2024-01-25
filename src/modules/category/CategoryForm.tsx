@@ -14,9 +14,7 @@ export function CategoryInput() {
     const debounce = useDebounce(value, 300);
 
     useEffect(() => {
-        if (debounce) {
-            dispatch(setCategoryName(debounce));
-        }
+        dispatch(setCategoryName(debounce));
     }, [debounce]);
 
     return (

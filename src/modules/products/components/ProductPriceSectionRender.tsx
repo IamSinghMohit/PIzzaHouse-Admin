@@ -18,7 +18,7 @@ function DummyPriceSectionRenderer({
 }) {
     return (
         <div
-            className={`h-[395px] flex flex-col gap-2 ${
+            className={`flex flex-col gap-2 ${
                 data.length > 0 && "overflow-y-scroll"
             } ml-1`}
         >
@@ -44,7 +44,7 @@ function DummyPriceSectionRenderer({
     );
 }
 
-function ProductPriceSectionCreate() {
+export function ProductPriceSectionCreate() {
     const dispatch = useAppDispatch();
     const category = useAppSelector((state) => state.product.current_category);
     const { data } = useCategoryPriceSections(category.split(":")[0]);
@@ -54,13 +54,13 @@ function ProductPriceSectionCreate() {
             dispatch(
                 setProductPriceSectionAttribute({
                     type: "SET",
-                    data: data.data,
+                    data: data,
                 }),
             );
         }
     }, [data]);
 
-    return <DummyPriceSectionRenderer data={data?.data || []} />;
+    return <DummyPriceSectionRenderer data={data || []} />;
 }
 
 function ProductPriceSectionUpdate() {

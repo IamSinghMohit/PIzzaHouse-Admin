@@ -1,6 +1,6 @@
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useUpdateCategory } from "../../hooks";
-import { Dispatch, SetStateAction, useEffect, memo } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { FormDataSend } from "@/utils";
@@ -9,10 +9,15 @@ import ModalButton from "@/modules/commponents/ModalButton";
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
+    onClose: () => void;
 }
 
-function UpdateCategoryButton({ setIsLoading, processedImage }: Props) {
-    const { mutate, isPending } = useUpdateCategory();
+function UpdateCategoryButton({
+    setIsLoading,
+    processedImage,
+    onClose,
+}: Props) {
+    const { mutate, isPending, data } = useUpdateCategory();
     const { is_image_updated, current_selected_category } = useAppSelector(
         (state) => state.category,
     );
@@ -30,6 +35,9 @@ function UpdateCategoryButton({ setIsLoading, processedImage }: Props) {
 
     useEffect(() => {
         setIsLoading(isPending);
+        if (data) {
+            onClose();
+        }
     }, [isPending]);
 
     return (
@@ -43,4 +51,4 @@ function UpdateCategoryButton({ setIsLoading, processedImage }: Props) {
     );
 }
 
-export default memo(UpdateCategoryButton);
+export default UpdateCategoryButton;

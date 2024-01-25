@@ -11,16 +11,16 @@ import { TCategorySection } from "@/store/slices/category/types";
 
 interface IProps {
     renderDeleteButton?: boolean;
-    categoryPriceSec: TCategorySection[];
+    priceSections: TCategorySection[];
     onDelete?: (sec: TCategorySection) => void;
 }
 
 function CategoryPriceSectionRenderer({
     renderDeleteButton = true,
-    categoryPriceSec,
+    priceSections,
     onDelete,
 }: IProps) {
-    return categoryPriceSec.map((sec) => (
+    return priceSections.map((sec) => (
         <Card
             shadow="sm"
             className="max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange"

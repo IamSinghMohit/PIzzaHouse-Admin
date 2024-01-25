@@ -12,6 +12,8 @@ import useDebounce from "@/hooks/useDebounce";
 import { IconSearch } from "@tabler/icons-react";
 import { useProductStats } from "../hooks/useProductStats";
 import SearchInput from "@/modules/commponents/SearchInput";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
 
 export function ProductSearchInput() {
     const [value, setValue] = useState("");
@@ -27,7 +29,9 @@ export function ProductSearchInput() {
         }
     }, [debounce]);
 
-    return <SearchInput value={value} onChange={(e) => setValue(e.target.value)}/>;
+    return (
+        <SearchInput value={value} onChange={(e) => setValue(e.target.value)} />
+    );
 }
 
 export function ProductPriceRange() {
@@ -133,16 +137,18 @@ export function FetchingProductStatusSelector() {
 
 function ProductBar() {
     const ModalRef = useRef<TModalRef | null>(null);
+    const directToCreatePage = useMediaQuery({ query: "(max-width:800px)" });
+    const navigate = useNavigate();
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
-            <CardBody className="flex-row justify-between">
-                <div className="flex gap-8 ">
+            <CardBody className="flex-row justify-between flex-wrap max-w-[270px] sm:max-w-full mx-auto gap-3">
+                <div className="flex gap-8 flex-wrap">
                     <div className="flex flex-col gap-2">
                         <ProductSearchInput />
                         <FetchingCategorySelector />
                     </div>
                     <div className="flex gap-2 flex-col">
-                        <div className="flex gap-2 items-start">
+                        <div className="flex gap-2 items-start flex-wrap">
                             <FetchingProductStatusSelector />
                             <ProductSearchCheck />
                         </div>
@@ -154,7 +160,13 @@ function ProductBar() {
                     className="text-white"
                     radius="sm"
                     endContent={<IconCodePlus />}
-                    onPress={() => ModalRef.current?.onOpen()}
+                    onPress={() => {
+                        if (directToCreatePage) {
+                            navigate("create");
+                        } else {
+                            ModalRef.current?.onOpen();
+                        }
+                    }}
                 >
                     Create Product
                 </Button>
