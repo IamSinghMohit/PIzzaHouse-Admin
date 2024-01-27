@@ -1,5 +1,5 @@
-import DeleteAlert from "@/components/DeleteAlert";
 import { forwardRef, Ref } from "react";
+import DeleteAlert from "@/modules/commponents/DeleteAlert";
 import { useDeleteCategory } from "../../hooks";
 import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";

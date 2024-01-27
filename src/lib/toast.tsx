@@ -1,9 +1,6 @@
 import toast from "react-hot-toast";
-import IconWrapper from "@/components/IconWrapper";
-import { MdError } from "react-icons/md";
-import { GiCheckMark } from "react-icons/gi";
 import { Spinner } from "@nextui-org/react";
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { IconChecks, IconExclamationCircle } from "@tabler/icons-react";
 
 export function successToast(message: string) {
     return toast.success(message, {
@@ -23,7 +20,7 @@ export function promiseToast<T>(
     func: Promise<T>,
     loadingText: string,
     success: string | ((data: T) => string),
-    error: string | ((data: T) => string)
+    error: string | ((data: T) => string),
 ) {
     return toast.promise(
         func,
@@ -45,8 +42,9 @@ export function promiseToast<T>(
                     secondary: "white",
                 },
                 icon: (
-                    <IconWrapper
-                        icon={<IoCheckmarkDoneOutline />}
+                    <IconChecks
+                        width={24}
+                        height={24}
                         className="text-green-500"
                     />
                 ),
@@ -66,10 +64,14 @@ export function promiseToast<T>(
                     color: "#991b1b",
                 },
                 icon: (
-                    <IconWrapper icon={<MdError />} className="text-red-500" />
+                    <IconExclamationCircle
+                        width={24}
+                        height={24}
+                        className="text-red-500"
+                    />
                 ),
             },
-        }
+        },
     );
 }
 
@@ -80,6 +82,12 @@ export function errorToast(message: string) {
             background: "#fed7aa",
             color: "#991b1b",
         },
-        icon: <IconWrapper icon={<MdError />} className="text-red-500" />,
+        icon: (
+            <IconExclamationCircle
+                width={24}
+                height={24}
+                className="text-red-500"
+            />
+        ),
     });
 }

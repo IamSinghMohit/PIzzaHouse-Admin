@@ -14,20 +14,9 @@ function SearchInput({ value, onChange }: Props) {
             type="text"
             value={value}
             onChange={onChange}
-            endContent={<IconSearch width={20} height={20} />}
+            endContent={<IconSearch width={28} height={28} />}
         />
     );
 }
 export default SearchInput;
 
-/* <div className="rounded-md flex items-center gap1 bg-gray-100">
-            <input
-                type="text"
-                className="p-3 bg-transparent focus:outline-none"
-                value={value}
-                onChange={onChange}
-            />
-            <button>
-                <IconSearch width={20} height={20} />
-            </button>
-        </div> */

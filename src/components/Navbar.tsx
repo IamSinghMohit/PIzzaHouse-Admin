@@ -1,11 +1,11 @@
 import Logo from "@/assets/logo.svg";
-import { FaHamburger } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { HamBurgerIcon } from "@/icons";
 
 interface Props {}
 
@@ -23,7 +23,7 @@ function Navbar({}: Props) {
                     className="text-primaryOrange text-2xl"
                     onClick={() => setNavOpen((prev) => !prev)}
                 >
-                    <FaHamburger />
+                    <HamBurgerIcon/>
                 </div>
             ) : null}
             <AnimatePresence>
@@ -51,14 +51,14 @@ function Navbar({}: Props) {
                                     <li>Home </li>
                                 </Link>
                                 <Link
-                                    to={"/product"}
+                                    to={"/products"}
                                     className="hover:underline hover:text-primaryOrange"
                                     onClick={() => setNavOpen(false)}
                                 >
                                     <li>Product</li>
                                 </Link>
                                 <Link
-                                    to={"/category"}
+                                    to={"/categories"}
                                     className="hover:underline hover:text-primaryOrange"
                                     onClick={() => setNavOpen(false)}
                                 >

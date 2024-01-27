@@ -1,11 +1,5 @@
-import React, {
-    useState,
-    Ref,
-    useImperativeHandle,
-} from "react";
+import React, { useState, Ref, useImperativeHandle } from "react";
 import { Slider } from "@nextui-org/react";
-import { MdCropRotate } from "react-icons/md";
-import { BsZoomIn } from "react-icons/bs";
 
 import {
     Button,
@@ -17,22 +11,17 @@ import {
 } from "@nextui-org/react";
 import Cropper, { Point, Area } from "react-easy-crop";
 import getCroppedImg from "@/components/ImageUploader/helper/getCroppedImage";
-import IconWrapper from "../IconWrapper";
-import { ModalRefType } from "@/types/Modal";
+import { TModalRef } from "@/types/Modal";
 import { useImageUploaderContext } from "./context";
+import { IconRotate, IconZoomIn } from "@tabler/icons-react";
 
 interface Props {
     aspectRatio?: { x: number; y: number };
 }
 
-function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
-    const {
-        setIsCropped,
-        isCropped,
-        image,
-        mimeType,
-        setProcessedImage,
-    } = useImageUploaderContext();
+function ImageUploader({ aspectRatio }: Props, ref: Ref<TModalRef>) {
+    const { setIsCropped, isCropped, image, mimeType, setProcessedImage } =
+        useImageUploaderContext();
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
@@ -53,7 +42,7 @@ function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
                 image,
                 croppedAreaPixels,
                 rotation,
-                mimeType
+                mimeType,
             );
 
             if (croppedImage) {
@@ -72,7 +61,7 @@ function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
         () => {
             return { onOpen, isOpen, onClose };
         },
-        []
+        [],
     );
 
     return (
@@ -111,7 +100,7 @@ function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
                             <div className=" flex gap-2 flex-col text-gray-400 mx-1 mt-1">
                                 <Slider
                                     startContent={
-                                        <IconWrapper icon={<MdCropRotate />} />
+                                        <IconRotate width={24} height={24} />
                                     }
                                     aria-label="crop slider"
                                     size="sm"
@@ -123,7 +112,7 @@ function ImageUploader({ aspectRatio }: Props, ref: Ref<ModalRefType>) {
                                 />
                                 <Slider
                                     startContent={
-                                        <IconWrapper icon={<BsZoomIn />} />
+                                        <IconZoomIn width={24} height={24} />
                                     }
                                     aria-label="zoom slider"
                                     size="sm"

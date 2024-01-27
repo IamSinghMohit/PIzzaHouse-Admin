@@ -7,13 +7,13 @@ import React, {
     ReactNode,
 } from "react";
 import placeholderImage from "@/assets/upload.png";
-import { TbDragDrop } from "react-icons/tb";
 import { Button } from "@nextui-org/react";
-import { PiGearSixLight } from "react-icons/pi";
 import ImageCropper from "./ImageCropper";
 import ImageUploaderContext, { useImageUploaderContext } from "./context";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { TModalRef } from "@/types/Modal";
+import { IconDragDrop } from "@tabler/icons-react";
+import { GearIcon } from "@/icons";
 
 function PlaceholderContainer({
     baseClassName,
@@ -69,7 +69,7 @@ function PlaceholderContainer({
                     className="absolute top-0 -right-[39px] rounded-l-none text-2xl bg-primaryOrange text-white"
                     onClick={handleImageChange}
                 >
-                    <PiGearSixLight />
+                    <GearIcon/>
                 </Button>
             )}
         </div>
@@ -105,7 +105,7 @@ function PlaceholderImageText({
         <span className={baseClassName + " text-gray-400"}>
             Drop{" "}
             <span className={iconClassName}>
-                <TbDragDrop />
+                <IconDragDrop/>
             </span>{" "}
             or click here
         </span>

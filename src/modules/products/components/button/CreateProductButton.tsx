@@ -8,18 +8,22 @@ import { errorToast } from "@/lib/toast";
 import { setProductPriceSectionAttribute } from "@/store/slices/product";
 
 interface Props {
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
+    onSuccess?: () => void;
 }
 
-function CreateProductButton({ setIsLoading, processedImage }: Props) {
-    const { mutate, isPending } = useCreateProduct();
+function CreateProductButton({
+    setIsLoading,
+    processedImage,
+    onSuccess,
+}: Props) {
+    const { mutate, isPending, data } = useCreateProduct();
     const { product_management, default_prices } = useAppSelector(
         (state) => state.product,
     );
-    const product_price_section_attribute = useAppSelector(
-        (state) => state.product.product_price_section_attribute,
-    );
+    const { product_price_section_attribute, current_category } =
+        useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
 
     function handleCreate() {
@@ -29,11 +33,16 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
             return errorToast("name is required");
         } else if (!product_management.product_description) {
             return errorToast("description is required");
+        } else if (
+            current_category?.isSectionExists &&
+            Object.keys(default_prices).length < 1
+        ) {
+            return errorToast("one price attribute must be selected");
         }
 
         let error = false;
         //       validation kicks in
-        const DefaultPriceAttributesArray: any =[];
+        const DefaultPriceAttributesArray: any = [];
         const sections: any = [];
         for (let key in product_price_section_attribute) {
             const attribute = product_price_section_attribute[key];
@@ -96,23 +105,27 @@ function CreateProductButton({ setIsLoading, processedImage }: Props) {
         FormDataSend(
             {
                 name: product_management.product_name,
-                category: product_management.product_category,
+                category_id: current_category?.id,
                 description: product_management.product_description,
                 status: product_management.product_status,
                 sections_json: JSON.stringify(sections),
                 image: processedImage.file,
                 price: product_management.product_price,
                 featured: product_management.product_featured,
-                default_attributes_json: JSON.stringify(DefaultPriceAttributesArray),
+                default_attributes_json: JSON.stringify(
+                    DefaultPriceAttributesArray,
+                ),
             },
             mutate,
         );
     }
+
     useEffect(() => {
-        if (isPending) {
-            setIsLoading(true);
-        } else if (!isPending) {
-            setIsLoading(false);
+        if (setIsLoading) {
+            setIsLoading(isPending);
+        }
+        if (data) {
+            if (onSuccess) onSuccess();
         }
     }, [isPending]);
 

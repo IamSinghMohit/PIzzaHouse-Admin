@@ -10,10 +10,11 @@ import {
     Divider,
 } from "@nextui-org/react";
 import {
-    forwardRef,
     Ref,
+    forwardRef,
     useEffect,
     useImperativeHandle,
+    useMemo,
     useState,
 } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
@@ -35,8 +36,11 @@ import {
     setProductUpdatedFields,
 } from "@/store/slices/product";
 import CreateProductButton from "../button/CreateProductButton";
-import UpdateProductButton from "../button/UpdateProductButton";
+import UpdateProductButton, {
+    TUpdateProductButtonProps,
+} from "../button/UpdateProductButton";
 import ProductPriceSectionRender from "../ProductPriceSectionRender";
+import { TProductUpdatedFields } from "@/store/slices/product/types";
 
 interface Props {
     type: "Create" | "Update";
@@ -74,9 +78,10 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
 
     return (
         <Modal
-            size="5xl"
             isOpen={isOpen}
+            size="5xl"
             isDismissable={!isLoading}
+            scrollBehavior="inside"
             isKeyboardDismissDisabled={!isLoading}
             hideCloseButton={isLoading}
             onOpenChange={onOpenChange}
@@ -100,7 +105,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                 dispatch(
                     setProductPriceSectionAttribute({ type: "SET", data: [] }),
                 );
-                dispatch(setCurrentProductCategory(''))
+                dispatch(setCurrentProductCategory(null));
                 dispatch(setDefaultProductPrices({ type: "SET", data: [] }));
                 dispatch(
                     setProductUpdatedFields({ type: "ALL", value: false }),
@@ -119,7 +124,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                         <ModalHeader className="flex flex-col gap-1">
                             {type} Product
                         </ModalHeader>
-                        <ModalBody className="flex-row gap-8">
+                        <ModalBody className="flex-row gap-8 justify-center">
                             <div className="flex flex-col gap-3 min-w-[450px]">
                                 <ImageUploader
                                     aspectRatio={{ x: 4, y: 3 }}
@@ -143,9 +148,18 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                 </ImageUploader>
 
                                 <div className="flex flex-col gap-3">
-                                    <div className="flex gap-2">
+                                    <div
+                                        className={
+                                            "flex gap-2 " +
+                                            (type === "Update"
+                                                ? "justify-center"
+                                                : "")
+                                        }
+                                    >
                                         <ProductNameInput />
-                                        <ProductCategorySelector />
+                                        {type !== "Update" && (
+                                            <ProductCategorySelector />
+                                        )}
                                     </div>
                                     <ProductDescriptionInput />
                                 </div>
@@ -155,8 +169,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                     <ProductStatusSelector />
                                 </div>
                             </div>
-                            <Divider orientation="vertical" />
-                            <ProductPriceSectionRender type={type} />
+                            <ProductPriceSectionRender type={type} shouldRenderDivider={true}/>
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
                             <Button
@@ -167,17 +180,10 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                             >
                                 Close
                             </Button>
-                            {type == "Create" ? (
-                                <CreateProductButton
-                                    setIsLoading={setIsLoading}
-                                    processedImage={processedImage}
-                                />
-                            ) : (
-                                <UpdateProductButton
-                                    setIsLoading={setIsLoading}
-                                    processedImage={processedImage}
-                                />
-                            )}
+                            <ProductModalUpdateProductButton
+                                setIsLoading={setIsLoading}
+                                processedImage={processedImage}
+                            />
                         </ModalFooter>
                     </>
                 )}
@@ -187,3 +193,50 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
 }
 
 export default forwardRef(ProductModal);
+
+function ProductModalUpdateProductButton({
+    processedImage,
+    setIsLoading,
+}: TUpdateProductButtonProps) {
+    const { updated_fields } = useAppSelector((state) => state.product);
+    const [isTrue, setIsTrue] = useState(false);
+    const shouldRender = useMemo(() => {
+        if (isTrue) return true;
+        for (let key in updated_fields) {
+            if (updated_fields[key as keyof TProductUpdatedFields]) {
+                setIsTrue(true);
+                return true;
+            }
+        }
+        return false;
+    }, [updated_fields]);
+
+    return shouldRender ? (
+        <UpdateProductButton
+            setIsLoading={setIsLoading}
+            processedImage={processedImage}
+        />
+    ) : (
+        <></>
+    );
+}
+function ProductModalSectionRenderer({ type }: { type: "Create" | "Update" }) {
+    const sections = useAppSelector(
+        (state) => state.product.product_price_section_attribute,
+    );
+    const haveSections = useMemo(() => {
+        return Object.keys(sections).length > 0;
+    }, [sections]);
+    console.log("have sections:", haveSections);
+    return haveSections ? (
+        <>
+            <Divider orientation="vertical" />
+            <ProductPriceSectionRender type={type} />
+        </>
+    ) : (
+        <>
+            <Divider orientation="vertical" />
+            <ProductPriceSectionRender type={type} />
+        </>
+    );
+}

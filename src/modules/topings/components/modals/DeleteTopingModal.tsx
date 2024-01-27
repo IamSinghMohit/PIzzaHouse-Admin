@@ -1,4 +1,4 @@
-import DeleteAlert from "@/components/DeleteAlert";
+import DeleteAlert from "@/modules/commponents/DeleteAlert";
 import { useAppSelector } from "@/hooks/state";
 import AlertModelContent from "@/modules/commponents/AlertModelContent";
 import { TModalRef } from "@/types/Modal";

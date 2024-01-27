@@ -6,10 +6,6 @@ import {
     Button,
     Divider,
 } from "@nextui-org/react";
-import { FaCheck } from "react-icons/fa6";
-import { BsPlusSquareDotted } from "react-icons/bs";
-import IconWrapper from "@/components/IconWrapper";
-import { BiReset } from "react-icons/bi";
 import { useRef, useState} from "react";
 import { uuid } from "@/utils/uuid";
 import {
@@ -19,15 +15,16 @@ import { useAppDispatch} from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
 import { validateString } from "@/utils/ValidateString";
 import { TAttributes } from "@/store/slices/category/types";
+import { IconCheck, IconRestore, IconSquarePlus } from "@tabler/icons-react";
 
 function CategoryPriceSection() {
     // this is for chip input tag
     const [attributes,setAttributes] = useState<TAttributes[]>([])
     const chipRef = useRef<HTMLInputElement>(null);
     const [chipText, setChipText] = useState("");
-    // this is for title of the category attribute
     const [title, setTitle] = useState("");
     const titleRef = useRef<HTMLInputElement>(null);
+    // this is for title of the category attribute
     // Errors
     const [errors, setErrors] = useState({ title: "", att: "" });
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -150,7 +147,7 @@ function CategoryPriceSection() {
                         size="md"
                         onClick={handleRegisterClick}
                     >
-                        <IconWrapper icon={<FaCheck />} className="text-md" />
+                        <IconCheck width={24} height={24}/>
                     </Button>
                 </div>
                 <div className="flex justify-between w-full gap-1">
@@ -182,7 +179,7 @@ function CategoryPriceSection() {
                             ref={buttonRef}
                             className="bg-primaryOrange text-white"
                         >
-                            <IconWrapper icon={<BsPlusSquareDotted />} />
+                            <IconSquarePlus width={24} height={24}/>
                         </Button>
                         <Button
                             radius="sm"
@@ -190,7 +187,7 @@ function CategoryPriceSection() {
                             onClick={() => setAttributes([])}
                             className="bg-primaryOrange text-white"
                         >
-                            <IconWrapper icon={<BiReset />} />
+                            <IconRestore width={24} height={24}/>
                         </Button>
                     </div>
                 </div>

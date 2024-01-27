@@ -64,6 +64,7 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
         <Modal
             size={isSectionExist ? "4xl" : "sm"}
             isOpen={isOpen}
+            scrollBehavior="inside"
             isDismissable={!isLoading}
             isKeyboardDismissDisabled={!isLoading}
             onOpenChange={onOpenChange}

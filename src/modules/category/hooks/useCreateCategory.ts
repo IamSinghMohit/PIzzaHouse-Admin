@@ -1,7 +1,9 @@
 import axios from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { errorToast } from "@/lib/toast";
+import { errorToast, successToast } from "@/lib/toast";
 import { CategorySchema, TCategorySchema } from "../schema";
+import { BackendError } from "@/types/api";
+import { AxiosError } from "axios";
 
 async function createCategory(data: any): Promise<TCategorySchema | null> {
     const result = await axios
@@ -12,11 +14,10 @@ async function createCategory(data: any): Promise<TCategorySchema | null> {
         })
         .then((res) => res.data);
     try {
-        return CategorySchema.parse(result);
+        return CategorySchema.parse(result?.data);
     } catch (error) {
         console.log(error);
-        errorToast("received bad data from server");
-        return null;
+        throw new Error('received bad data from server')
     }
 }
 
@@ -29,6 +30,10 @@ export function useCreateCategory() {
             qeryClient.invalidateQueries({
                 queryKey: ["category"],
             });
+            successToast("category created")
+        },
+        onError: (error: AxiosError<BackendError>) => {
+            errorToast(error.response?.data.error.message || "some error occured");
         },
     });
 }

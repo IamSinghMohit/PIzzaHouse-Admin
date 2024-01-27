@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import DeleteCategoryAlert from "../modals/DeleteCategoryAlert";
 import CategoryTableRender from "./CategoryTableRender";
 import { TModalRef } from "@/types/Modal";
-import AppPagination from "@/components/AppPagination";
+import AppPagination from "@/modules/commponents/AppPagination";
 import { useCategory } from "../../hooks";
 import { useAppSelector } from "@/hooks/state";
 import ViewCategoryModal from "../modals/ViewCategoryModal";

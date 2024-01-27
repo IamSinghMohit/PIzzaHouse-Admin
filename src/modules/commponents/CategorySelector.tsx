@@ -3,20 +3,30 @@ import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { Key, useState } from "react";
 
+export type TCategorySelectorPayload = {
+    id: string;
+    name: string;
+    isSectionExists: boolean;
+};
+
 interface Props {
     setSelectedCategory: (e: Key) => void;
     className?: string;
-    inputValue?:string;
+    inputValue?: string;
 }
 
-function CategorySelector({ setSelectedCategory, className ,inputValue}: Props) {
+function CategorySelector({
+    setSelectedCategory,
+    className,
+    inputValue,
+}: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const { items, hasMore, isLoading, onLoadMore } = useCategoryScroll();
 
     const [, scrollerRef] = useInfiniteScroll({
         hasMore,
         isEnabled: isOpen,
-        shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
+        shouldUseLoader: false, 
         onLoadMore,
     });
 
@@ -39,8 +49,11 @@ function CategorySelector({ setSelectedCategory, className ,inputValue}: Props) 
             {(item) => {
                 return (
                     <AutocompleteItem
-                        key={`${item.id}:${item.name}`}
-                        className="capitalize"
+                        key={JSON.stringify({
+                            id: item.id,
+                            name: item.name,
+                            isSectionExists: item.sections.length > 0,
+                        } as TCategorySelectorPayload)}
                     >
                         {item.name}
                     </AutocompleteItem>

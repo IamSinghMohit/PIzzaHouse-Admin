@@ -15,7 +15,6 @@ function CreateCategoryPage({}: Props) {
         url: "",
         file: null,
     });
-    const [isLoading, setIsLoading] = useState(false);
     const shouldRener = useMediaQuery({ query: "(max-width:750px)" });
     if(!shouldRener){
         return <Navigate to={"/category"}/>
@@ -43,7 +42,6 @@ function CreateCategoryPage({}: Props) {
                 <CategoryPriceSection />
 
                 <CreateCategoryButton
-                    setIsLoading={setIsLoading}
                     processedImage={processedImage}
                 />
             </CardBody>

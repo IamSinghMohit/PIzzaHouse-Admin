@@ -1,29 +1,29 @@
-import SearchInput from "@/components/SearchInput";
+import SearchInput from "@/modules/commponents/SearchInput";
 import { useAppDispatch } from "@/hooks/state";
 import { setCategorySearchName } from "@/store/slices/category";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 interface Props {}
 
 function SearchCategoryInput({}: Props) {
     const [value, setValue] = useState("");
     const dispatch = useAppDispatch();
+    const debouncedText = useDebounce(value, 400);
 
-    const handleSearchClick = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            dispatch(setCategorySearchName(value));
-        }
-    };
+    useEffect(() => {
+        dispatch(setCategorySearchName(debouncedText));
+    }, [value]);
 
     return (
-        <SearchInput
-            value={value}
-            onChange={(e) => {
-                setValue(e.target.value);
-            }}
-            onKeyDown={handleSearchClick}
-            onButtonPress={handleSearchClick}
-        />
+        <div className="w-[280px]">
+            <SearchInput
+                value={value}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                }}
+            />
+        </div>
     );
 }
 

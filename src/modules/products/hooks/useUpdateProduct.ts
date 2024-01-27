@@ -6,7 +6,7 @@ import { BackendError } from "@/types/api";
 
 async function updateProduct(data:any) {
     return await axios
-        .put(`/product/admin/${data.id}`, data.data, {
+        .patch(`/product/admin`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -23,7 +23,7 @@ export function useUpdateProduct() {
             qeryClient.invalidateQueries({
                 queryKey: ["product"],
             });
-            successToast("category updated");
+            successToast("product updated");
         },
         onError: (err: AxiosError<BackendError>) => {
             if (err.response) {

@@ -1,4 +1,7 @@
-import { TGetCategorySections } from "@/modules/category/schema";
+import {
+    TGetCategorySections,
+} from "@/modules/category/schema";
+import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 import { TProductSchema } from "@/modules/products/schema";
 import { TGetProductPriceSectionSchema } from "@/modules/products/schema/Get";
 import { TitemStatus } from "@/modules/types/inex";
@@ -15,13 +18,16 @@ export type ProductSubAttributesType = {
     id: string;
     error: boolean;
 };
-export type TProductUpdatedFields = Record<
-    keyof TProductManagement | "product_featured" | "product_default_attributes" ,
+export type TProductUpdatedFields = Omit<Record<
+    | keyof TProductManagement
+    | "product_featured"
+    | "product_default_attributes",
     boolean
->;
+>,"product_id" | "product_category">
+
 export type TFetchingStates = {
     product_category: string;
-    product_status:TitemStatus; 
+    product_status: TitemStatus;
     product_featured: boolean;
     product_name: string;
     range: [number, number];
@@ -65,7 +71,7 @@ export type TSetProductDefaultPrices =
       }
     | {
           type: "SET";
-          data: TGetProductPriceSectionSchema['default_attributes']
+          data: TGetProductPriceSectionSchema["default_attributes"];
       };
 
 export type TProductUtilityStates = {
@@ -81,7 +87,7 @@ export type TProductSliceInitialStateType = {
         string,
         { name: string; id: string; section: string }
     >;
-    updated_fields: Omit<TProductUpdatedFields, "product_id">;
+    updated_fields: TProductUpdatedFields;
     fetching_states: TFetchingStates;
-    current_category:string;
+    current_category: TCategorySelectorPayload | null;
 };

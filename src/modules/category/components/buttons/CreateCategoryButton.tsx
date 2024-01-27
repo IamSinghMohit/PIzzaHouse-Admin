@@ -7,15 +7,15 @@ import { errorToast } from "@/lib/toast";
 import ModalButton from "@/modules/commponents/ModalButton";
 
 interface Props {
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
-    onClose: () => void;
+    onSuccess?: () => void;
 }
 
 function CreateCategoryButton({
     setIsLoading,
     processedImage,
-    onClose,
+    onSuccess,
 }: Props) {
     const { mutate, isPending, data } = useCreateCategory();
     const { category_price_sec, category_name } = useAppSelector(
@@ -39,9 +39,11 @@ function CreateCategoryButton({
     }
 
     useEffect(() => {
-        setIsLoading(isPending);
+        if (setIsLoading) {
+            setIsLoading(isPending);
+        }
         if (data) {
-            onClose();
+            if (onSuccess) onSuccess();
         }
     }, [isPending]);
 

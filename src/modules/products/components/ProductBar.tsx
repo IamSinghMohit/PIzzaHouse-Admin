@@ -9,7 +9,6 @@ import AppCheck from "@/modules/commponents/AppCheck";
 import CategorySelector from "@/modules/commponents/CategorySelector";
 import StatusSelector from "@/modules/commponents/StatusSelector";
 import useDebounce from "@/hooks/useDebounce";
-import { IconSearch } from "@tabler/icons-react";
 import { useProductStats } from "../hooks/useProductStats";
 import SearchInput from "@/modules/commponents/SearchInput";
 import { useMediaQuery } from "react-responsive";
@@ -60,7 +59,7 @@ export function ProductPriceRange() {
             size="sm"
             step={1}
             minValue={0}
-            maxValue={10 + (data?.max_price || 0)}
+            maxValue={data?.max_price || 10}
             defaultValue={range}
             formatOptions={{
                 style: "currency",

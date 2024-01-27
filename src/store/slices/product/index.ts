@@ -1,3 +1,4 @@
+import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 import {
     TProductSliceInitialStateType,
     TFetchingStates,
@@ -23,7 +24,6 @@ const initialState: TProductSliceInitialStateType = {
     product_price_section_attribute: {},
     default_prices: {},
     updated_fields: {
-        product_category: false,
         product_description: false,
         product_featured: false,
         product_name: false,
@@ -39,7 +39,7 @@ const initialState: TProductSliceInitialStateType = {
         product_status: "All",
         range: [0, 10],
     },
-    current_category: "",
+    current_category: null,
 };
 
 export const ProductSlice = createSlice({
@@ -127,11 +127,16 @@ export const ProductSlice = createSlice({
             };
         },
 
-        setCurrentProductCategory(state, action: PayloadAction<string>) {
+        setCurrentProductCategory(
+            state,
+            action: PayloadAction<TCategorySelectorPayload | null>,
+        ) {
             state.current_category = action.payload;
-            state.product_management.product_category =
-                action.payload.split(":")[1];
-            state.updated_fields.product_category = true;
+            if (action.payload) {
+                state.product_management.product_category = action.payload.name;
+            } else {
+                state.product_management.product_category = "";
+            }
         },
 
         setProductPriceSectionAttribute(

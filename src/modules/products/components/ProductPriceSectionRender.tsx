@@ -10,8 +10,9 @@ import { ProductContextProvider } from "../context";
 import ProductPriceInput from "./ProductPriceInput";
 import { TGetCategorySections } from "@/modules/category/schema";
 import { useProductPriceSection } from "../hooks/useProductPriceSection";
+import { Divider } from "@nextui-org/react";
 
-function DummyPriceSectionRenderer({
+export function DummyPriceSectionRenderer({
     data,
 }: {
     data: TGetCategorySections["data"];
@@ -44,10 +45,18 @@ function DummyPriceSectionRenderer({
     );
 }
 
-export function ProductPriceSectionCreate() {
+export function ProductPriceSectionCreate({
+    shouldRenderDivider,
+}: {
+    shouldRenderDivider: boolean;
+}) {
     const dispatch = useAppDispatch();
+    let id = "";
     const category = useAppSelector((state) => state.product.current_category);
-    const { data } = useCategoryPriceSections(category.split(":")[0]);
+    if (category?.isSectionExists) {
+        id = category.id;
+    }
+    const { data } = useCategoryPriceSections(id);
 
     useEffect(() => {
         if (data) {
@@ -60,17 +69,28 @@ export function ProductPriceSectionCreate() {
         }
     }, [data]);
 
-    return <DummyPriceSectionRenderer data={data || []} />;
+    return (
+        (data?.length || 0) > 0 && (
+            <>
+                {shouldRenderDivider && <Divider orientation="vertical" />}
+                <DummyPriceSectionRenderer data={data || []} />
+            </>
+        )
+    );
 }
 
-function ProductPriceSectionUpdate() {
+function ProductPriceSectionUpdate({
+    shouldRenderDivider,
+}: {
+    shouldRenderDivider: boolean;
+}) {
     const category = useAppSelector((state) => state.product.current_category);
     const productId = useAppSelector(
         (state) => state.product.product_management.product_id,
     );
     const { data } = useProductPriceSection(productId || "");
     const { data: categorySection } = useCategoryPriceSections(
-        category.split(":")[0],
+        category?.id || "",
     );
     const dispatch = useAppDispatch();
 
@@ -96,7 +116,7 @@ function ProductPriceSectionUpdate() {
             dispatch(
                 setProductPriceSectionAttribute({
                     type: "SET",
-                    data: categorySection.data,
+                    data: categorySection,
                 }),
             );
             dispatch(setDefaultProductPrices({ type: "SET", data: [] }));
@@ -105,17 +125,34 @@ function ProductPriceSectionUpdate() {
             );
         }
     }, [categorySection]);
-    const propData = categorySection ? categorySection.data : data?.sections;
-    return <DummyPriceSectionRenderer data={propData || []} />;
+    const propData = categorySection ? categorySection : data?.sections;
+    return (
+        (data?.sections.length || 0) > 0 && (
+            <>
+                {shouldRenderDivider && <Divider orientation="vertical" />}
+                <DummyPriceSectionRenderer data={propData || []} />
+            </>
+        )
+    );
 }
 
-function ProductPriceSectionRender({ type }: { type: "Update" | "Create" }) {
+function ProductPriceSectionRender({
+    type,
+    shouldRenderDivider,
+}: {
+    type: "Update" | "Create";
+    shouldRenderDivider: boolean;
+}) {
     return (
         <ProductContextProvider>
             {type == "Update" ? (
-                <ProductPriceSectionUpdate />
+                <ProductPriceSectionUpdate
+                    shouldRenderDivider={shouldRenderDivider}
+                />
             ) : (
-                <ProductPriceSectionCreate />
+                <ProductPriceSectionCreate
+                    shouldRenderDivider={shouldRenderDivider}
+                />
             )}
         </ProductContextProvider>
     );

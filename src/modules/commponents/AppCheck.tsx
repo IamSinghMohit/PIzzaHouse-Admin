@@ -1,5 +1,5 @@
+import { CrownIcon } from "@/icons";
 import { Checkbox } from "@nextui-org/react";
-import { FaCrown } from "react-icons/fa6";
 interface Props {
     isSelected?: boolean;
     onValueChange?: (e: boolean) => void;
@@ -16,7 +16,7 @@ function AppCheck({ onValueChange, isSelected, text }: Props) {
             onValueChange={onValueChange}
         >
             <div className="flex gap-1 text-primaryOrange items-center">
-                <FaCrown />{" "}
+                <CrownIcon/>
                 <span className="text-black font-bold text-[14px]">{text}</span>
             </div>
         </Checkbox>

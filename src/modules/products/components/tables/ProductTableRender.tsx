@@ -13,12 +13,10 @@ import * as dayjs from "dayjs";
 import TableActions from "@/components/Table/TableAction";
 import { memo, useMemo } from "react";
 import { ProductColumns } from "@/data/product-table";
-import { FaCrown } from "react-icons/fa6";
-import { TbCrownOff } from "react-icons/tb";
-import IconWrapper from "@/components/IconWrapper";
 import { useAppDispatch } from "@/hooks/state";
 import { TProductSchema } from "../../schema";
 import { setProductState } from "@/store/slices/product";
+import { IconCrown, IconCrownOff } from "@tabler/icons-react";
 
 interface Props {
     data: TProductSchema[];
@@ -124,12 +122,7 @@ function ProductTableRender({
                                     radius="sm"
                                     color="primary"
                                     variant="bordered"
-                                    startContent={
-                                        <IconWrapper
-                                            icon={<FaCrown />}
-                                            className="text-[18px]"
-                                        />
-                                    }
+                                    startContent={<IconCrown />}
                                 >
                                     Yes
                                 </Chip>
@@ -138,12 +131,7 @@ function ProductTableRender({
                                     radius="sm"
                                     color="secondary"
                                     variant="bordered"
-                                    startContent={
-                                        <IconWrapper
-                                            icon={<TbCrownOff />}
-                                            className="text-[18px]"
-                                        />
-                                    }
+                                    startContent={<IconCrownOff />}
                                 >
                                     No
                                 </Chip>

@@ -8,7 +8,7 @@ import {
     setProductState,
 } from "@/store/slices/product";
 import { Button, Input, Textarea } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export function ProductNameInput() {
     const [value, setValue] = useState(
@@ -101,25 +101,64 @@ export function ProductDescriptionInput() {
 }
 
 export function ProductPrice() {
-    const { product_price: price } = useAppSelector(
-        (state) => state.product.product_management,
-    );
+    const {
+        product_price_section_attribute,
+        product_management: { product_price },
+    } = useAppSelector((state) => state.product);
+    const haveSections = useMemo(() => {
+        return Object.keys(product_price_section_attribute).length > 0;
+    }, []);
+
+    const [value, setValue] = useState(product_price);
+    const [shouldUpdate, setShouldUpdate] = useState(false);
+    const [syncedValue, setSyncedValue] = useState<number | null>(null);
+    const dispatch = useAppDispatch();
+    const debounce = useDebounce(value, 300);
+
+    useEffect(() => {
+        if (shouldUpdate) {
+            if (syncedValue) {
+                setSyncedValue(null);
+            }
+            dispatch(
+                setProductState({
+                    type: "UPDATE",
+                    data: { product_price: debounce },
+                }),
+            );
+        }
+    }, [debounce]);
+
+    useEffect(() => {
+        if (product_price != value) {
+            setSyncedValue(product_price);
+        }
+    }, [product_price]);
+
     return (
         <div className={`flex`}>
             <Button
-                className={`h-[40px]  bg-red-500 rounded-md rounded-r-none text-white`}
-                isDisabled
+                className={`h-[40px] bg-red-600 rounded-md rounded-r-none text-white`}
             >
                 Price
             </Button>
             <Input
                 type="number"
-                value={`${price}`}
+                isDisabled={haveSections}
+                value={`${syncedValue ? syncedValue : value}`}
                 radius="none"
                 classNames={{
                     base: "w-[100px] h-[40px]",
                     inputWrapper: "rounded-r-md h-[40px]",
                     input: "price-input",
+                }}
+                onChange={(e) => {
+                    if (!shouldUpdate) {
+                        setShouldUpdate(true);
+                    }
+                    if (!haveSections) {
+                        setValue(parseInt(e.target.value));
+                    }
                 }}
             />
         </div>
@@ -131,6 +170,7 @@ export function ProductCheck() {
         (state) => state.product.product_management.product_featured,
     );
     const dispatch = useAppDispatch();
+    console.log(featured)
     return (
         <AppCheck
             text="Featured"
@@ -191,8 +231,7 @@ export function ProductCategorySelector() {
         <CategorySelector
             inputValue={category}
             setSelectedCategory={(e) => {
-                console.log(e);
-                dispatch(setCurrentProductCategory(e as string));
+                dispatch(setCurrentProductCategory(JSON.parse(e as any)));
             }}
         />
     );

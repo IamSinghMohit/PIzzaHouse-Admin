@@ -2,7 +2,7 @@ import { useAppSelector } from "@/hooks/state";
 import { useCallback, useRef, useState } from "react";
 import { TModalRef } from "@/types/Modal";
 import { shallowEqual } from "react-redux";
-import AppPagination from "@/components/AppPagination";
+import AppPagination from "@/modules/commponents/AppPagination";
 import { useTopings } from "../../hooks/useTopings";
 import TopingTableRender from "./TopingTableRender";
 import TopingModal from "../modals/TopingModal";

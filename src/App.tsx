@@ -6,15 +6,22 @@ import Dashboard from "./modules/home";
 import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { SocketContextProvider } from "./socketContext";
+
 import CategoryLoader from "./modules/category/CategoryLoader";
 import CreateCategoryPage from "./modules/category/CreateCategoryPage";
 import ProductLoader from "./modules/products/ProductLoader";
-import CreateProductPage from "./modules/products/CreateProductPage";
 
-const Category = lazy(() => import("./modules/category"));
-const Product = lazy(() => import("./modules/products"));
-const Orders = lazy(() => import("./modules/orders"));
-const Topings = lazy(() => import("./modules/topings"));
+import CreateProductPage from "./modules/products/CreateProductPage";
+import ViewProductPage from "./modules/products/ViewCategoryPage";
+import Category  from"./modules/category"
+import Product from"./modules/products"
+import Orders  from"./modules/orders"
+import Topings from"./modules/topings"
+
+// const Category = lazy(() => import("./modules/category"));
+// const Product = lazy(() => import("./modules/products"));
+// const Orders = lazy(() => import("./modules/orders"));
+// const Topings = lazy(() => import("./modules/topings"));
 
 const App = () => {
     const router = createBrowserRouter([
@@ -31,7 +38,7 @@ const App = () => {
                     element: <Dashboard />,
                 },
                 {
-                    path: "category/",
+                    path: "categories",
                     element: (
                         <Suspense fallback={<CategoryLoader />}>
                             <Category />
@@ -39,7 +46,7 @@ const App = () => {
                     ),
                 },
                 {
-                    path: "category/create",
+                    path: "categories/create",
                     element: <CreateCategoryPage />,
                 },
                 {
@@ -51,8 +58,12 @@ const App = () => {
                     ),
                 },
                 {
-                    path:"products/create",
-                    element:<CreateProductPage/>
+                    path: "products/create",
+                    element: <CreateProductPage />,
+                },
+                {
+                    path: "products/view",
+                    element: <ViewProductPage />,
                 },
                 {
                     path: "topings",

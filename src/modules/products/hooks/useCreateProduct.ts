@@ -1,24 +1,17 @@
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { promiseToast } from "@/lib/toast";
+import { errorToast} from "@/lib/toast";
 import { BackendError } from "@/types/api";
 
 async function createProduct(data: any): Promise<string> {
-    const promise = axios
+    return await axios
         .post("/product/admin/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
         .then((res) => res.data);
-    promiseToast(
-        promise,
-        "creating product",
-        "successfully created product",
-        (err: AxiosError<BackendError>) => `${err.response?.data.error}`
-    );
-    return await promise;
 }
 export function useCreateProduct() {
     const qeryClient = useQueryClient();
@@ -30,5 +23,8 @@ export function useCreateProduct() {
                 queryKey: ["product"],
             });
         },
+        onError:(error:AxiosError<BackendError>) => {
+            errorToast(error.response?.data.error.message || "some server error")
+        }
     });
 }
