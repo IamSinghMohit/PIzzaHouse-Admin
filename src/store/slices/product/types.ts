@@ -21,7 +21,8 @@ export type ProductSubAttributesType = {
 export type TProductUpdatedFields = Omit<Record<
     | keyof TProductManagement
     | "product_featured"
-    | "product_default_attributes",
+    | "product_default_attributes"
+    | "product_sections",
     boolean
 >,"product_id" | "product_category">
 

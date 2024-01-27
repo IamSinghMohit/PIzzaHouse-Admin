@@ -35,7 +35,6 @@ import {
     setProductState,
     setProductUpdatedFields,
 } from "@/store/slices/product";
-import CreateProductButton from "../button/CreateProductButton";
 import UpdateProductButton, {
     TUpdateProductButtonProps,
 } from "../button/UpdateProductButton";
@@ -218,25 +217,5 @@ function ProductModalUpdateProductButton({
         />
     ) : (
         <></>
-    );
-}
-function ProductModalSectionRenderer({ type }: { type: "Create" | "Update" }) {
-    const sections = useAppSelector(
-        (state) => state.product.product_price_section_attribute,
-    );
-    const haveSections = useMemo(() => {
-        return Object.keys(sections).length > 0;
-    }, [sections]);
-    console.log("have sections:", haveSections);
-    return haveSections ? (
-        <>
-            <Divider orientation="vertical" />
-            <ProductPriceSectionRender type={type} />
-        </>
-    ) : (
-        <>
-            <Divider orientation="vertical" />
-            <ProductPriceSectionRender type={type} />
-        </>
     );
 }

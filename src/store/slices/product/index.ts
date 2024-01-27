@@ -25,6 +25,7 @@ const initialState: TProductSliceInitialStateType = {
     default_prices: {},
     updated_fields: {
         product_description: false,
+        product_sections: false,
         product_featured: false,
         product_name: false,
         product_price: false,
@@ -178,6 +179,9 @@ export const ProductSlice = createSlice({
                             ) || 0;
                     });
                     state.product_management.product_price = price;
+                    if (!state.updated_fields.product_sections) {
+                        state.updated_fields.product_sections = true;
+                    }
                     break;
                 }
                 case "SET_WITH_VALUE": {
