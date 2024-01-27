@@ -1,27 +1,29 @@
+import { StatusEnum } from "@/modules/types/inex";
 import { TopingSliceInitialState } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 
 const initialState: TopingSliceInitialState = {
     toping_management: {
-        id:'',
+        id: "",
         name: "",
-        category: "",
         price: 0,
-        status: "Draft",
-        image:'',
+        status: StatusEnum.DRAFT,
+        image: "",
     },
     updated_fields: {
         name: false,
         category: false,
         price: false,
-        image:false,
+        image: false,
     },
     fetching_states: {
         name: "",
-        range: [0, 10],
+        range: [0, 0],
         category: "",
         status: "All",
     },
+    category: null,
 };
 
 export const TopingSlice = createSlice({
@@ -60,12 +62,11 @@ export const TopingSlice = createSlice({
                 }
                 default:
                     state.toping_management = {
-                        id:'',
+                        id: "",
                         name: "",
-                        category: "",
                         price: 0,
-                        status: "Draft",
-                        image:'',
+                        status: StatusEnum.DRAFT,
+                        image: "",
                     };
             }
         },
@@ -94,16 +95,31 @@ export const TopingSlice = createSlice({
         setTopingFetchingStates(
             state,
             action: PayloadAction<
-                Partial<Record<keyof TopingSliceInitialState["fetching_states"], any>>
+                Partial<
+                    Record<
+                        keyof TopingSliceInitialState["fetching_states"],
+                        any
+                    >
+                >
             >,
         ) {
-                
             state.fetching_states = {
                 ...state.fetching_states,
                 ...action.payload,
             };
         },
+        setTopingCategory(
+            state,
+            action: PayloadAction<TCategorySelectorPayload>,
+        ) {
+            state.category = action.payload;
+        },
     },
 });
 
-export const { setTopingState, setTopingFetchingStates ,setTopingUpdatedFields} = TopingSlice.actions;
+export const {
+    setTopingState,
+    setTopingFetchingStates,
+    setTopingCategory,
+    setTopingUpdatedFields,
+} = TopingSlice.actions;

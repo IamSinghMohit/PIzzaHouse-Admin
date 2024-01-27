@@ -16,7 +16,7 @@ type getTopingsType = {
 };
 
 async function getTopings(opts: getTopingsType): Promise<TGetTopingsSchema> {
-    let url = `/toping/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page${opts.page}&limit${opts.limit}`;
+    let url = `/toping/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}`;
 
     if (opts.status && opts.status !== "All") {
         url += `&status=${opts.status}`;

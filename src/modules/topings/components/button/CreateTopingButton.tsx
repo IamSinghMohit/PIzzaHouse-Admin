@@ -13,7 +13,9 @@ interface Props {
 
 function CreateTopingButton({ setIsLoading, processedImage }: Props) {
     const { mutate, isPending } = useCreateToping();
-    const { toping_management } = useAppSelector((state) => state.toping);
+    const { toping_management, category } = useAppSelector(
+        (state) => state.toping,
+    );
 
     function handleCreate() {
         if (!processedImage.file) {
@@ -22,12 +24,14 @@ function CreateTopingButton({ setIsLoading, processedImage }: Props) {
             return errorToast("name is required");
         } else if (!toping_management.price) {
             return errorToast("price is required");
+        } else if (!category) {
+            return errorToast("category is required");
         }
 
         FormDataSend(
             {
                 name: toping_management.name,
-                category: toping_management.category.split(":")[1],
+                category_id: category.id,
                 status: toping_management.status,
                 image: processedImage.file,
                 price: toping_management.price,
@@ -51,4 +55,4 @@ function CreateTopingButton({ setIsLoading, processedImage }: Props) {
     );
 }
 
-export default  CreateTopingButton;
+export default CreateTopingButton;

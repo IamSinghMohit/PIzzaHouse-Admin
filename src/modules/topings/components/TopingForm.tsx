@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import useDebounce from "@/hooks/useDebounce";
-import { setTopingState } from "@/store/slices/topings";
+import { setTopingCategory, setTopingState } from "@/store/slices/topings";
 import { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import StatusSelector from "@/modules/commponents/StatusSelector";
@@ -9,7 +9,7 @@ import CategorySelector from "@/modules/commponents/CategorySelector";
 export function TopingNameInput() {
     const [value, setValue] = useState(
         useAppSelector(
-            (state) => state.product.product_management.product_name,
+            (state) => state.toping.toping_management.name,
         ),
     );
     const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -76,7 +76,6 @@ export function TopingPrice() {
                 type="number"
                 value={`${price}`}
                 onChange={(e) => {
-                    console.log(e.target.value)
                     if (!shouldUpdate) {
                         setShouldUpdate(true);
                     }
@@ -130,20 +129,10 @@ export function TopingStatusSelector() {
 
 export function TopingCategorySelector() {
     const dispatch = useAppDispatch();
-    const category = useAppSelector(
-        (state) => state.toping.toping_management.category,
-    );
     return (
         <CategorySelector
-            inputValue={category}
             setSelectedCategory={(e) => {
-                console.log(e);
-                dispatch(
-                    setTopingState({
-                        type: "UPDATE",
-                        data: { category: e as string },
-                    }),
-                );
+                dispatch(setTopingCategory(JSON.parse(e as any)));
             }}
         />
     );

@@ -1,7 +1,6 @@
 import { StatusEnum } from "@/modules/types/inex";
 import { z, TypeOf } from "zod";
 
-
 export const TopingSchema = z.object({
     id: z.string(),
     name: z.string(),
@@ -19,5 +18,13 @@ export const GetTopingsSchema = z.object({
     pages: z.number(),
 });
 
+export const GetTopingStats = z.object({
+    success: z.boolean(),
+    data: z.object({
+        max_price: z.number(),
+    }),
+});
+
 export type TGetTopingsSchema = TypeOf<typeof GetTopingsSchema>;
 export type TTopingSchema = TypeOf<typeof TopingSchema>;
+export type TGetTopingStats = TypeOf<typeof GetTopingStats>;

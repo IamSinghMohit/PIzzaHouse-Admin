@@ -9,6 +9,7 @@ import { Card, CardBody, Button, Slider } from "@nextui-org/react";
 import { IconCubePlus } from "@tabler/icons-react";
 import { useRef, useState, useEffect } from "react";
 import TopingModal from "./modals/TopingModal";
+import { useTopingStats } from "../hooks/useTopingStats";
 
 function TopingSearchInput() {
     const [value, setValue] = useState("");
@@ -30,14 +31,9 @@ function TopingSearchInput() {
 }
 
 function TopingPriceRange() {
-    const range = useAppSelector((state) => state.toping.fetching_states.range);
     const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //     if (data) {
-    //         dispatch(setTopoingFetchingSates({ range: [0, data.max_price] }));
-    //     }
-    // }, [data]);
+    const { data  } = useTopingStats();
+    const range = useAppSelector((state) => state.toping.fetching_states.range)
 
     return (
         <Slider
@@ -51,9 +47,8 @@ function TopingPriceRange() {
             size="sm"
             step={1}
             minValue={0}
-            // maxValue={10 + (data?.max_price || 0)}
-            maxValue={10000}
             defaultValue={range}
+            maxValue={data?.max_price || 10}
             formatOptions={{
                 style: "currency",
                 currency: "INR",
@@ -69,7 +64,7 @@ function FetchingCategorySelector() {
             setSelectedCategory={(e) => {
                 dispatch(
                     setTopingFetchingStates({
-                        category: e as unknown as string,
+                        category: JSON.parse(e as any).name,
                     }),
                 );
             }}

@@ -24,10 +24,10 @@ import {
     TopingPrice,
     TopingStatusSelector,
 } from "../TopingForm";
-import { GiCrossFlare } from "react-icons/gi";
 import { setTopingState, setTopingUpdatedFields } from "@/store/slices/topings";
 import CreateTopingButton from "../button/CreateTopingButton";
 import UpdateTopingButton from "../button/UpdateTopingButton";
+import { StatusEnum } from "@/modules/types/inex";
 
 interface Props {
     type: "Create" | "Update";
@@ -38,7 +38,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
-        (state) => state.product.product_management.product_image, //  here will be product
+        (state) => state.toping.toping_management.image, 
     );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
@@ -78,8 +78,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                             id: "",
                             image: "",
                             name: "",
-                            category: "",
-                            status: "Draft",
+                            status: StatusEnum.DRAFT,
                             price: 0,
                         },
                     }),
@@ -98,7 +97,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                         <ModalHeader className="flex flex-col gap-1">
                             {type} Toping
                         </ModalHeader>
-                        <ModalBody className="flex-row gap-8 justify-between">
+                        <ModalBody className="flex-row justify-center gap-8 sm:justify-between flex-wrap">
                             <div className="flex flex-col gap-3 items-center">
                                 <ImageUploader
                                     aspectRatio={{ x: 2, y: 2 }}
@@ -111,18 +110,20 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                     }
                                 >
                                     <ImageUploader.PlaceholderContainer
-                                        baseClassName="w-[100px] h-[100px]"
+                                        baseClassName="w-[180px] h-[180px]"
                                         placeholderImage={
-                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[40px] h-[40px]" />
+                                            <ImageUploader.PlaceholderImage imageBeforeClassName="w-[100px] h-[100px]" />
                                         }
                                         placeholderImageText={
-                                            <ImageUploader.PlaceholderImageText baseClassName="text-[11px] flex gap-1" />
+                                            <ImageUploader.PlaceholderImageText baseClassName="text-[16px] flex gap-1" />
                                         }
                                     />
                                 </ImageUploader>
 
                                 <TopingNameInput />
-                                <TopingCategorySelector />
+                                {type === "Create" && (
+                                    <TopingCategorySelector />
+                                )}
                             </div>
                             <div className="flex items-center gap-3 flex-col">
                                 <TopingPrice />

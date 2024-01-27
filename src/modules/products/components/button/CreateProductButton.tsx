@@ -37,7 +37,7 @@ function CreateProductButton({
             current_category?.isSectionExists &&
             Object.keys(default_prices).length < 1
         ) {
-            return errorToast("one price attribute must be selected");
+            return errorToast("at least one price attribute must be selected");
         }
 
         let error = false;
