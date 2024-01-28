@@ -1,24 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { promiseToast } from "@/lib/toast";
+import { errorToast, successToast } from "@/lib/toast";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { BackendError } from "@/types/api";
 
 async function createToping(data: any): Promise<string> {
-    const promise = axios
+    return await axios
         .post("/toping/admin/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
         .then((res) => res.data);
-    promiseToast(
-        promise,
-        "creating product",
-        "successfully created toping",
-        (err: AxiosError<BackendError>) => `${err.response?.data.error}`,
-    );
-    return await promise;
 }
 
 export function useCreateToping() {
@@ -29,8 +22,13 @@ export function useCreateToping() {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["toping"],
-                exact: true,
             });
+            successToast("toping  created");
+        },
+        onError: (err: AxiosError<BackendError>) => {
+            errorToast(
+                err.response?.data.error.message || "some server error",
+            );
         },
     });
 }

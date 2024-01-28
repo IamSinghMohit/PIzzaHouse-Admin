@@ -7,15 +7,19 @@ export const TopingSchema = z.object({
     price: z.number(),
     image: z.string(),
     status: z.enum([StatusEnum.DRAFT, StatusEnum.PUBLISHED], {
-        errorMap: (issue, ctx) => ({ message: "enum is not valid" }),
+        errorMap: () => ({ message: "enum is not valid" }),
     }),
     category: z.string(),
     created_at: z.string(),
     updated_at: z.string(),
 });
 export const GetTopingsSchema = z.object({
-    topings: z.array(TopingSchema),
-    pages: z.number(),
+    success: z.boolean(),
+    data: z.object({
+        topings: z.array(TopingSchema),
+        pages: z.number(),
+        page: z.number(),
+    }),
 });
 
 export const GetTopingStats = z.object({

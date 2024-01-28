@@ -1,52 +1,46 @@
 import ModalButton from "@/modules/commponents/ModalButton";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import {  useAppSelector } from "@/hooks/state";
+import { useAppSelector } from "@/hooks/state";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { FormDataSend } from "@/utils";
-import { errorToast } from "@/lib/toast";
+import { useUpdateToping } from "../../hooks/useUpdateToping";
 
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
+    onSuccess?: () => void;
 }
 
-function UpdateTopingButton({ setIsLoading, processedImage }: Props) {
-    // const { mutate, isPending } = useUpdateProduct();
-    const {
-        updated_fields,
-        product_management,
-        product_price_section_attribute,
-        default_prices,
-    } = useAppSelector((state) => state.product);
+function UpdateTopingButton({
+    setIsLoading,
+    processedImage,
+    onSuccess,
+}: Props) {
+    const { mutate, data, isPending } = useUpdateToping();
+
+    const { updated_fields, toping_management } = useAppSelector(
+        (state) => state.toping,
+    );
 
     function handleUpdateProduct() {
         const obj: any = {
-            ...(updated_fields.product_name
-                ? { name: product_management.product_name }
-                : {}),
-            ...(updated_fields.product_price
-                ? { price: product_management.product_price }
-                : {}),
-            ...(updated_fields.product_description
-                ? { description: product_management.product_description }
-                : {}),
-            ...(updated_fields.product_image
-                ? { image: processedImage.file }
-                : {}),
-            ...(updated_fields.product_status
-                ? { status: product_management.product_status }
-                : {}),
-            ...(updated_fields.product_featured
-                ? { featured: product_management.product_featured }
-                : {}),
+            id: toping_management.id,
+            ...(updated_fields.name ? { name: toping_management.name } : {}),
+            ...(updated_fields.price ? { price: toping_management.price } : {}),
+            ...(updated_fields.image ? { image: processedImage.file } : {}),
         };
-        // FormDataSend(obj, mutate);
+        FormDataSend(obj, mutate);
     }
 
-    // useEffect(() => {
-    //     setIsLoading(isPending);
-    // }, [isPending]);
+    useEffect(() => {
+        if (setIsLoading) {
+            setIsLoading(isPending);
+        }
+        if (data) {
+            if (onSuccess) onSuccess();
+        }
+    }, [isPending]);
 
     return (
         <ModalButton
@@ -59,4 +53,4 @@ function UpdateTopingButton({ setIsLoading, processedImage }: Props) {
     );
 }
 
-export default  UpdateTopingButton;
+export default UpdateTopingButton;

@@ -16,13 +16,11 @@ function TopingSearchInput() {
     const dispatch = useAppDispatch();
     const debounce = useDebounce(value, 400);
     useEffect(() => {
-        if (debounce) {
-            dispatch(
-                setTopingFetchingStates({
-                    name: value,
-                }),
-            );
-        }
+        dispatch(
+            setTopingFetchingStates({
+                name: value,
+            }),
+        );
     }, [debounce]);
 
     return (
@@ -32,8 +30,14 @@ function TopingSearchInput() {
 
 function TopingPriceRange() {
     const dispatch = useAppDispatch();
-    const { data  } = useTopingStats();
-    const range = useAppSelector((state) => state.toping.fetching_states.range)
+    const { data } = useTopingStats();
+    const range = useAppSelector((state) => state.toping.fetching_states.range);
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setTopingFetchingStates({ range: [0, data.max_price] }));
+        }
+    }, [data]);
 
     return (
         <Slider
@@ -64,7 +68,7 @@ function FetchingCategorySelector() {
             setSelectedCategory={(e) => {
                 dispatch(
                     setTopingFetchingStates({
-                        category: JSON.parse(e as any).name,
+                        category: JSON.parse(e as any)?.name || "",
                     }),
                 );
             }}

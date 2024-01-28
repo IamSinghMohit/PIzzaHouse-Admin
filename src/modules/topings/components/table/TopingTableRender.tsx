@@ -16,6 +16,7 @@ import { useAppDispatch } from "@/hooks/state";
 import { TTopingSchema } from "../../schema";
 import { TopingColumns } from "@/data/topings-table";
 import { setTopingState } from "@/store/slices/topings";
+import TableLoader from "@/modules/Loader";
 
 interface Props {
     data: TTopingSchema[];
@@ -41,7 +42,6 @@ function ProductTableRender({
                 type: "SET",
                 data: {
                     id: item.id,
-                    category: item.category,
                     name: item.name,
                     price: item.price,
                     status: item.status,
@@ -70,7 +70,7 @@ function ProductTableRender({
             aria-label="Prodcut table"
             layout="auto"
             classNames={{
-                table: `${isLoading && "h-[520px]"}`,
+                table: `${isLoading && "h-[500px]"}`,
             }}
         >
             <TableHeader>
@@ -80,12 +80,13 @@ function ProductTableRender({
             </TableHeader>
             <TableBody
                 emptyContent={
-                    !isLoading && isError
-                        ? "Some error occured ❌"
-                        : "No Product found create 🔥 one!"
+                    !isLoading &&
+                    (isError
+                        ? "Some server error occured ❌"
+                        : "No Product found create 🔥 one!")
                 }
                 isLoading={isLoading}
-                loadingContent={<Spinner label="Loading..." />}
+                loadingContent={<TableLoader/>}
             >
                 {data.map((item) => (
                     <TableRow key={item.id}>

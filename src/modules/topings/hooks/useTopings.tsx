@@ -15,7 +15,9 @@ type getTopingsType = {
     page: number;
 };
 
-async function getTopings(opts: getTopingsType): Promise<TGetTopingsSchema> {
+async function getTopings(
+    opts: getTopingsType,
+): Promise<TGetTopingsSchema["data"] | undefined> {
     let url = `/toping/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}`;
 
     if (opts.status && opts.status !== "All") {
@@ -25,15 +27,19 @@ async function getTopings(opts: getTopingsType): Promise<TGetTopingsSchema> {
     if (opts.category) {
         url += `&category=${opts.category}`;
     }
-    const result = await axios.get(url).then((res) => res.data);
-    try {
-        return GetTopingsSchema.parse(result.data);
-    } catch (error) {
-        errorToast("received bad data from server");
-        return { topings: [], pages: 1 };
-    }
+    return await axios
+        .get(url)
+        .then((res) => res.data)
+        .then((res) => {
+            try {
+                return GetTopingsSchema.parse(res).data;
+            } catch (error) {
+                console.log(error);
+                errorToast("received bad data from server");
+                return undefined;
+            }
+        });
 }
-
 
 export function useTopings(opts: getTopingsType) {
     return useQuery({

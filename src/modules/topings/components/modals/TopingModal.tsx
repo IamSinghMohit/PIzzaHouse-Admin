@@ -38,7 +38,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
     const defaultImage = useAppSelector(
-        (state) => state.toping.toping_management.image, 
+        (state) => state.toping.toping_management.image,
     );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
@@ -143,11 +143,13 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 <CreateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
+                                    onSuccess={onClose}
                                 />
                             ) : (
                                 <UpdateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
+                                    onSuccess={onClose}
                                 />
                             )}
                         </ModalFooter>

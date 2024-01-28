@@ -9,10 +9,11 @@ import { useCreateToping } from "../../hooks/useCreateToping";
 interface Props {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
+    onSuccess?:() => void;
 }
 
-function CreateTopingButton({ setIsLoading, processedImage }: Props) {
-    const { mutate, isPending } = useCreateToping();
+function CreateTopingButton({ setIsLoading, processedImage ,onSuccess}: Props) {
+    const { mutate, isPending ,data} = useCreateToping();
     const { toping_management, category } = useAppSelector(
         (state) => state.toping,
     );
@@ -41,10 +42,11 @@ function CreateTopingButton({ setIsLoading, processedImage }: Props) {
     }
 
     useEffect(() => {
-        if (isPending) {
-            setIsLoading(true);
-        } else if (!isPending) {
-            setIsLoading(false);
+        if (setIsLoading) {
+            setIsLoading(isPending);
+        }
+        if (data) {
+            if (onSuccess) onSuccess();
         }
     }, [isPending]);
 

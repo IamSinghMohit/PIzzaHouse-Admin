@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/state";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState ,useEffect} from "react";
 import { TModalRef } from "@/types/Modal";
 import { shallowEqual } from "react-redux";
 import AppPagination from "@/modules/commponents/AppPagination";
@@ -11,23 +11,23 @@ import DeleteTopingModal from "../modals/DeleteTopingModal";
 function TopingTable() {
     const ProductMoalRef = useRef<TModalRef>(null);
     const DeleteModalRef = useRef<TModalRef>(null);
-    const [page, setPage] = useState(1);
     const [limit, setLimit] = useState("10");
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
     const {
         name,
         category:topingCategory,
         status,
         range,
     } = useAppSelector((state) => state.toping.fetching_states, shallowEqual);
-    const category = topingCategory ? topingCategory.split(":")[1] : "";
 
     const { data, isError, isLoading } = useTopings({
         max: range[1],
         min: range[0],
         name: name,
-        category: category,
+        category: topingCategory,
         status: status,
-        limit: limit,
+        limit: parseInt(limit),
         page: page,
     });
 
@@ -39,6 +39,10 @@ function TopingTable() {
         ProductMoalRef.current?.onOpen();
     }, []);
 
+    useEffect(() => {
+        setPages(data?.pages || 1);
+    }, [data]);
+
     return (
         <>
             <TopingTableRender
@@ -49,11 +53,11 @@ function TopingTable() {
                 onViewClick={handleViewClick}
             />
             <AppPagination
+                totalPages={pages}
                 page={page}
-                totalPages={data?.pages || 1}
                 setPage={setPage}
-                selected={limit}
                 setSelected={setLimit}
+                selected={limit}
             />
             <TopingModal type="Update" ref={ProductMoalRef} />
             <DeleteTopingModal ref={DeleteModalRef} />

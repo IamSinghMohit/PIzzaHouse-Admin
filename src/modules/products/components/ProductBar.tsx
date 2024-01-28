@@ -88,7 +88,8 @@ function FetchingCategorySelector() {
             setSelectedCategory={(e) => {
                 dispatch(
                     setProductFetchingStates({
-                        product_category: JSON.parse(e)?.name || "",
+                        product_category:
+                            JSON.parse(e as unknown as any)?.name || "",
                     }),
                 );
             }}
