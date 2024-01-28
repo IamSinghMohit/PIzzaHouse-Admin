@@ -12,7 +12,7 @@ import CreateCategoryPage from "./modules/category/CreateCategoryPage";
 import ProductLoader from "./modules/products/ProductLoader";
 
 import CreateProductPage from "./modules/products/CreateProductPage";
-import ViewProductPage from "./modules/products/ViewCategoryPage";
+import ViewProductPage from "./modules/products/ViewProductPage";
 import Category  from"./modules/category"
 import Product from"./modules/products"
 import Orders  from"./modules/orders"

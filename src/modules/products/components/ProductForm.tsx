@@ -73,7 +73,6 @@ export function ProductDescriptionInput() {
     return (
         <Textarea
             placeholder="Enter your description"
-            // size="lg"
             radius="sm"
             value={value}
             onChange={(e) => {
@@ -107,7 +106,7 @@ export function ProductPrice() {
     } = useAppSelector((state) => state.product);
     const haveSections = useMemo(() => {
         return Object.keys(product_price_section_attribute).length > 0;
-    }, []);
+    }, [product_price_section_attribute]);
 
     const [value, setValue] = useState(product_price);
     const [shouldUpdate, setShouldUpdate] = useState(false);

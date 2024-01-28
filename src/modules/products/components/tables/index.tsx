@@ -3,7 +3,7 @@ import { useProducts } from "../../hooks/useProducts";
 import ProductTableRender from "./ProductTableRender";
 import DeleteProductModal from "../modal/DeleteProductModal";
 import ProductModal from "../modal/ProductModal";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TModalRef } from "@/types/Modal";
 import { shallowEqual } from "react-redux";
 import AppPagination from "@/modules/commponents/AppPagination";
@@ -13,8 +13,9 @@ import { useNavigate } from "react-router-dom";
 function ProductTable() {
     const ProductMoalRef = useRef<TModalRef>(null);
     const DeleteModalRef = useRef<TModalRef>(null);
-    const [page, setPage] = useState(1);
     const [limit, setLimit] = useState("10");
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
     const {
         product_category,
         product_featured,
@@ -22,22 +23,22 @@ function ProductTable() {
         product_status,
         range,
     } = useAppSelector((state) => state.product.fetching_states, shallowEqual);
-    const category = product_category ? product_category.split(":")[1] : "";
     const navigate = useNavigate();
 
     const { data, isError, isLoading } = useProducts({
         max: range[1],
         min: range[0],
         name: product_name,
-        category: category,
+        category: product_category,
         featured: product_featured,
         status: product_status,
-        limit: limit,
+        limit: parseInt(limit),
         page: page,
     });
     const shouldOpenUpdateProductModal = useMediaQuery({
         query: "(min-width:825px)",
     });
+
     const handleDeleteClick = useCallback(() => {
         DeleteModalRef.current?.onOpen();
     }, []);
@@ -50,6 +51,10 @@ function ProductTable() {
         }
     }, []);
 
+    useEffect(() => {
+        setPages(data?.pages || 1);
+    }, [data]);
+
     return (
         <>
             <ProductTableRender
@@ -60,11 +65,11 @@ function ProductTable() {
                 onViewClick={handleViewClick}
             />
             <AppPagination
+                totalPages={pages}
                 page={page}
-                totalPages={data?.pages || 1}
                 setPage={setPage}
-                selected={limit}
                 setSelected={setLimit}
+                selected={limit}
             />
             <ProductModal type="Update" ref={ProductMoalRef} />
             <DeleteProductModal ref={DeleteModalRef} />

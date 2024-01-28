@@ -12,7 +12,7 @@ import { TCategorySection } from "@/store/slices/category/types";
 interface IProps {
     renderDeleteButton?: boolean;
     priceSections: TCategorySection[];
-    onDelete?: (sec: TCategorySection) => void;
+    onDelete?: (id:string) => void;
 }
 
 function CategoryPriceSectionRenderer({
@@ -35,7 +35,7 @@ function CategoryPriceSectionRenderer({
                             isIconOnly
                             onClick={() => {
                                 if (onDelete) {
-                                    onDelete(sec);
+                                    onDelete(sec.id);
                                 }
                             }}
                         >
@@ -64,14 +64,3 @@ function CategoryPriceSectionRenderer({
 }
 
 export default CategoryPriceSectionRenderer;
-/*
-    const dispatch = useAppDispatch();
-    const category_price_sec = useAppSelector(
-        (state) => state.category.category_price_sec,
-        shallowEqual,
-    );
-
-    function handleDeleteSection(id: string) {
-        dispatch(deletePriceSection(id));
-    }
- */

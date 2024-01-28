@@ -55,7 +55,6 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
         }
     }, [processedImage.file]);
 
-    console.log("create modalrendered");
     return (
         <Modal
             size="5xl"
@@ -117,7 +116,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                 Close
                             </Button>
                             <CreateCategoryButton
-                                onClose={onClose}
+                                onSuccess={onClose}
                                 setIsLoading={setIsLoading}
                                 processedImage={processedImage}
                             />

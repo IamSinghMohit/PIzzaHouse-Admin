@@ -7,7 +7,6 @@ import {
     ModalContent,
     useDisclosure,
     ModalFooter,
-    Divider,
 } from "@nextui-org/react";
 import {
     Ref,
@@ -40,6 +39,7 @@ import UpdateProductButton, {
 } from "../button/UpdateProductButton";
 import ProductPriceSectionRender from "../ProductPriceSectionRender";
 import { TProductUpdatedFields } from "@/store/slices/product/types";
+import CreateProductButton from "../button/CreateProductButton";
 
 interface Props {
     type: "Create" | "Update";
@@ -168,7 +168,10 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                     <ProductStatusSelector />
                                 </div>
                             </div>
-                            <ProductPriceSectionRender type={type} shouldRenderDivider={true}/>
+                            <ProductPriceSectionRender
+                                type={type}
+                                shouldRenderDivider={true}
+                            />
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
                             <Button
@@ -179,10 +182,19 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                             >
                                 Close
                             </Button>
-                            <ProductModalUpdateProductButton
-                                setIsLoading={setIsLoading}
-                                processedImage={processedImage}
-                            />
+                            {type == "Update" ? (
+                                <ProductModalUpdateProductButton
+                                    setIsLoading={setIsLoading}
+                                    processedImage={processedImage}
+                                    onSuccess={onClose}
+                                />
+                            ) : (
+                                <CreateProductButton
+                                    processedImage={processedImage}
+                                    setIsLoading={setIsLoading}
+                                    onSuccess={onClose}
+                                />
+                            )}
                         </ModalFooter>
                     </>
                 )}
@@ -196,6 +208,7 @@ export default forwardRef(ProductModal);
 function ProductModalUpdateProductButton({
     processedImage,
     setIsLoading,
+    onSuccess,
 }: TUpdateProductButtonProps) {
     const { updated_fields } = useAppSelector((state) => state.product);
     const [isTrue, setIsTrue] = useState(false);
@@ -214,6 +227,7 @@ function ProductModalUpdateProductButton({
         <UpdateProductButton
             setIsLoading={setIsLoading}
             processedImage={processedImage}
+            onSuccess={onSuccess}
         />
     ) : (
         <></>

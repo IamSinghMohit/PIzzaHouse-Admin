@@ -17,6 +17,7 @@ import { useAppDispatch } from "@/hooks/state";
 import { TProductSchema } from "../../schema";
 import { setProductState } from "@/store/slices/product";
 import { IconCrown, IconCrownOff } from "@tabler/icons-react";
+import TableLoader from "@/modules/Loader";
 
 interface Props {
     data: TProductSchema[];
@@ -75,7 +76,7 @@ function ProductTableRender({
             layout="auto"
             radius="sm"
             classNames={{
-                table: `${isLoading && "h-[520px]"}`,
+                table: `${isLoading && "h-[500px]"}`,
             }}
         >
             <TableHeader>
@@ -85,12 +86,13 @@ function ProductTableRender({
             </TableHeader>
             <TableBody
                 emptyContent={
-                    !isLoading && isError
-                        ? "Some error occured ❌"
-                        : "No Product found create 🔥 one!"
+                    !isLoading &&
+                    (isError
+                        ? "Some server error occured ❌"
+                        : "No Product found create 🔥 one!")
                 }
                 isLoading={isLoading}
-                loadingContent={<Spinner label="Loading..." />}
+                loadingContent={<TableLoader/>}
             >
                 {data.map((item) => (
                     <TableRow key={item.id}>

@@ -61,7 +61,7 @@ body {
 }
 
 @media (min-width: 638px) {
-    .category-table-screen {
+     .category-table-screen {
         width: calc(100vw - 146px);
     }
 }
@@ -127,7 +127,7 @@ body {
     -moz-appearance: textfield;
 }
 
-/* loading effects */
+/* loading shimmer effects */
 
 .shimmer {
     @apply  bg-gray-200 overflow-hidden relative rounded-md  
@@ -157,4 +157,8 @@ body {
     100% {
         left: 100%;
     }
+}
+/* additional class for tailwind css */
+.z-10 {
+    z-index: 10;
 }

@@ -1,7 +1,7 @@
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { errorToast} from "@/lib/toast";
+import { errorToast, successToast} from "@/lib/toast";
 import { BackendError } from "@/types/api";
 
 async function createProduct(data: any): Promise<string> {
@@ -22,6 +22,7 @@ export function useCreateProduct() {
             qeryClient.invalidateQueries({
                 queryKey: ["product"],
             });
+            successToast("product created")
         },
         onError:(error:AxiosError<BackendError>) => {
             errorToast(error.response?.data.error.message || "some server error")

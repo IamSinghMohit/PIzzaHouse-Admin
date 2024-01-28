@@ -20,7 +20,7 @@ function Navbar({}: Props) {
 
             {showToggleButton ? (
                 <div
-                    className="text-primaryOrange text-2xl w-6"
+                    className="text-primaryOrange text-2xl w-6 cursor-pointer"
                     onClick={() => setNavOpen((prev) => !prev)}
                 >
                     <HamBurgerIcon/>

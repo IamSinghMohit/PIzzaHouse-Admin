@@ -1,12 +1,18 @@
 import ImageUploader from "@/components/ImageUploader";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CategoryInput } from "./CategoryForm";
 import CategoryPriceSection from "./components/CategoryPriceSection";
 import CreateCategoryButton from "./components/buttons/CreateCategoryButton";
 import { Navigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import CategoryPriceSectionRenderer from "./components/CategoryPriceSectionRenderer";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import {
+    deletePriceSection,
+    setCategorySections,
+} from "@/store/slices/category";
 
 type Props = {};
 
@@ -16,9 +22,16 @@ function CreateCategoryPage({}: Props) {
         file: null,
     });
     const shouldRener = useMediaQuery({ query: "(max-width:750px)" });
-    if(!shouldRener){
-        return <Navigate to={"/category"}/>
+    if (!shouldRener) {
+        return <Navigate to={"/categories"} />;
     }
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        return () => {
+            dispatch(setCategorySections({ type: "REPLACE", data: [] }));
+        };
+    }, []);
     return (
         <Card radius="sm">
             <CardHeader>Create Category</CardHeader>
@@ -40,13 +53,29 @@ function CreateCategoryPage({}: Props) {
                 </ImageUploader>
                 <CategoryInput />
                 <CategoryPriceSection />
-
-                <CreateCategoryButton
-                    processedImage={processedImage}
-                />
+                <CreateCategoryPagePriceSectionRenderer />
+                <CreateCategoryButton processedImage={processedImage} />
             </CardBody>
         </Card>
     );
 }
 
 export default CreateCategoryPage;
+
+function CreateCategoryPagePriceSectionRenderer() {
+    const dispatch = useAppDispatch();
+    const category_price_sec = useAppSelector(
+        (state) => state.category.category_price_sec,
+    );
+
+    function handleDeleteSection(id: string) {
+        dispatch(deletePriceSection(id));
+    }
+    return (
+        <CategoryPriceSectionRenderer
+            renderDeleteButton={true}
+            priceSections={category_price_sec}
+            onDelete={handleDeleteSection}
+        />
+    );
+}

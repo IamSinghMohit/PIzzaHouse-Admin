@@ -11,12 +11,14 @@ interface Props {
     setIsLoading?: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
     onSuccess?: () => void;
+    className?:string;
 }
 
 function CreateProductButton({
     setIsLoading,
     processedImage,
     onSuccess,
+    className,
 }: Props) {
     const { mutate, isPending, data } = useCreateProduct();
     const { product_management, default_prices } = useAppSelector(
@@ -38,6 +40,8 @@ function CreateProductButton({
             Object.keys(default_prices).length < 1
         ) {
             return errorToast("at least one price attribute must be selected");
+        } else if (!product_management.product_category) {
+            return errorToast("category is required");
         }
 
         let error = false;
@@ -130,7 +134,11 @@ function CreateProductButton({
     }, [isPending]);
 
     return (
-        <ModalButton isLoading={isPending} onPress={handleCreate}>
+        <ModalButton
+            isLoading={isPending}
+            onPress={handleCreate}
+            className={className}
+        >
             Create
         </ModalButton>
     );

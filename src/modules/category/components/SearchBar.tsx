@@ -1,11 +1,35 @@
 import { Card, CardBody, Button } from "@nextui-org/react";
-import { useRef } from "react";
 import { IconRowInsertBottom } from "@tabler/icons-react";
 import { TModalRef } from "@/types/Modal";
-import SearchCategoryInput from "./SearchCategoryInput";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import CreateCategoryModal from "./modals/CreateCategoryModal";
+import SearchInput from "@/modules/commponents/SearchInput";
+import { useAppDispatch } from "@/hooks/state";
+import { setCategorySearchName } from "@/store/slices/category";
+import { useEffect, useState ,useRef} from "react";
+import useDebounce from "@/hooks/useDebounce";
+
+function SearchCategoryInput() {
+    const [value, setValue] = useState("");
+    const dispatch = useAppDispatch();
+    const debouncedText = useDebounce(value, 400);
+
+    useEffect(() => {
+        dispatch(setCategorySearchName(debouncedText));
+    }, [debouncedText]);
+
+    return (
+        <div className="w-[255px]">
+            <SearchInput
+                value={value}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                }}
+            />
+        </div>
+    );
+}
 
 function SearchBar() {
     const ModalRef = useRef<TModalRef | null>(null);

@@ -8,12 +8,14 @@ import {
     ProductCategorySelector,
     ProductDescriptionInput,
 } from "./components/ProductForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateProductButton from "./components/button/CreateProductButton";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import ProductPriceSectionRender from "./components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
+import { useAppDispatch } from "@/hooks/state";
+import { setProductState } from "@/store/slices/product";
 
 type Props = {};
 
@@ -23,11 +25,30 @@ function CreateProductPage({}: Props) {
         file: null,
     });
     const shouldRedirectBack = useMediaQuery({ query: "(min-width:800px)" });
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     if (shouldRedirectBack) {
         navigate("products");
     }
-
+    useEffect(() => {
+        return () => {
+            dispatch(
+                setProductState({
+                    type: "SET",
+                    data: {
+                        product_id: "",
+                        product_name: "",
+                        product_image: "",
+                        product_category: "",
+                        product_featured: false,
+                        product_status: "Draft",
+                        product_price: 0,
+                        product_description: "",
+                    },
+                }),
+            );
+        };
+    }, []);
     return (
         <Card radius="sm">
             <CardHeader>Create Product</CardHeader>
@@ -65,10 +86,14 @@ function CreateProductPage({}: Props) {
                         <ProductStatusSelector />
                     </div>
                 </div>
-                <ProductPriceSectionRender type="Create" />
+                <ProductPriceSectionRender
+                    type="Create"
+                    shouldRenderDivider={false}
+                />
                 <CardFooter className="flex justify-end">
                     <CreateProductButton
                         processedImage={processedImage}
+                        className="z-10"
                     />
                 </CardFooter>
             </CardBody>

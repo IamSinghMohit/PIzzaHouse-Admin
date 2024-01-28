@@ -28,7 +28,6 @@ function ViewProductPage({}: Props) {
     const defaultImage = useAppSelector(
         (state) => state.product.product_management.product_image,
     );
-    const navigate = useNavigate();
     if (shouldRedirectBack) {
         <Navigate to="/products" />;
     }

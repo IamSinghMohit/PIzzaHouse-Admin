@@ -15,7 +15,7 @@ type getProductsType = {
 };
 
 async function getProducts(opts: getProductsType): Promise<TGetProductsSchema> {
-    let url = `/product/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page${opts.page}&limit${opts.limit}`;
+    let url = `/product/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}&category=${opts.category}`;
 
     if (opts.featured !== undefined) {
         url += `&featured=${opts.featured}`;
@@ -25,16 +25,18 @@ async function getProducts(opts: getProductsType): Promise<TGetProductsSchema> {
         url += `&status=${opts.status}`;
     }
 
-    if (opts.category) {
-        url += `&category=${opts.category}`;
-    }
-    const result = await axios.get(url).then((res) => res.data);
-    try {
-        return GetProductsSchema.parse(result.data);
-    } catch (error) {
-        errorToast("received bad data from server");
-        return { products: [], pages: 1 };
-    }
+    return await axios
+        .get(url)
+        .then((res) => res.data)
+        .then((res) => {
+            try {
+                return GetProductsSchema.parse(res.data);
+            } catch (error) {
+                console.log(error)
+                errorToast("received bad data from server");
+                return Error("received bad data from server");
+            }
+        });
 }
 
 export function useProducts(opts: getProductsType) {

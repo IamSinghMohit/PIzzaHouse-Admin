@@ -19,13 +19,11 @@ export function ProductSearchInput() {
     const dispatch = useAppDispatch();
     const debounce = useDebounce(value, 400);
     useEffect(() => {
-        if (debounce) {
-            dispatch(
-                setProductFetchingStates({
-                    product_name: value,
-                }),
-            );
-        }
+        dispatch(
+            setProductFetchingStates({
+                product_name: value,
+            }),
+        );
     }, [debounce]);
 
     return (
@@ -90,7 +88,7 @@ function FetchingCategorySelector() {
             setSelectedCategory={(e) => {
                 dispatch(
                     setProductFetchingStates({
-                        product_category: e as unknown as string,
+                        product_category: JSON.parse(e)?.name || "",
                     }),
                 );
             }}

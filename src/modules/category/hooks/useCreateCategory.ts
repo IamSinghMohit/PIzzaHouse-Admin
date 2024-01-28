@@ -5,7 +5,7 @@ import { CategorySchema, TCategorySchema } from "../schema";
 import { BackendError } from "@/types/api";
 import { AxiosError } from "axios";
 
-async function createCategory(data: any): Promise<TCategorySchema | null> {
+async function createCategory(data: any): Promise<TCategorySchema | undefined> {
     const result = await axios
         .post("/category/admin/create", data, {
             headers: {

@@ -52,9 +52,10 @@ function CategoryTableRender({
             </TableHeader>
             <TableBody
                 emptyContent={
-                    !isLoading && isError
-                        ? "Some server occured ❌"
-                        : "No Category found create 🔥 one!"
+                    !isLoading &&
+                    (isError
+                        ? "Some server error occured ❌"
+                        : "No Category found create 🔥 one!")
                 }
                 isLoading={isLoading}
                 loadingContent={<TableLoader />}
