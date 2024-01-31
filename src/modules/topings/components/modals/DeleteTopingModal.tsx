@@ -13,7 +13,7 @@ function DeleteTopinModal({}, ref: Ref<TModalRef>) {
     const name = useAppSelector(
         (state) => state.toping.toping_management.name,
     );
-    // const { mutate } = useDeleteProduct();
+
     const handleDeleteProduct = () => {
         mutate(id || "");
     };
