@@ -18,8 +18,8 @@ body {
 
 /* Chrome, Edge and Safari */
 *::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
+    height: 4px;
+    width: 4px;
 }
 *::-webkit-scrollbar-track {
     background-color: #dfe9eb;
@@ -161,4 +161,7 @@ body {
 /* additional class for tailwind css */
 .z-10 {
     z-index: 10;
+}
+.min-h-screen-nav {
+    min-height:calc(100vh - 60px);
 }

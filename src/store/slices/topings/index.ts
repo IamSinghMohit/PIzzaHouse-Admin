@@ -16,6 +16,7 @@ const initialState: TopingSliceInitialState = {
         category: false,
         price: false,
         image: false,
+        status:false,
     },
     fetching_states: {
         name: "",

@@ -29,6 +29,7 @@ function UpdateTopingButton({
             ...(updated_fields.name ? { name: toping_management.name } : {}),
             ...(updated_fields.price ? { price: toping_management.price } : {}),
             ...(updated_fields.image ? { image: processedImage.file } : {}),
+            ...(updated_fields.status ? { status: toping_management.status} : {}),
         };
         FormDataSend(obj, mutate);
     }

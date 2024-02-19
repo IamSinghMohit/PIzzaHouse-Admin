@@ -13,7 +13,9 @@ export default {
                 darkOrange:'#E27C09',
                 primaryBalck:'#101010',
                 secondaryBlack:'#282828',
-                beforeColor:'rgba(255, 147, 67, 0.11)'
+                primaryRed:'#FE550D',
+                beforeColor:'rgba(255, 147, 67, 0.11)',
+                primaryOrangeAlpha:'rgba(254, 129, 11, 0.46)',
             },
             screens:{
                 'xs':'450px'

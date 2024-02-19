@@ -5,8 +5,6 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Avatar,
-    Spinner,
     Chip,
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
@@ -17,6 +15,7 @@ import { TTopingSchema } from "../../schema";
 import { TopingColumns } from "@/data/topings-table";
 import { setTopingState } from "@/store/slices/topings";
 import TableLoader from "@/modules/Loader";
+import ClImage from "@/modules/commponents/ClImage";
 
 interface Props {
     data: TTopingSchema[];
@@ -83,15 +82,15 @@ function ProductTableRender({
                     !isLoading &&
                     (isError
                         ? "Some server error occured ❌"
-                        : "No Product found create 🔥 one!")
+                        : "No Toping found create 🔥 one!")
                 }
                 isLoading={isLoading}
-                loadingContent={<TableLoader/>}
+                loadingContent={<TableLoader />}
             >
                 {data.map((item) => (
                     <TableRow key={item.id}>
                         <TableCell>
-                            <Avatar src={item.image} size="lg" radius="sm" />
+                            <ClImage imageId={item.image} />
                         </TableCell>
                         <TableCell>{item.name}</TableCell>
                         <TableCell>{item.category}</TableCell>

@@ -12,7 +12,7 @@ function TabList({}: Props) {
         <Tabs
             classNames={{
                 cursor: "w-full w-full h-[45px]",
-                tabList: "flex flex-col p-0 gap-4",
+                tabList: "flex flex-col p-0 gap-4 h-full",
                 base: "bg-white border-b-1 rounded-b-lg w-[220px]",
                 tabContent: `group-data-[selected=true]:text-white text-md w-[220px] mt-3 ml-3`,
             }}

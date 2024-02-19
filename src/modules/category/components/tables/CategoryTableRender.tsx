@@ -15,6 +15,7 @@ import * as dayjs from "dayjs";
 import TableAction from "@/components/Table/TableAction";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
 import TableLoader from "@/modules/Loader";
+import ClImage from "@/modules/commponents/ClImage";
 
 interface Props {
     data: TCategorySchema[];
@@ -64,11 +65,7 @@ function CategoryTableRender({
                     data.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                <Avatar
-                                    src={item.image}
-                                    size="lg"
-                                    radius="sm"
-                                />
+                                <ClImage imageId={item.image}/>
                             </TableCell>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>

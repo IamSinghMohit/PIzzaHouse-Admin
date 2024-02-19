@@ -5,7 +5,6 @@ import Layout from "./components/Layout";
 import Dashboard from "./modules/home";
 import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { SocketContextProvider } from "./socketContext";
 
 import CategoryLoader from "./modules/category/CategoryLoader";
 import CreateCategoryPage from "./modules/category/CreateCategoryPage";
@@ -13,10 +12,10 @@ import ProductLoader from "./modules/products/ProductLoader";
 
 import CreateProductPage from "./modules/products/CreateProductPage";
 import ViewProductPage from "./modules/products/ViewProductPage";
-import Category  from"./modules/category"
-import Product from"./modules/products"
-import Orders  from"./modules/orders"
-import Topings from"./modules/topings"
+import Category from "./modules/category";
+import Product from "./modules/products";
+import Orders from "./modules/orders";
+import Topings from "./modules/topings";
 
 // const Category = lazy(() => import("./modules/category"));
 // const Product = lazy(() => import("./modules/products"));
@@ -26,12 +25,7 @@ import Topings from"./modules/topings"
 const App = () => {
     const router = createBrowserRouter([
         {
-            element: (
-                <SocketContextProvider>
-                    {" "}
-                    <Layout />
-                </SocketContextProvider>
-            ),
+            element: <Layout />,
             children: [
                 {
                     path: "/",

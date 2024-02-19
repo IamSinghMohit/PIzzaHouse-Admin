@@ -13,6 +13,7 @@ export interface TopingSliceInitialState {
         price: boolean;
         category: boolean;
         image:boolean;
+        status:boolean;
     };
     fetching_states :{
         name:string;

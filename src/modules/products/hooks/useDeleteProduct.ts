@@ -23,7 +23,6 @@ export function useDeleteProduct() {
         mutationKey: ["product", "delete"],
         mutationFn: deleteProduct,
         onMutate: (id: string) => {
-            queryClient.cancelQueries({ queryKey: ["product"] });
             const prevData = queryClient.getQueryData(queryKeys) as TGetProductsSchema;
             queryClient.setQueryData(queryKeys, () => {
                 return prevData.filter((pro) => {

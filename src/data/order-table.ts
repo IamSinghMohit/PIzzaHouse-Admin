@@ -26,8 +26,5 @@ export const OrderColumns = [
     {
         id: "12d301b5-cfbb-46df-8313-e943300dbebb",
         name: "PLACED AT",
-    },{
-        id:"65ef3313-1292-438c-abc0-4daafa37b4e7",
-        name:"ACTION"
-    }
+    },
 ];

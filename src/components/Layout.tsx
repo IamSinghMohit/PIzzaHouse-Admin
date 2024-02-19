@@ -32,7 +32,7 @@ function Layout() {
             <Navbar />
             <div className="md:flex">
                 {showTabList && <TabList />}
-                <div className="layout bg-gray-100 p-2 py-1 flex-grow min-w-[100px]">
+                <div className="layout bg-gray-100 p-2 py-1 flex-grow min-w-[100px] min-h-screen-nav">
                     <UrlBreadCrumbs/>
                     <Outlet />
                 </div>

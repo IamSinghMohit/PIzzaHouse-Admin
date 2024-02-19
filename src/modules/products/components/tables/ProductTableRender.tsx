@@ -6,7 +6,6 @@ import {
     TableRow,
     TableCell,
     Avatar,
-    Spinner,
     Chip,
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
@@ -18,6 +17,7 @@ import { TProductSchema } from "../../schema";
 import { setProductState } from "@/store/slices/product";
 import { IconCrown, IconCrownOff } from "@tabler/icons-react";
 import TableLoader from "@/modules/Loader";
+import ClImage from "@/modules/commponents/ClImage";
 
 interface Props {
     data: TProductSchema[];
@@ -97,7 +97,7 @@ function ProductTableRender({
                 {data.map((item) => (
                     <TableRow key={item.id}>
                         <TableCell>
-                            <Avatar src={item.image} size="lg" radius="sm" />
+                            <ClImage imageId={item.image}/>
                         </TableCell>
                         <TableCell>{item.name}</TableCell>
                         <TableCell>{item.category}</TableCell>
