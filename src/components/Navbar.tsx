@@ -13,7 +13,7 @@ function Navbar({}: Props) {
     const [navOpen, setNavOpen] = useState(false);
     const showToggleButton = useMediaQuery({ query: "(max-width:770px)" });
     return (
-        <nav className="bg-white h-[50px] p-1 px-2 shadow-md flex justify-between items-center">
+        <nav className="bg-white h-[50px] p-1 px-2 shadow-sm flex justify-between items-center sticky top-0 z-50">
             <div className="w-[140px]">
                 <img src={Logo} alt="logo image" className="w-full h-full" />
             </div>

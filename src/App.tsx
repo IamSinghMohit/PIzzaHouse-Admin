@@ -25,10 +25,14 @@ import Topings from "./modules/topings";
 const App = () => {
     const router = createBrowserRouter([
         {
+            path: "/",
+            element: <Login />,
+        },
+        {
             element: <Layout />,
             children: [
                 {
-                    path: "/",
+                    path: "home",
                     element: <Dashboard />,
                 },
                 {
@@ -68,10 +72,6 @@ const App = () => {
                     element: <Orders />,
                 },
             ],
-        },
-        {
-            path: "/",
-            element: <Login />,
         },
     ]);
     return (
