@@ -113,7 +113,7 @@ function AdminCard({
     increased,
 }: Props) {
     return (
-        <Card radius="sm" className="max-h-[145px]">
+        <Card radius="sm" className="h-[145px]">
             <CardHeader className="flex items-center justify-between gap-2">
                 <div className="p-3 rounded-xl bg-primaryOrangeAlpha">
                     <div className="p-1 bg-primaryRed rounded-2xl text-white">

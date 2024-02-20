@@ -2,26 +2,36 @@ import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./modules/auth";
 import Layout from "./components/Layout";
-import Dashboard from "./modules/home";
 import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import CategoryLoader from "./modules/category/CategoryLoader";
-import CreateCategoryPage from "./modules/category/CreateCategoryPage";
-import ProductLoader from "./modules/products/ProductLoader";
+import NotFound from "./components/NotFound";
 
-import CreateProductPage from "./modules/products/CreateProductPage";
-import ViewProductPage from "./modules/products/ViewProductPage";
-import Category from "./modules/category";
-import Product from "./modules/products";
-import Orders from "./modules/orders";
-import Topings from "./modules/topings";
+// pages loaders
 import DashboardLoader from "./modules/home/DashboardLoader";
+import ProductLoader from "./modules/products/ProductLoader";
+import CategoryLoader from "./modules/category/CategoryLoader";
+import TopingLoader from "./modules/topings/TopingLoader";
+import OrderLoader from "./modules/orders/OrderLoader";
+import CreateCategoryPageLoader from "./modules/category/create/CreateCategoryPageLoader";
+import ViewProductPageLoader from "./modules/products/view/ViewProductPageLoader";
+import CreateProductPageLoader from "./modules/products/create/CreateProductPageLoader";
 
-// const Category = lazy(() => import("./modules/category"));
-// const Product = lazy(() => import("./modules/products"));
-// const Orders = lazy(() => import("./modules/orders"));
-// const Topings = lazy(() => import("./modules/topings"));
+// pages
+const CreateProductPage = lazy(
+    () => import("./modules/products/create/CreateProductPage"),
+);
+const CreateCategoryPage = lazy(
+    () => import("./modules/category/create/CreateCategoryPage"),
+);
+const ViewProductPage = lazy(
+    () => import("./modules/products/view/ViewProductPage"),
+);
+const Category = lazy(() => import("./modules/category"));
+const Product = lazy(() => import("./modules/products"));
+const Orders = lazy(() => import("./modules/orders"));
+const Topings = lazy(() => import("./modules/topings"));
+const Dashboard = lazy(() => import("./modules/home"));
 
 const App = () => {
     const router = createBrowserRouter([
@@ -34,7 +44,11 @@ const App = () => {
             children: [
                 {
                     path: "home",
-                    element: <DashboardLoader/>,
+                    element: (
+                        <Suspense fallback={<DashboardLoader />}>
+                            <Dashboard />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "categories",
@@ -46,7 +60,11 @@ const App = () => {
                 },
                 {
                     path: "categories/create",
-                    element: <CreateCategoryPage />,
+                    element: (
+                        <Suspense fallback={<CreateCategoryPageLoader />}>
+                            <CreateCategoryPage />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "products",
@@ -58,21 +76,41 @@ const App = () => {
                 },
                 {
                     path: "products/create",
-                    element: <CreateProductPage />,
+                    element: (
+                        <Suspense fallback={<CreateProductPageLoader />}>
+                            <CreateProductPage />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "products/view",
-                    element: <ViewProductPage />,
+                    element: (
+                        <Suspense fallback={<ViewProductPageLoader />}>
+                            <ViewProductPage />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "topings",
-                    element: <Topings />,
+                    element: (
+                        <Suspense fallback={<TopingLoader />}>
+                            <Topings />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "orders",
-                    element: <Orders />,
+                    element: (
+                        <Suspense fallback={<OrderLoader />}>
+                            <Orders />
+                        </Suspense>
+                    ),
                 },
             ],
+        },
+        {
+            path: "*",
+            element: <NotFound />,
         },
     ]);
     return (

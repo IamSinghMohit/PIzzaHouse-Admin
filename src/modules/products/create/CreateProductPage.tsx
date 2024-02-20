@@ -7,12 +7,12 @@ import {
     ProductNameInput,
     ProductCategorySelector,
     ProductDescriptionInput,
-} from "./components/ProductForm";
+} from "../components/ProductForm";
 import { useEffect, useState } from "react";
-import CreateProductButton from "./components/button/CreateProductButton";
+import CreateProductButton from "../components/button/CreateProductButton";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import ProductPriceSectionRender from "./components/ProductPriceSectionRender";
+import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch } from "@/hooks/state";
 import { setProductState } from "@/store/slices/product";
@@ -71,21 +71,17 @@ function CreateProductPage({}: Props) {
                     </ImageUploader>
                     <ProductNameInput />
                 </div>
-                <div className="max-w-[320px] sm:max-w-full mx-auto">
-                    <div className="flex gap-3 flex-wrap">
-                        <div className="w-[280px]">
-                            <ProductDescriptionInput />
-                        </div>
-                        <div className="flex gap-2 flex-col">
-                            <ProductCategorySelector />
-                            <ProductPrice />
-                        </div>
-                    </div>
+
+                <div className="create-product-page-grid">
+                    <ProductDescriptionInput />
+                    <ProductCategorySelector />
+                    <ProductPrice />
                     <div className="flex items-center gap-2">
                         <ProductCheck />
                         <ProductStatusSelector />
                     </div>
                 </div>
+
                 <ProductPriceSectionRender
                     type="Create"
                     shouldRenderDivider={false}

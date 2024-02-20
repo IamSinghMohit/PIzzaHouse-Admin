@@ -65,6 +65,7 @@ function FetchingCategorySelector() {
     const dispatch = useAppDispatch();
     return (
         <CategorySelector
+            className="max-w-full"
             setSelectedCategory={(e) => {
                 dispatch(
                     setTopingFetchingStates({
@@ -116,16 +117,12 @@ function TopingBar() {
     const ModalRef = useRef<TModalRef | null>(null);
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
-            <CardBody className="flex-row justify-between">
-                <div className="flex gap-8 ">
-                    <div className="flex flex-col gap-2">
-                        <TopingSearchInput />
-                        <FetchingCategorySelector />
-                    </div>
-                    <div className="flex gap-2 flex-col w-[250px]">
-                        <FetchingTopingStatusSelector />
-                        <TopingPriceRange />
-                    </div>
+            <CardBody className="flex-row justify-between flex-wrap gap-3">
+                <div className="bar-grid">
+                    <TopingSearchInput />
+                    <FetchingCategorySelector />
+                    <FetchingTopingStatusSelector />
+                    <TopingPriceRange />
                 </div>
                 <Button
                     color="primary"

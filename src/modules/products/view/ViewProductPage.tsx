@@ -6,14 +6,14 @@ import {
     ProductStatusSelector,
     ProductNameInput,
     ProductDescriptionInput,
-} from "./components/ProductForm";
-import { useMemo, useState ,useEffect} from "react";
+} from "../components/ProductForm";
+import { useMemo, useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Navigate, useNavigate } from "react-router-dom";
-import ProductPriceSectionRender from "./components/ProductPriceSectionRender";
+import { Navigate } from "react-router-dom";
+import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import UpdateProductButton from "./components/button/UpdateProductButton";
+import UpdateProductButton from "../components/button/UpdateProductButton";
 import { setProductUpdatedFields } from "@/store/slices/product";
 
 type Props = {};
@@ -23,7 +23,7 @@ function ViewProductPage({}: Props) {
         url: "",
         file: null,
     });
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const shouldRedirectBack = useMediaQuery({ query: "(min-width:800px)" });
     const defaultImage = useAppSelector(
         (state) => state.product.product_management.product_image,

@@ -85,6 +85,7 @@ function FetchingCategorySelector() {
     const dispatch = useAppDispatch();
     return (
         <CategorySelector
+            className="max-w-full"
             setSelectedCategory={(e) => {
                 dispatch(
                     setProductFetchingStates({
@@ -139,8 +140,8 @@ function ProductBar() {
     const navigate = useNavigate();
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
-            <CardBody className="">
-                <div className="grid gap-3 grid-rows-4">
+            <CardBody className="flex-row justify-between flex-wrap gap-3">
+                <div className="bar-grid">
                     <ProductSearchInput />
                     <FetchingCategorySelector />
                     <div className="flex gap-2 items-start flex-wrap">

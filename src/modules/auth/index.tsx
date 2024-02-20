@@ -39,7 +39,7 @@ function Login() {
     return (
         <div className="h-screen w-screen max-w-[1536px] pt-10 sm:pt-16">
             <Card
-                className="flex flex-col w-[340px] justify-center p-2 pb-4 mx-auto"
+                className="flex flex-col w-[340px] justify-center p-4 pb-6 mx-auto"
                 shadow="sm"
                 radius="sm"
             >

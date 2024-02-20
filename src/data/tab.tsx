@@ -10,7 +10,7 @@ export const TAB = [
         key: "home",
         iconText: "Home",
         icon: <IconLayoutDashboard />,
-        to: "",
+        to: "home",
     },
     {
         id: "6555108a1e2da48a28041593",
