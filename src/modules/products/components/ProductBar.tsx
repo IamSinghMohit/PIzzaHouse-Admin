@@ -139,19 +139,15 @@ function ProductBar() {
     const navigate = useNavigate();
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
-            <CardBody className="flex-row justify-between flex-wrap max-w-[270px] sm:max-w-full mx-auto gap-3">
-                <div className="flex gap-8 flex-wrap">
-                    <div className="flex flex-col gap-2">
-                        <ProductSearchInput />
-                        <FetchingCategorySelector />
+            <CardBody className="">
+                <div className="grid gap-3 grid-rows-4">
+                    <ProductSearchInput />
+                    <FetchingCategorySelector />
+                    <div className="flex gap-2 items-start flex-wrap">
+                        <FetchingProductStatusSelector />
+                        <ProductSearchCheck />
                     </div>
-                    <div className="flex gap-2 flex-col">
-                        <div className="flex gap-2 items-start flex-wrap">
-                            <FetchingProductStatusSelector />
-                            <ProductSearchCheck />
-                        </div>
-                        <ProductPriceRange />
-                    </div>
+                    <ProductPriceRange />
                 </div>
                 <Button
                     color="primary"

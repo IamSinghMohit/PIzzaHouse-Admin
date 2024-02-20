@@ -16,6 +16,7 @@ import Category from "./modules/category";
 import Product from "./modules/products";
 import Orders from "./modules/orders";
 import Topings from "./modules/topings";
+import DashboardLoader from "./modules/home/DashboardLoader";
 
 // const Category = lazy(() => import("./modules/category"));
 // const Product = lazy(() => import("./modules/products"));
@@ -33,7 +34,7 @@ const App = () => {
             children: [
                 {
                     path: "home",
-                    element: <Dashboard />,
+                    element: <DashboardLoader/>,
                 },
                 {
                     path: "categories",
