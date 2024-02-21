@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { CategoryColumns } from "@/data/cateogry-table";
 import { useAppDispatch } from "@/hooks/state";
-import { Avatar } from "@nextui-org/avatar";
 import {
     Table,
     TableHeader,
@@ -14,8 +13,8 @@ import { TCategorySchema } from "../../schema";
 import * as dayjs from "dayjs";
 import TableAction from "@/components/Table/TableAction";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
-import TableLoader from "@/modules/Loader";
 import ClImage from "@/modules/commponents/ClImage";
+import { TableLoader } from "@/modules/loaders";
 
 interface Props {
     data: TCategorySchema[];

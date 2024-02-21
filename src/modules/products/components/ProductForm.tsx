@@ -169,7 +169,7 @@ export function ProductCheck() {
         (state) => state.product.product_management.product_featured,
     );
     const dispatch = useAppDispatch();
-    console.log(featured)
+    console.log(featured);
     return (
         <AppCheck
             text="Featured"
@@ -221,7 +221,7 @@ export function ProductStatusSelector() {
     );
 }
 
-export function ProductCategorySelector() {
+export function ProductCategorySelector({ className }: { className?: string }) {
     const dispatch = useAppDispatch();
     const category = useAppSelector(
         (state) => state.product.product_management.product_category,
@@ -229,6 +229,7 @@ export function ProductCategorySelector() {
     return (
         <CategorySelector
             inputValue={category}
+            className={className}
             setSelectedCategory={(e) => {
                 dispatch(setCurrentProductCategory(JSON.parse(e as any)));
             }}

@@ -13,19 +13,19 @@ function Layout() {
     const dispatch = useAppDispatch();
     const { user, isTriedToAutoLogin } = useAppSelector((state) => state.user);
 
-    const { data } = useUserAutoLogin({
+    const { data ,isError} = useUserAutoLogin({
         enabled: !user && !isTriedToAutoLogin,
     });
 
     useEffect(() => {
         if (!user && data) {
             dispatch(setUser(data));
-        } else if (!user) {
+        } else if (!user && isError) {
             dispatch(setTriedToLogin(true));
-            // navigate("/");
-            console.log("not logined");
+            navigate("/");
         }
     }, [data]);
+
     const showTabList = useMediaQuery({ query: "(min-width:770px)" });
     return true ? (
         <>

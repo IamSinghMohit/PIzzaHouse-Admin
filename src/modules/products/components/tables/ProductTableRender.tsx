@@ -16,8 +16,8 @@ import { useAppDispatch } from "@/hooks/state";
 import { TProductSchema } from "../../schema";
 import { setProductState } from "@/store/slices/product";
 import { IconCrown, IconCrownOff } from "@tabler/icons-react";
-import TableLoader from "@/modules/Loader";
 import ClImage from "@/modules/commponents/ClImage";
+import { TableLoader } from "@/modules/loaders";
 
 interface Props {
     data: TProductSchema[];

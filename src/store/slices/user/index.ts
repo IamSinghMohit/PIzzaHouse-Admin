@@ -5,7 +5,6 @@ import { UserSchemaType } from "@/modules/auth/schema";
 const initialState: UserSliceState = {
     user: null,
     isTriedToAutoLogin: false,
-    isNavOpen: false,
 };
 export const UserSlice = createSlice({
     name: "user",
@@ -22,13 +21,6 @@ export const UserSlice = createSlice({
         setTriedToLogin(state, action: PayloadAction<boolean>) {
             state.isTriedToAutoLogin = action.payload;
         },
-
-        setNavOpen(state) {
-            state.isNavOpen = !state.isNavOpen;
-        },
-        mutateNavOpen(state, action: PayloadAction<boolean>) {
-            state.isNavOpen = action.payload;
-        },
     },
 });
 // export default UserSlice.reducer;
@@ -36,6 +28,4 @@ export const {
     setUser,
     removeUser,
     setTriedToLogin,
-    setNavOpen,
-    mutateNavOpen,
 } = UserSlice.actions;

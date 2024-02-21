@@ -12,10 +12,10 @@ import DashboardLoader from "./modules/home/DashboardLoader";
 import ProductLoader from "./modules/products/ProductLoader";
 import CategoryLoader from "./modules/category/CategoryLoader";
 import TopingLoader from "./modules/topings/TopingLoader";
-import OrderLoader from "./modules/orders/OrderLoader";
 import CreateCategoryPageLoader from "./modules/category/create/CreateCategoryPageLoader";
 import ViewProductPageLoader from "./modules/products/view/ViewProductPageLoader";
 import CreateProductPageLoader from "./modules/products/create/CreateProductPageLoader";
+import { TableSkaletonLoader } from "./modules/loaders";
 
 // pages
 const CreateProductPage = lazy(
@@ -101,7 +101,7 @@ const App = () => {
                 {
                     path: "orders",
                     element: (
-                        <Suspense fallback={<OrderLoader />}>
+                        <Suspense fallback={<TableSkaletonLoader />}>
                             <Orders />
                         </Suspense>
                     ),

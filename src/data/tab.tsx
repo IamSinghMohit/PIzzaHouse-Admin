@@ -21,7 +21,7 @@ export const TAB = [
     },
     {
         id: "655510951e2da48a28041594",
-        key: "category",
+        key: "categories",
         iconText: "Categories",
         icon: <IconCategory2 />,
         to: "categories",

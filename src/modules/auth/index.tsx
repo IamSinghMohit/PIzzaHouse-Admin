@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { setTriedToLogin, setUser } from "@/store/slices/user";
@@ -6,12 +6,38 @@ import { useUserAutoLogin } from "@/modules/auth/hooks/userUserAutoLogin";
 import { useUserLogin } from "@/modules/auth/hooks/useUserLogin";
 import { Button, Card, Input } from "@nextui-org/react";
 import LogoImage from "@/assets/logo.svg";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+type formValues = {
+    email: string;
+    password: string;
+};
 function Login() {
-    // const { user, isTriedToAutoLogin } = useAppSelector((state) => state.user);
-    // const { isError, data: queryData } = useUserAutoLogin({
-    //     enabled: !user && !isTriedToAutoLogin,
-    // });
+    const { user, isTriedToAutoLogin } = useAppSelector((state) => state.user);
+    const { isError, data: queryData } = useUserAutoLogin({
+        enabled: !user && !isTriedToAutoLogin,
+    });
+    const schema = z.object({
+        email: z
+            .string()
+            .email("Invalid email address")
+            .nonempty("Email is required"),
+        password: z.string().nonempty("Password is required"),
+    });
+
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<formValues>({
+        defaultValues: {
+            email: "admin123@gmail.com",
+            password: "admin",
+        },
+        resolver: zodResolver(schema),
+    });
     // const { mutate, isSuccess, data } = useUserLogin({
     //     errCb: (err) => "hello",
     // });
@@ -35,7 +61,10 @@ function Login() {
     //         navigate("/admin");
     //     }
     // }, [isError, isSuccess]);
-
+    //
+    //
+    function login(data:formValues) {
+    }
     return (
         <div className="h-screen w-screen max-w-[1536px] pt-10 sm:pt-16">
             <Card
@@ -55,20 +84,31 @@ function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6">
-                        <Input
-                            size="sm"
-                            radius="sm"
-                            label="Email"
-                            type="email"
-                        />
-                        <Input
-                            size="sm"
-                            radius="sm"
-                            label="Password"
-                            type="password"
-                        />
-
+                    <form onSubmit={handleSubmit(login)}>
+                        <div className="flex flex-col items-start gap-2">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                className="w-full p-2 text-md outline-none bg-gray-50 border rounded-md caret-primaryOrange"
+                                type="email"
+                                {...register("email")}
+                            />
+                            <p className="text-red-500 text-sm">
+                                {errors.email?.message}
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-start gap-2">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                className="w-full p-2 text-md outline-none bg-gray-50 border rounded-md caret-primaryOrange"
+                                type="password"
+                                {...register("password")}
+                            />
+                            <p className="text-red-500 text-sm">
+                                {errors.password?.message}
+                            </p>
+                        </div>
                         <Button
                             type="submit"
                             className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-darkOrange"
@@ -84,4 +124,3 @@ function Login() {
 }
 
 export default Login;
-

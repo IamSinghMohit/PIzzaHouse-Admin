@@ -2,7 +2,7 @@ import Logo from "@/assets/logo.svg";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
-import { IconX } from "@tabler/icons-react";
+import { IconLogout, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { HamBurgerIcon } from "@/icons";
@@ -14,7 +14,7 @@ function Navbar({}: Props) {
     const showToggleButton = useMediaQuery({ query: "(max-width:770px)" });
     return (
         <nav className="bg-white h-[50px] p-1 px-2 shadow-sm flex justify-between items-center sticky top-0 z-50">
-            <div className="w-[140px]">
+            <div className="w-[140px] flex gap-2 items-center justify-between">
                 <img src={Logo} alt="logo image" className="w-full h-full" />
             </div>
 
@@ -23,9 +23,14 @@ function Navbar({}: Props) {
                     className="text-primaryOrange text-2xl w-6 cursor-pointer"
                     onClick={() => setNavOpen((prev) => !prev)}
                 >
-                    <HamBurgerIcon/>
+                    <HamBurgerIcon />
                 </div>
-            ) : null}
+            ) : (
+                <Button isIconOnly color="primary" className="text-white">
+                    <IconLogout />
+                </Button>
+            )}
+
             <AnimatePresence>
                 {navOpen && (
                     <motion.div

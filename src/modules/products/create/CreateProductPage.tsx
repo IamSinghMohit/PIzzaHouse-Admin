@@ -30,6 +30,7 @@ function CreateProductPage({}: Props) {
     if (shouldRedirectBack) {
         navigate("products");
     }
+
     useEffect(() => {
         return () => {
             dispatch(
@@ -49,6 +50,7 @@ function CreateProductPage({}: Props) {
             );
         };
     }, []);
+
     return (
         <Card radius="sm">
             <CardHeader>Create Product</CardHeader>
@@ -72,9 +74,9 @@ function CreateProductPage({}: Props) {
                     <ProductNameInput />
                 </div>
 
+                <ProductDescriptionInput />
                 <div className="create-product-page-grid">
-                    <ProductDescriptionInput />
-                    <ProductCategorySelector />
+                    <ProductCategorySelector className="max-w-full" />
                     <ProductPrice />
                     <div className="flex items-center gap-2">
                         <ProductCheck />

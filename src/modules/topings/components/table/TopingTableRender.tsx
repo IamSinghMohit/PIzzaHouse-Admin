@@ -14,8 +14,8 @@ import { useAppDispatch } from "@/hooks/state";
 import { TTopingSchema } from "../../schema";
 import { TopingColumns } from "@/data/topings-table";
 import { setTopingState } from "@/store/slices/topings";
-import TableLoader from "@/modules/Loader";
 import ClImage from "@/modules/commponents/ClImage";
+import { TableLoader } from "@/modules/loaders";
 
 interface Props {
     data: TTopingSchema[];

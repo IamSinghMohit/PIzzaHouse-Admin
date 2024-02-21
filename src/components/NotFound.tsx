@@ -14,7 +14,7 @@ function NotFound({}: Props) {
                     bg-gray-100
                   "
         >
-            <div className="px-40 py-20 bg-white rounded-md shadow-xl">
+            <div className="p-4 sm:px-40 sm:py-20 bg-white rounded-md shadow-xl">
                 <div className="flex flex-col items-center">
                     <h1 className="font-bold text-primaryOrange text-9xl">404</h1>
 

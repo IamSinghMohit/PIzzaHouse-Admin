@@ -16,8 +16,8 @@ import { OrderStatusEnum } from "./schema";
 import { useUpdateOrderStatus } from "./hooks/useUpdateOrderStatus";
 import ClImage from "../commponents/ClImage";
 import { TGetOrderSchema } from "./schema";
-import TableLoader from "../Loader";
 import AppPagination from "../commponents/AppPagination";
+import { TableLoader } from "../loaders";
 
 interface Props {}
 

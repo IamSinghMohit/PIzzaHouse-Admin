@@ -1,6 +1,4 @@
-type Props = {};
-
-function TableLoader({}: Props) {
+export function TableLoader() {
     return (
         <div className="w-full p-2">
             {["lskj", "2lk3", "lksdl2", "lk23k", "lsdd55sd5"].map((item) => (
@@ -19,4 +17,11 @@ function TableLoader({}: Props) {
     );
 }
 
-export default TableLoader;
+export function TableSkaletonLoader() {
+    return (
+        <div className="bg-white p-4 h-[640px] rounded-lg flex flex-col gap-2 border">
+            <div className="shimmer w-full h-12" />
+            <div className="shimmer w-full h-full" />
+        </div>
+    );
+}

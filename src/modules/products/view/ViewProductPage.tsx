@@ -13,8 +13,9 @@ import { Navigate } from "react-router-dom";
 import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import UpdateProductButton from "../components/button/UpdateProductButton";
-import { setProductUpdatedFields } from "@/store/slices/product";
+import UpdateProductButton, { TUpdateProductButtonProps } from "../components/button/UpdateProductButton";
+import { setProductState, setProductUpdatedFields } from "@/store/slices/product";
+import { TProductUpdatedFields } from "@/store/slices/product/types";
 
 type Props = {};
 
@@ -43,6 +44,27 @@ function ViewProductPage({}: Props) {
         }
     }, [processedImage.file]);
 
+    /* useEffect(() => {
+        return () => {
+            dispatch(
+                setProductState({
+                    type: "SET",
+                    data: {
+                        product_id: "",
+                        product_name: "",
+                        product_image: "",
+                        product_category: "",
+                        product_featured: false,
+                        product_status: "Draft",
+                        product_price: 0,
+                        product_description: "",
+                    },
+                }),
+            );
+        };
+
+    }, []); */
+
     return (
         <Card radius="sm">
             <CardHeader>View Product</CardHeader>
@@ -66,21 +88,20 @@ function ViewProductPage({}: Props) {
                     </ImageUploader>
                     <ProductNameInput />
                 </div>
-                <div className="flex flex-wrap justify-between max-w-[700px]">
-                    <div className="flex gap-3 flex-wrap">
-                        <div className="w-[280px]">
-                            <ProductDescriptionInput />
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 items-start mt-2">
-                        <ProductPrice />
-                        <div className="flex items-center">
-                            <ProductCheck />
-                            <ProductStatusSelector />
-                        </div>
+
+                <ProductDescriptionInput />
+                <div className="create-product-page-grid">
+                    <ProductPrice />
+                    <div className="flex items-center gap-2">
+                        <ProductCheck />
+                        <ProductStatusSelector />
                     </div>
                 </div>
-                <ProductPriceSectionRender type="Update" />
+
+                <ProductPriceSectionRender
+                    type="Update"
+                    shouldRenderDivider={false}
+                />
                 <CardFooter className="flex justify-end">
                     <ViewProductPageUpdateButton
                         processedImage={processedImage}
@@ -98,6 +119,7 @@ function ViewProductPageUpdateButton({
     setIsLoading,
 }: TUpdateProductButtonProps) {
     const { updated_fields } = useAppSelector((state) => state.product);
+    
     const shouldRender = useMemo(() => {
         for (let key in updated_fields) {
             if (updated_fields[key]) {
@@ -106,7 +128,6 @@ function ViewProductPageUpdateButton({
         }
         return false;
     }, [updated_fields]);
-
     return shouldRender ? (
         <UpdateProductButton
             setIsLoading={setIsLoading}

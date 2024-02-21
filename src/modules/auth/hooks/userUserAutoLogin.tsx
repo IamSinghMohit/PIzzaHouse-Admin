@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import { User } from "@/modules/auth/schema";
 
-
-export function useUserAutoLogin(opts?:{}){
+export function useUserAutoLogin({ enabled }: { enabled: boolean }) {
     return useQuery({
         queryKey: ["user", "me"],
-        queryFn: () => axios.get<User>("/auth/me").then((res) => res.data),
-        retry:1,
-        ...opts,
+        queryFn: () => axios.get("/auth/me").then((res) => res.data),
+        enabled,
     });
 }

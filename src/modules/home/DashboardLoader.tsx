@@ -11,7 +11,7 @@ function DashboardLoader({}: Props) {
                     "167f4f8a-6dc0-4eb1-9c90-a15cc807d461",
                 ].map((id) => (
                     <div
-                        className="h-[145px] bg-white p-4 rounded-md flex flex-col gap-2"
+                        className="h-[145px] bg-white p-4 rounded-lg flex flex-col gap-2"
                         key={id}
                     >
                         <div className="flex items-center justify-between gap-2">
@@ -27,9 +27,9 @@ function DashboardLoader({}: Props) {
                 ))}
             </div>
             <div className="grid  gap-2 grid-cols-1 grid-rows-3 sm:grid-rows-2 sm:grid-cols-2">
-                <div className="h-[350px] shimmer" />
-                <div className="h-[350px] shimmer" />
-                <div className="sm:col-span-2 h-[350px]  shimmer" />
+                <div className="h-[350px] shimmer rounded-lg" />
+                <div className="h-[350px] shimmer rounded-lg" />
+                <div className="sm:col-span-2 h-[350px] shimmer rounded-lg" />
             </div>
         </div>
     );
