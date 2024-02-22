@@ -1,6 +1,5 @@
 import axios from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getCurrentWindow } from "@/utils";
 import { TCategorySchema } from "../schema";
 
 async function searchCategory(
@@ -14,16 +13,7 @@ async function searchCategory(
 }
 
 export function useSearchCateogry(text: string, argLimit?: number) {
-    const screen = getCurrentWindow();
-    let limit = 3;
-    if (screen == "mobile") {
-        limit = 5 as number;
-    } else {
-        limit = 10 as number;
-    }
-    if (argLimit) {
-        limit = argLimit;
-    }
+    const limit = argLimit || 10;
     return useInfiniteQuery({
         queryKey: ["category", "search", text],
         queryFn: async ({ pageParam }) =>

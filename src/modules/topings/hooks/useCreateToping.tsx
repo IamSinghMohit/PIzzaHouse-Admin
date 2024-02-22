@@ -3,15 +3,17 @@ import { errorToast, successToast } from "@/lib/toast";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { BackendError } from "@/types/api";
+import { ValidateBackendResponse } from "@/utils";
+import { TTopingSchema, TopingSchema } from "../schema";
 
-async function createToping(data: any): Promise<string> {
+async function createToping(data: any): Promise<TTopingSchema | undefined> {
     return await axios
         .post("/toping/admin/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then((res) => res.data);
+        .then((res) => ValidateBackendResponse(res.data,TopingSchema));
 }
 
 export function useCreateToping() {

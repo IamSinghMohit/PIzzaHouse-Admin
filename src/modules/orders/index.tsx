@@ -93,7 +93,7 @@ export default Orders;
 function OrderSelector({
     order,
 }: {
-    order: TGetOrderSchema["data"]["orders"][0];
+    order: TGetOrderSchema["orders"][0];
 }) {
     const { mutate } = useUpdateOrderStatus();
     const [selected, setSelected] = useState(`${order.status}`);

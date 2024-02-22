@@ -1,8 +1,10 @@
 import axios from "@/lib/axios";
 import { errorToast, successToast } from "@/lib/toast";
 import { BackendError } from "@/types/api";
+import { ValidateBackendResponse } from "@/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { TopingSchema } from "../schema";
 
 async function updateTopoing(data: any) {
     return await axios
@@ -11,7 +13,7 @@ async function updateTopoing(data: any) {
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then((res) => res.data);
+        .then((res) => ValidateBackendResponse(res.data,TopingSchema));
 }
 
 export function useUpdateToping() {

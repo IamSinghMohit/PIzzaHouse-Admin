@@ -66,6 +66,8 @@ function ProductTableRender({
     return (
         <Table
             isHeaderSticky
+            radius="sm"
+            shadow="sm"
             aria-label="Prodcut table"
             layout="auto"
             classNames={{

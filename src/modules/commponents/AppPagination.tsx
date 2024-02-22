@@ -15,8 +15,6 @@ function AppPagination({
     selected,
     setSelected,
 }: Props) {
-    console.log("rendered");
-
     return (
         <div className="self-start inline-flex items-start gap-3 bg-white p-2 rounded-xl mt-1 shadow-md flex-wrap sm:items-center">
             <Pagination

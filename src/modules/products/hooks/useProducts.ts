@@ -1,7 +1,7 @@
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { errorToast } from "@/lib/toast";
-import { GetProductsSchema, TGetProductsSchema } from "../schema/Get";
+import { GetProductsSchema, TGetProductsSchema } from "../schema";
+import { ValidateBackendResponse } from "@/utils";
 
 type getProductsType = {
     name: string;
@@ -10,11 +10,11 @@ type getProductsType = {
     min: number;
     max: number;
     category?: string;
-    limit: string;
+    limit: number;
     page: number;
 };
 
-async function getProducts(opts: getProductsType): Promise<TGetProductsSchema> {
+async function getProducts(opts: getProductsType): Promise<TGetProductsSchema | undefined> {
     let url = `/product/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}&category=${opts.category}`;
 
     if (opts.featured !== undefined) {
@@ -27,16 +27,7 @@ async function getProducts(opts: getProductsType): Promise<TGetProductsSchema> {
 
     return await axios
         .get(url)
-        .then((res) => res.data)
-        .then((res) => {
-            try {
-                return GetProductsSchema.parse(res.data);
-            } catch (error) {
-                console.log(error)
-                errorToast("received bad data from server");
-                return Error("received bad data from server");
-            }
-        });
+        .then((res) => ValidateBackendResponse(res.data, GetProductsSchema));
 }
 
 export function useProducts(opts: getProductsType) {

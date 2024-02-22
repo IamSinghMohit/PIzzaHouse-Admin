@@ -14,44 +14,39 @@ export const CategorySchema = z.object({
     updated_at: z.string(),
 });
 
-export const GetCategorySectionsSchema = z
-    .object({
-        success: z.boolean(),
-        data: z.array(
-            z.object({
-                id: z.string(),
-                name: z.string(),
-                attributes: z.array(
-                    z.object({
-                        id: z.string(),
-                        name: z.string(),
-                    }),
-                ),
-            }),
-        ),
-    })
-
-export const GetCategorySchema = z.object({
-    success: z.boolean(),
-    data: z.object({
-        page: z.union([z.number(), z.string()]).transform((data) => {
-            if (typeof data == "string") {
-                return parseInt(data);
-            } else {
-                return data;
-            }
-        }),
-        pages: z.union([z.number(), z.string()]).transform((data) => {
-            if (typeof data == "string") {
-                return parseInt(data);
-            } else {
-                return data;
-            }
-        }),
-        categories: z.array(CategorySchema),
-    }),
+export const GetCategorySectionsSchema = z.object({
+    data: z.array(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            attributes: z.array(
+                z.object({
+                    id: z.string(),
+                    name: z.string(),
+                })
+            ),
+        })
+    ),
 });
 
-export type TGetCategorySchema = TypeOf<typeof GetCategorySchema>;
+export const GetCategoriesSchema = z.object({
+    page: z.union([z.number(), z.string()]).transform((data) => {
+        if (typeof data == "string") {
+            return parseInt(data);
+        } else {
+            return data;
+        }
+    }),
+    pages: z.union([z.number(), z.string()]).transform((data) => {
+        if (typeof data == "string") {
+            return parseInt(data);
+        } else {
+            return data;
+        }
+    }),
+    categories: z.array(CategorySchema),
+});
+
+export type TGetCategoriesSchema = TypeOf<typeof GetCategoriesSchema>;
 export type TCategorySchema = TypeOf<typeof CategorySchema>;
 export type TGetCategorySections = TypeOf<typeof GetCategorySectionsSchema>;

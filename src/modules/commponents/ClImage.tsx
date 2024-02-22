@@ -1,4 +1,3 @@
-import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Avatar } from "@nextui-org/react";
 
@@ -6,10 +5,10 @@ type Props = {
     imageId: string;
 };
 
-function ClImage({ imageId, className }: Props) {
+function ClImage({ imageId}: Props) {
     const cld = new Cloudinary({
         cloud: {
-            cloudName: "uchihamadara",
+            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
         },
     });
     const image = cld.image(imageId).toURL();

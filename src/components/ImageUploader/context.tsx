@@ -1,13 +1,13 @@
 import { createContext, createRef, useContext } from "react";
 import { ImageUploaderContextType } from "./types";
-import { ModalRefType } from "@/types/Modal";
+import { TModalRef } from "@/types/Modal";
 
 const ImageUploaderContext = createContext<ImageUploaderContextType>({
     image: "",
     ImageRef: createRef<HTMLImageElement>(),
     InputRef: createRef<HTMLInputElement | null>(),
     mimeType: "",
-    ModalRef: createRef<ModalRefType>(),
+    ModalRef: createRef<TModalRef>(),
     setImage: () => {},
     setMimeType: () => {},
     isCropped: false,

@@ -5,7 +5,6 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Avatar,
     Chip,
 } from "@nextui-org/react";
 import * as dayjs from "dayjs";
@@ -34,7 +33,6 @@ function ProductTableRender({
     isLoading,
     isError,
 }: Props) {
-    console.log("table rendered");
     const columns = useMemo(() => ProductColumns, []);
     const dispatch = useAppDispatch();
 

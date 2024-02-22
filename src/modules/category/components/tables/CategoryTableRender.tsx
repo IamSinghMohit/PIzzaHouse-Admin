@@ -40,6 +40,7 @@ function CategoryTableRender({
             isHeaderSticky
             radius="sm"
             aria-label="category table"
+            shadow="sm"
             layout="auto"
             classNames={{
                 table: `${isLoading && "h-[500px]"}`,

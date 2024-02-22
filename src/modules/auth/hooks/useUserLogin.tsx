@@ -1,22 +1,21 @@
 import axios from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { LoginFormInput } from "@/modules/auth/schema";
-import { User,UserSchema } from "@/modules/auth/schema";
-import { BackendError } from "@/schema/Error";
+import {
+    TLoginFormSchema,
+    TUserSchema,
+    UserSchema,
+} from "@/modules/auth/schema";
+import { ValidateBackendResponse } from "@/utils";
 
-interface QueryCallback {
-    errCb: (err: string) => void;
+async function login(data: TLoginFormSchema): Promise<TUserSchema | undefined> {
+    return await axios
+        .post("auth/login", data)
+        .then((res) => ValidateBackendResponse(res.data, UserSchema));
 }
-async function login(data: LoginFormInput): Promise<User> {
-    const { data: res } = await axios.post("auth/login", data);
-    const result = UserSchema.parse(res);
-    return result;
-};
 
-export const useUserLogin = ({ errCb }: QueryCallback) => {
+export const useUserLogin = () => {
     return useMutation({
-        mutationKey:['user','login'],
-        mutationFn:login
+        mutationKey: ["user", "login"],
+        mutationFn: login,
     });
 };

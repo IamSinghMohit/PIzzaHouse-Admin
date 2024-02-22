@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetTopingsSchema, TGetTopingsSchema } from "../schema";
 import axios from "@/lib/axios";
-import { errorToast } from "@/lib/toast";
 import { TitemStatus } from "@/modules/types/inex";
+import { ValidateBackendResponse } from "@/utils";
 
 type getTopingsType = {
     name: string;
@@ -11,13 +11,13 @@ type getTopingsType = {
     min: number;
     max: number;
     category?: string;
-    limit: string;
+    limit: number;
     page: number;
 };
 
 async function getTopings(
     opts: getTopingsType,
-): Promise<TGetTopingsSchema["data"] | undefined> {
+): Promise<TGetTopingsSchema| undefined> {
     let url = `/toping/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}`;
 
     if (opts.status && opts.status !== "All") {
@@ -29,16 +29,7 @@ async function getTopings(
     }
     return await axios
         .get(url)
-        .then((res) => res.data)
-        .then((res) => {
-            try {
-                return GetTopingsSchema.parse(res).data;
-            } catch (error) {
-                console.log(error);
-                errorToast("received bad data from server");
-                return undefined;
-            }
-        });
+        .then((res) => ValidateBackendResponse(res.data,GetTopingsSchema))
 }
 
 export function useTopings(opts: getTopingsType) {

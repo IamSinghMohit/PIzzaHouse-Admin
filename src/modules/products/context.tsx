@@ -25,7 +25,6 @@ export function ProductContextProvider({
 }) {
     const InputRef = useRef<{ [key: string]: HTMLInputElement | null }>({});
     const inputIdArrayRef = useRef<string[]>([]);
-    console.log("context run!!!");
     return (
         <ProductContext.Provider value={{ InputRef, inputIdArrayRef  }}>
             {children}

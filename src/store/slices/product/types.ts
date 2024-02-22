@@ -3,7 +3,7 @@ import {
 } from "@/modules/category/schema";
 import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 import { TProductSchema } from "@/modules/products/schema";
-import { TGetProductPriceSectionSchema } from "@/modules/products/schema/Get";
+import { TGetProductPriceSectionSchema } from "@/modules/products/schema";
 import { TitemStatus } from "@/modules/types/inex";
 
 export type TSetProductPriceSectoinAttributeData = {

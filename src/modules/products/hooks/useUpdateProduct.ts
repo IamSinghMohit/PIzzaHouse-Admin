@@ -3,15 +3,17 @@ import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { errorToast, successToast } from "@/lib/toast";
 import { BackendError } from "@/types/api";
+import { ValidateBackendResponse } from "@/utils";
+import { ProductSchema, TProductSchema } from "../schema";
 
-async function updateProduct(data:any) {
+async function updateProduct(data:any):Promise<TProductSchema | undefined> {
     return await axios
         .patch(`/product/admin`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then((res) => res.data);
+        .then((res) => ValidateBackendResponse(res.data,ProductSchema));
 }
 
 export function useUpdateProduct() {

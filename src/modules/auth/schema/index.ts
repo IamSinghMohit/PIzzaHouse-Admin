@@ -1,12 +1,19 @@
-import {z,TypeOf} from "zod"
+import { z, TypeOf } from "zod";
 
 export const UserSchema = z.object({
-    id:z.string(),
-    name:z.string(),
-    avatar:z.string().optional(),
-    createdAt:z.string(),
-    updatedAt:z.string()
-})
+    id: z.string(),
+    avatar: z.string().optional(),
+    first_name: z.string(),
+    last_name: z.string().optional(),
+});
 
+export const LoginFormSchema = z.object({
+    email: z
+        .string()
+        .email("Invalid email address")
+        .nonempty("Email is required"),
+    password: z.string().nonempty("Password is required"),
+});
 
-export type UserSchemaType = TypeOf<typeof UserSchema>
+export type TUserSchema = TypeOf<typeof UserSchema>;
+export type TLoginFormSchema = TypeOf<typeof LoginFormSchema>;

@@ -1,70 +1,54 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import { setTriedToLogin, setUser } from "@/store/slices/user";
 import { useUserAutoLogin } from "@/modules/auth/hooks/userUserAutoLogin";
 import { useUserLogin } from "@/modules/auth/hooks/useUserLogin";
-import { Button, Card, Input } from "@nextui-org/react";
+import { Button, Card } from "@nextui-org/react";
 import LogoImage from "@/assets/logo.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { LoginFormSchema, TLoginFormSchema } from "./schema";
+import { setTriedAutoToLogin, setUser } from "@/store/slices/user";
 
-type formValues = {
-    email: string;
-    password: string;
-};
 function Login() {
     const { user, isTriedToAutoLogin } = useAppSelector((state) => state.user);
     const { isError, data: queryData } = useUserAutoLogin({
         enabled: !user && !isTriedToAutoLogin,
     });
-    const schema = z.object({
-        email: z
-            .string()
-            .email("Invalid email address")
-            .nonempty("Email is required"),
-        password: z.string().nonempty("Password is required"),
-    });
+    const { mutate, data } = useUserLogin();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const {
         handleSubmit,
         register,
         formState: { errors },
-    } = useForm<formValues>({
+    } = useForm<TLoginFormSchema>({
         defaultValues: {
             email: "admin123@gmail.com",
             password: "admin",
         },
-        resolver: zodResolver(schema),
+        resolver: zodResolver(LoginFormSchema),
     });
-    // const { mutate, isSuccess, data } = useUserLogin({
-    //     errCb: (err) => "hello",
-    // });
-    // const dispatch = useAppDispatch();
-    // const navigate = useNavigate();
-    //
-    // useEffect(() => {
-    //     if (queryData) {
-    //         dispatch(setTriedToLogin(true));
-    //         dispatch(setUser(queryData));
-    //         navigate("/admin");
-    //     }
-    //
-    //     if (isSuccess) {
-    //         dispatch(setUser(data));
-    //         dispatch(setTriedToLogin(true));
-    //         navigate("/admin");
-    //     }
-    //
-    //     if (user) {
-    //         navigate("/admin");
-    //     }
-    // }, [isError, isSuccess]);
-    //
-    //
-    function login(data:formValues) {
+
+    useEffect(() => {
+        if (isError) {
+            dispatch(setTriedAutoToLogin(true));
+        }
+        if (queryData) {
+            dispatch(setUser(queryData));
+            navigate("/home");
+        }
+        if (data) {
+            dispatch(setUser(queryData));
+            navigate("/home");
+        }
+    }, [isError, queryData, data]);
+
+    function login(data: TLoginFormSchema) {
+        mutate(data);
     }
+
     return (
         <div className="h-screen w-screen max-w-[1536px] pt-10 sm:pt-16">
             <Card

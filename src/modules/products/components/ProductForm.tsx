@@ -169,7 +169,6 @@ export function ProductCheck() {
         (state) => state.product.product_management.product_featured,
     );
     const dispatch = useAppDispatch();
-    console.log(featured);
     return (
         <AppCheck
             text="Featured"

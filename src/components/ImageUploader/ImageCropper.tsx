@@ -32,7 +32,7 @@ function ImageUploader({ aspectRatio }: Props, ref: Ref<TModalRef>) {
         y: 0,
     });
 
-    const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
+    const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
         setCroppedAreaPixels(croppedAreaPixels);
     };
 

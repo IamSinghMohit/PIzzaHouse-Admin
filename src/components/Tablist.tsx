@@ -1,13 +1,13 @@
 import { Tabs, Tab } from "@nextui-org/react";
 import TabIcon from "./TabIcon";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TAB } from "@/data/tab";
 
 interface Props {}
 
 function TabList({}: Props) {
     const location = useLocation();
-
+    const navigate = useNavigate();
     return (
         <Tabs
             classNames={{
@@ -20,13 +20,12 @@ function TabList({}: Props) {
             color="primary"
             radius="none"
             defaultSelectedKey={location.pathname.split("/")[1]}
+            onSelectionChange={(e) => navigate(e as string)}
         >
             {TAB.map((tab) => (
                 <Tab
                     key={tab.key}
                     title={<TabIcon icon={tab.icon} iconText={tab.iconText} />}
-                    as={Link}
-                    to={tab.to}
                 />
             ))}
         </Tabs>

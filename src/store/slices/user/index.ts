@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserSliceState } from "./types";
-import { UserSchemaType } from "@/modules/auth/schema";
+import { TUserSchema } from "@/modules/auth/schema";
 
 const initialState: UserSliceState = {
     user: null,
@@ -10,7 +10,7 @@ export const UserSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<UserSchemaType  | undefined>) {
+        setUser(state, action: PayloadAction<TUserSchema  | undefined>) {
             if (action.payload) {
                 state.user = action.payload;
             }
@@ -18,7 +18,7 @@ export const UserSlice = createSlice({
         removeUser(state) {
             state.user = null;
         },
-        setTriedToLogin(state, action: PayloadAction<boolean>) {
+        setTriedAutoToLogin(state, action: PayloadAction<boolean>) {
             state.isTriedToAutoLogin = action.payload;
         },
     },
@@ -27,5 +27,5 @@ export const UserSlice = createSlice({
 export const {
     setUser,
     removeUser,
-    setTriedToLogin,
+    setTriedAutoToLogin,
 } = UserSlice.actions;

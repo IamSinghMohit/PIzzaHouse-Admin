@@ -1,5 +1,6 @@
-import { UserSchemaType } from "@/modules/auth/schema";
+import { TUserSchema } from "@/modules/auth/schema";
+
 export interface UserSliceState {
-    user:UserSchemaType  | null;
+    user:TUserSchema| null;
     isTriedToAutoLogin:boolean
 }

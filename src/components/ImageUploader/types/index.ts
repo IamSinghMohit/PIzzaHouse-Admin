@@ -1,5 +1,5 @@
-import { ProcessedImageType } from "@/types/ImageUploader";
-import { ModalRefType } from "@/types/Modal";
+import { TModalRef } from "@/types/Modal";
+import { TProcessedImage } from "@/types/ImageUploader";
 import { SetStateAction, Dispatch, RefObject } from "react";
 
 export type ImageUploaderContextType = {
@@ -9,12 +9,12 @@ export type ImageUploaderContextType = {
     InputRef: RefObject<HTMLInputElement | null>;
     mimeType: string;
     setMimeType: Dispatch<SetStateAction<string>>;
-    ModalRef: RefObject<ModalRefType>;
+    ModalRef: RefObject<TModalRef >;
     isCropped: boolean;
     setIsCropped: Dispatch<SetStateAction<boolean>>;
     processedImage: {
         file: unknown;
         url: string;
     };
-    setProcessedImage: Dispatch<SetStateAction<ProcessedImageType>>;
+    setProcessedImage: Dispatch<SetStateAction<TProcessedImage >>;
 };

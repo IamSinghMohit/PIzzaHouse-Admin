@@ -7,13 +7,12 @@ import {
     Divider,
 } from "@nextui-org/react";
 import { useRef, useState} from "react";
-import { uuid } from "@/utils/uuid";
 import {
     setCategorySections,
 } from "@/store/slices/category";
 import { useAppDispatch} from "@/hooks/state";
 import UiInput from "@/ui/UiInput";
-import { validateString } from "@/utils/ValidateString";
+import { validateString ,uuid} from "@/utils";
 import { TAttributes } from "@/store/slices/category/types";
 import { IconCheck, IconRestore, IconSquarePlus } from "@tabler/icons-react";
 

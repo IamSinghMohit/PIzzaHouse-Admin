@@ -13,8 +13,12 @@ import { Navigate } from "react-router-dom";
 import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import UpdateProductButton, { TUpdateProductButtonProps } from "../components/button/UpdateProductButton";
-import { setProductState, setProductUpdatedFields } from "@/store/slices/product";
+import UpdateProductButton, {
+    TUpdateProductButtonProps,
+} from "../components/button/UpdateProductButton";
+import {
+    setProductUpdatedFields,
+} from "@/store/slices/product";
 import { TProductUpdatedFields } from "@/store/slices/product/types";
 
 type Props = {};
@@ -119,15 +123,17 @@ function ViewProductPageUpdateButton({
     setIsLoading,
 }: TUpdateProductButtonProps) {
     const { updated_fields } = useAppSelector((state) => state.product);
-    
+
     const shouldRender = useMemo(() => {
-        for (let key in updated_fields) {
+        let key: keyof TProductUpdatedFields;
+        for (key in updated_fields) {
             if (updated_fields[key]) {
                 return true;
             }
         }
         return false;
     }, [updated_fields]);
+
     return shouldRender ? (
         <UpdateProductButton
             setIsLoading={setIsLoading}

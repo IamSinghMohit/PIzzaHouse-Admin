@@ -1,19 +1,20 @@
-import axios from "@/lib/axios";
+import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { GetCategorySectionsSchema, TGetCategorySections } from "../schema";
-import { errorToast } from "@/lib/toast";
+import { ValidateBackendResponse } from "@/utils";
 
-async function getSections(id: string): Promise<TGetCategorySections["data"]> {
-    const result = await axios
+async function getSections(
+    id: string
+): Promise<TGetCategorySections["data"] | undefined> {
+    let result = await api
         .get(`/category/admin/sections/${id}`)
-        .then((res) => res.data);
-    try {
-        return GetCategorySectionsSchema.parse(result).data;
-    } catch (error) {
-        console.log(error);
-        errorToast("received bad data from server");
-        return [];
+        .then((res) =>
+            ValidateBackendResponse(res.data, GetCategorySectionsSchema)
+        );
+    if (result) {
+        return result.data;
     }
+    return result;
 }
 export function useCategoryPriceSections(id: string) {
     return useQuery({

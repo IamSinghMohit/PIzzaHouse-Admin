@@ -4,21 +4,16 @@ import { errorToast, successToast } from "@/lib/toast";
 import { CategorySchema, TCategorySchema } from "../schema";
 import { BackendError } from "@/types/api";
 import { AxiosError } from "axios";
+import { ValidateBackendResponse } from "@/utils";
 
 async function createCategory(data: any): Promise<TCategorySchema | undefined> {
-    const result = await axios
+    return await axios
         .post("/category/admin/create", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then((res) => res.data);
-    try {
-        return CategorySchema.parse(result?.data);
-    } catch (error) {
-        console.log(error);
-        throw new Error('received bad data from server')
-    }
+        .then((res) => ValidateBackendResponse(res.data, CategorySchema));
 }
 
 export function useCreateCategory() {
@@ -30,10 +25,12 @@ export function useCreateCategory() {
             qeryClient.invalidateQueries({
                 queryKey: ["category"],
             });
-            successToast("category created")
+            successToast("category created");
         },
         onError: (error: AxiosError<BackendError>) => {
-            errorToast(error.response?.data.error.message || "some error occured");
+            errorToast(
+                error.response?.data.error.message || "some error occured"
+            );
         },
     });
 }
