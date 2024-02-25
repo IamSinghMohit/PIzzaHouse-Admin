@@ -8,7 +8,7 @@ export const TopingSchema = z
         status: z.enum([StatusEnum.DRAFT, StatusEnum.PUBLISHED], {
             errorMap: () => ({ message: "enum is not valid" }),
         }),
-        category: z.string(),
+        categories: z.array(z.string()),
     })
     .merge(BaseResponseWithNameAndImage);
 

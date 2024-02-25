@@ -90,7 +90,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                     setProcessedImage={setProcessedImage}
                                 >
                                     <ImageUploader.PlaceholderContainer
-                                        baseClassName="w-[150px] h-[150px]"
+                                        baseClassName="w-[180px] h-[180px]"
                                         placeholderImage={
                                             <ImageUploader.PlaceholderImage imageBeforeClassName="w-[80px] h-[80px]" />
                                         }

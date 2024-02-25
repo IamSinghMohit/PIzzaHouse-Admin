@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import useDebounce from "@/hooks/useDebounce";
-import { setTopingCategory, setTopingState } from "@/store/slices/topings";
+import { setTopingState, addToTopingCategories } from "@/store/slices/topings";
 import { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import StatusSelector from "@/modules/commponents/StatusSelector";
@@ -8,9 +8,7 @@ import CategorySelector from "@/modules/commponents/CategorySelector";
 
 export function TopingNameInput() {
     const [value, setValue] = useState(
-        useAppSelector(
-            (state) => state.toping.toping_management.name,
-        ),
+        useAppSelector((state) => state.toping.toping_management.name),
     );
     const [shouldUpdate, setShouldUpdate] = useState(false);
 
@@ -127,13 +125,17 @@ export function TopingStatusSelector() {
     );
 }
 
-export function TopingCategorySelector() {
+export function TopingCategorySelector({ className }: { className?: string }) {
     const dispatch = useAppDispatch();
     return (
         <CategorySelector
             setSelectedCategory={(e) => {
-                dispatch(setTopingCategory(JSON.parse(e as any)));
+                const name = JSON.parse(e as any)?.name as string;
+                if (name && name.trim().length > 0) {
+                    dispatch(addToTopingCategories(name));
+                }
             }}
+            className={className}
         />
     );
 }

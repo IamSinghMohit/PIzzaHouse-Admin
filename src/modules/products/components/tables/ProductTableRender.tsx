@@ -17,6 +17,7 @@ import { setProductState } from "@/store/slices/product";
 import { IconCrown, IconCrownOff } from "@tabler/icons-react";
 import ClImage from "@/modules/commponents/ClImage";
 import { TableLoader } from "@/modules/loaders";
+import { generateCloudinaryImageUrl } from "@/utils";
 
 interface Props {
     data: TProductSchema[];
@@ -48,7 +49,7 @@ function ProductTableRender({
                     product_name: item.name,
                     product_price: item.price,
                     product_status: item.status,
-                    product_image: item.image,
+                    product_image: generateCloudinaryImageUrl(item.image),
                 },
             }),
         );
@@ -90,12 +91,12 @@ function ProductTableRender({
                         : "No Product found create 🔥 one!")
                 }
                 isLoading={isLoading}
-                loadingContent={<TableLoader/>}
+                loadingContent={<TableLoader />}
             >
                 {data.map((item) => (
                     <TableRow key={item.id}>
                         <TableCell>
-                            <ClImage imageId={item.image}/>
+                            <ClImage imageId={item.image} />
                         </TableCell>
                         <TableCell>{item.name}</TableCell>
                         <TableCell>{item.category}</TableCell>

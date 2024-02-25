@@ -1,4 +1,3 @@
-import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 import { StatusEnum, TitemStatus } from "@/modules/types/inex";
 export interface TopingSliceInitialState {
     toping_management: {
@@ -11,7 +10,7 @@ export interface TopingSliceInitialState {
     updated_fields: {
         name: boolean;
         price: boolean;
-        category: boolean;
+        categories: boolean;
         image:boolean;
         status:boolean;
     };
@@ -21,6 +20,6 @@ export interface TopingSliceInitialState {
         category:string,
         status:TitemStatus;
     }
-    category:TCategorySelectorPayload | null
+    categories:Record<string,boolean>
 }
 

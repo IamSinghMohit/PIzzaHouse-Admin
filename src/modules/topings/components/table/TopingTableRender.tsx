@@ -13,9 +13,10 @@ import { memo, useMemo } from "react";
 import { useAppDispatch } from "@/hooks/state";
 import { TTopingSchema } from "../../schema";
 import { TopingColumns } from "@/data/topings-table";
-import { setTopingState } from "@/store/slices/topings";
+import { setTopingCategories, setTopingState } from "@/store/slices/topings";
 import ClImage from "@/modules/commponents/ClImage";
 import { TableLoader } from "@/modules/loaders";
+import { generateCloudinaryImageUrl } from "@/utils";
 
 interface Props {
     data: TTopingSchema[];
@@ -44,12 +45,19 @@ function ProductTableRender({
                     name: item.name,
                     price: item.price,
                     status: item.status,
-                    image: item.image,
+                    image: generateCloudinaryImageUrl(item.image),
                 },
             }),
         );
+
+        const obj: Record<string, boolean> = {};
+        item.categories.forEach((cat) => {
+            obj[cat] = true;
+        });
+        dispatch(setTopingCategories(obj));
         onViewClick();
     }
+
     function handleDeleteClick(item: TTopingSchema) {
         dispatch(
             setTopingState({
@@ -95,7 +103,6 @@ function ProductTableRender({
                             <ClImage imageId={item.image} />
                         </TableCell>
                         <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.category}</TableCell>
                         <TableCell>
                             <Chip
                                 radius="sm"

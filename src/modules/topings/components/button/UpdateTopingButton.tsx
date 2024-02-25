@@ -22,6 +22,8 @@ function UpdateTopingButton({
     const { updated_fields, toping_management } = useAppSelector(
         (state) => state.toping,
     );
+    const categoriesMap = useAppSelector((state) => state.toping.categories);
+    const categories = Object.keys(categoriesMap)
 
     function handleUpdateProduct() {
         const obj: any = {
@@ -29,7 +31,10 @@ function UpdateTopingButton({
             ...(updated_fields.name ? { name: toping_management.name } : {}),
             ...(updated_fields.price ? { price: toping_management.price } : {}),
             ...(updated_fields.image ? { image: processedImage.file } : {}),
-            ...(updated_fields.status ? { status: toping_management.status} : {}),
+            ...(updated_fields.status
+                ? { status: toping_management.status }
+                : {}),
+            ...(updated_fields.categories ? { categories_json: JSON.stringify(categories) } : {}),
         };
         FormDataSend(obj, mutate);
     }

@@ -3,15 +3,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { IconLogout, IconX } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { HamBurgerIcon } from "@/icons";
+import { CapitalizeWord } from "@/utils";
 
 interface Props {}
 
 function Navbar({}: Props) {
     const [navOpen, setNavOpen] = useState(false);
     const showToggleButton = useMediaQuery({ query: "(max-width:770px)" });
+    const location = useLocation();
+    const route = CapitalizeWord(location.pathname.split("/")[1]);
+
     return (
         <nav className="bg-white h-[50px] p-1 px-2 shadow-sm flex justify-between items-center sticky top-0 z-50">
             <div className="w-[140px] flex gap-2 items-center justify-between">
@@ -48,41 +52,39 @@ function Navbar({}: Props) {
                         </Button>
                         <div className="h-full">
                             <ul className="flex flex-col justify-center items-center gap-3 font-bold text-white my-auto">
-                                <Link
-                                    to={"/"}
+                                {[
+                                    "Home",
+                                    "Products",
+                                    "Categories",
+                                    "Topings",
+                                    "Orders",
+                                ].map((item) => (
+                                    <Link
+                                        to={item}
+                                        className={
+                                            route === item
+                                                ? "text-primaryOrange"
+                                                : "hover:underline hover:text-primaryOrange "
+                                        }
+                                        onClick={() => setNavOpen(false)}
+                                        key={item}
+                                    >
+                                        <li>{item}</li>
+                                    </Link>
+                                ))}
+                                <p
                                     className="hover:underline hover:text-primaryOrange"
-                                    onClick={() => setNavOpen(false)}
+                                    onClick={() =>
+                                        console.log("put logout logic here")
+                                    }
                                 >
-                                    <li>Home </li>
-                                </Link>
-                                <Link
-                                    to={"/products"}
-                                    className="hover:underline hover:text-primaryOrange"
-                                    onClick={() => setNavOpen(false)}
-                                >
-                                    <li>Product</li>
-                                </Link>
-                                <Link
-                                    to={"/categories"}
-                                    className="hover:underline hover:text-primaryOrange"
-                                    onClick={() => setNavOpen(false)}
-                                >
-                                    <li>Category</li>
-                                </Link>
-                                <Link
-                                    to={"/topings"}
-                                    className="hover:underline hover:text-primaryOrange"
-                                    onClick={() => setNavOpen(false)}
-                                >
-                                    <li>Topings</li>
-                                </Link>
-                                <Link
-                                    to={"/orders"}
-                                    className="hover:underline hover:text-primaryOrange"
-                                    onClick={() => setNavOpen(false)}
-                                >
-                                    <li>Order</li>
-                                </Link>
+                                    <li className="flex items-center gap-1 tex-md">
+                                        Logout{" "}
+                                        <span>
+                                            <IconLogout />
+                                        </span>
+                                    </li>
+                                </p>
                             </ul>
                         </div>
                     </motion.div>

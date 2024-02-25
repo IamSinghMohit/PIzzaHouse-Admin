@@ -38,6 +38,7 @@ function CategorySelector({
             placeholder="Category"
             aria-label="cateogry selector input"
             defaultItems={items}
+            shouldCloseOnBlur={true}
             defaultInputValue={inputValue}
             size="sm"
             color="primary"

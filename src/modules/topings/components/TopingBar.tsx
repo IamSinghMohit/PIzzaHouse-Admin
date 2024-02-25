@@ -10,6 +10,8 @@ import { IconCubePlus } from "@tabler/icons-react";
 import { useRef, useState, useEffect } from "react";
 import TopingModal from "./modals/TopingModal";
 import { useTopingStats } from "../hooks/useTopingStats";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
 
 function TopingSearchInput() {
     const [value, setValue] = useState("");
@@ -115,6 +117,18 @@ export function FetchingTopingStatusSelector() {
 
 function TopingBar() {
     const ModalRef = useRef<TModalRef | null>(null);
+    const sholdRedirectToCreateTopingPage = useMediaQuery({
+        query: "(max-width:710px)",
+    });
+    const navigate = useNavigate();
+    function handleClick() {
+        if (!sholdRedirectToCreateTopingPage) {
+            ModalRef.current?.onOpen();
+        } else {
+            navigate("create");
+        }
+    }
+
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
             <CardBody className="flex-row justify-between flex-wrap gap-3">
@@ -129,7 +143,7 @@ function TopingBar() {
                     className="text-white"
                     radius="sm"
                     endContent={<IconCubePlus />}
-                    onPress={() => ModalRef.current?.onOpen()}
+                    onPress={handleClick}
                 >
                     Create Toping
                 </Button>

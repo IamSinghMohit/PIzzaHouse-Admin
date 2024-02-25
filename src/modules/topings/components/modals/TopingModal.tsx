@@ -7,6 +7,7 @@ import {
     ModalContent,
     useDisclosure,
     ModalFooter,
+    Divider,
 } from "@nextui-org/react";
 import {
     forwardRef,
@@ -24,10 +25,11 @@ import {
     TopingPrice,
     TopingStatusSelector,
 } from "../TopingForm";
-import { setTopingState, setTopingUpdatedFields } from "@/store/slices/topings";
+import { setTopingCategories, setTopingState, setTopingUpdatedFields } from "@/store/slices/topings";
 import CreateTopingButton from "../button/CreateTopingButton";
 import UpdateTopingButton from "../button/UpdateTopingButton";
 import { StatusEnum } from "@/modules/types/inex";
+import TopingCategoryRenderer from "../TopingCategoryRenderer";
 
 interface Props {
     type: "Create" | "Update";
@@ -63,7 +65,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
 
     return (
         <Modal
-            size="xl"
+            size="2xl"
             isOpen={isOpen}
             isDismissable={!isLoading}
             isKeyboardDismissDisabled={!isLoading}
@@ -83,6 +85,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                         },
                     }),
                 );
+                dispatch(setTopingCategories({}))
                 dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
                 onClose();
             }}
@@ -121,13 +124,13 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 </ImageUploader>
 
                                 <TopingNameInput />
-                                {type === "Create" && (
-                                    <TopingCategorySelector />
-                                )}
+                                <TopingCategoryRenderer className="min-w-[280px] w-[280px]" />
                             </div>
-                            <div className="flex items-center gap-3 flex-col">
+                            <Divider orientation="vertical" />
+                            <div className="flex gap-3 flex-col items-end">
                                 <TopingPrice />
                                 <TopingStatusSelector />
+                                <TopingCategorySelector />
                             </div>
                         </ModalBody>
                         <ModalFooter className="px-6 py-2">
@@ -143,7 +146,6 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 <CreateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
-                                    // onSuccess={onClose}
                                 />
                             ) : (
                                 <UpdateTopingButton

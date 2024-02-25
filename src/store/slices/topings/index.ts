@@ -1,7 +1,6 @@
 import { StatusEnum } from "@/modules/types/inex";
 import { TopingSliceInitialState } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TCategorySelectorPayload } from "@/modules/commponents/CategorySelector";
 
 const initialState: TopingSliceInitialState = {
     toping_management: {
@@ -13,10 +12,10 @@ const initialState: TopingSliceInitialState = {
     },
     updated_fields: {
         name: false,
-        category: false,
+        categories: false,
         price: false,
         image: false,
-        status:false,
+        status: false,
     },
     fetching_states: {
         name: "",
@@ -24,7 +23,7 @@ const initialState: TopingSliceInitialState = {
         category: "",
         status: "All",
     },
-    category: null,
+    categories: {},
 };
 
 export const TopingSlice = createSlice({
@@ -109,11 +108,34 @@ export const TopingSlice = createSlice({
                 ...action.payload,
             };
         },
-        setTopingCategory(
+        addToTopingCategories(state, action: PayloadAction<string>) {
+            const obj = { ...state.categories, [action.payload]: true };
+            state.categories = obj;
+
+            if (!state.updated_fields.categories) {
+                state.updated_fields = {
+                    ...state.updated_fields,
+                    categories: true,
+                };
+            }
+        },
+        removeFromTopingCategories(state, action: PayloadAction<string>) {
+            const obj = { ...state.categories };
+            delete obj[action.payload];
+            state.categories = obj;
+
+            if (!state.updated_fields.categories) {
+                state.updated_fields = {
+                    ...state.updated_fields,
+                    categories: true,
+                };
+            }
+        },
+        setTopingCategories(
             state,
-            action: PayloadAction<TCategorySelectorPayload>,
+            action: PayloadAction<Record<string, boolean>>,
         ) {
-            state.category = action.payload;
+            state.categories = action.payload;
         },
     },
 });
@@ -121,6 +143,8 @@ export const TopingSlice = createSlice({
 export const {
     setTopingState,
     setTopingFetchingStates,
-    setTopingCategory,
     setTopingUpdatedFields,
+    addToTopingCategories,
+    removeFromTopingCategories,
+    setTopingCategories,
 } = TopingSlice.actions;

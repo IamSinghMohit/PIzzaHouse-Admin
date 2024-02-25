@@ -17,7 +17,7 @@ type getTopingsType = {
 
 async function getTopings(
     opts: getTopingsType,
-): Promise<TGetTopingsSchema| undefined> {
+): Promise<TGetTopingsSchema | undefined> {
     let url = `/toping/admin/all?name=${opts.name}&min=${opts.min}&max=${opts.max}&page=${opts.page}&limit=${opts.limit}`;
 
     if (opts.status && opts.status !== "All") {
@@ -29,7 +29,7 @@ async function getTopings(
     }
     return await axios
         .get(url)
-        .then((res) => ValidateBackendResponse(res.data,GetTopingsSchema))
+        .then((res) => ValidateBackendResponse(res.data, GetTopingsSchema));
 }
 
 export function useTopings(opts: getTopingsType) {

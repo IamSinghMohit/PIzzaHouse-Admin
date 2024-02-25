@@ -8,10 +8,6 @@ export const TopingColumns = [
         name:'NAME'
     },
     {
-        id:'658fa7763f5e0cf9ee68c337"',
-        name:'CATEGORY'
-    },
-    {
         id:'655510cf1e2da48a28041599',
         name:'STATUS'
     },

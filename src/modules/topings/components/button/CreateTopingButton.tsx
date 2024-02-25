@@ -14,9 +14,10 @@ interface Props {
 
 function CreateTopingButton({ setIsLoading, processedImage ,onSuccess}: Props) {
     const { mutate, isPending ,data} = useCreateToping();
-    const { toping_management, category } = useAppSelector(
+    const { toping_management, categories } = useAppSelector(
         (state) => state.toping,
     );
+    const topingCategoryArray = Object.keys(categories )
 
     function handleCreate() {
         if (!processedImage.file) {
@@ -25,14 +26,14 @@ function CreateTopingButton({ setIsLoading, processedImage ,onSuccess}: Props) {
             return errorToast("name is required");
         } else if (!toping_management.price) {
             return errorToast("price is required");
-        } else if (!category) {
+        } else if (topingCategoryArray.length === 0) {
             return errorToast("category is required");
         }
 
         FormDataSend(
             {
                 name: toping_management.name,
-                category_id: category.id,
+                categories_json:JSON.stringify(topingCategoryArray),
                 status: toping_management.status,
                 image: processedImage.file,
                 price: toping_management.price,

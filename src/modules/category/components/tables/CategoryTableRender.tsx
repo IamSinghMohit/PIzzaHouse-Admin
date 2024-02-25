@@ -15,6 +15,7 @@ import TableAction from "@/components/Table/TableAction";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
 import ClImage from "@/modules/commponents/ClImage";
 import { TableLoader } from "@/modules/loaders";
+import { generateCloudinaryImageUrl } from "@/utils";
 
 interface Props {
     data: TCategorySchema[];
@@ -35,6 +36,14 @@ function CategoryTableRender({
     const disaptch = useAppDispatch();
     const shouldRenderData: any = data && !isLoading;
 
+    function handleCurrrentSelectedCategory(item: TCategorySchema) {
+        disaptch(
+            setCurrentSelectedCategory({
+                ...item,
+                image: generateCloudinaryImageUrl(item.image),
+            }),
+        );
+    }
     return (
         <Table
             isHeaderSticky
@@ -65,7 +74,7 @@ function CategoryTableRender({
                     data.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                <ClImage imageId={item.image}/>
+                                <ClImage imageId={item.image} />
                             </TableCell>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>
@@ -75,20 +84,16 @@ function CategoryTableRender({
                                 <TableAction
                                     deleteIconEvents={{
                                         onClick: () => {
-                                            disaptch(
-                                                setCurrentSelectedCategory(
-                                                    item,
-                                                ),
-                                            ),
-                                                onDeleteClick();
+                                            handleCurrrentSelectedCategory(
+                                                item,
+                                            );
+                                            onDeleteClick();
                                         },
                                     }}
                                     viewIconEvents={{
                                         onClick: () => {
-                                            disaptch(
-                                                setCurrentSelectedCategory(
-                                                    item,
-                                                ),
+                                            handleCurrrentSelectedCategory(
+                                                item,
                                             );
                                             onViewClick();
                                         },

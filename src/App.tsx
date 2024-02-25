@@ -16,6 +16,7 @@ import CreateCategoryPageLoader from "./modules/category/create/CreateCategoryPa
 import ViewProductPageLoader from "./modules/products/view/ViewProductPageLoader";
 import CreateProductPageLoader from "./modules/products/create/CreateProductPageLoader";
 import { TableSkaletonLoader } from "./modules/loaders";
+import CreateTopingPage from "./modules/topings/create/CreateTopingPage";
 
 // pages
 const CreateProductPage = lazy(
@@ -95,6 +96,14 @@ const App = () => {
                     element: (
                         <Suspense fallback={<TopingLoader />}>
                             <Topings />
+                        </Suspense>
+                    ),
+                },
+                {
+                    path: "topings/create",
+                    element: (
+                        <Suspense fallback={<TopingLoader />}>
+                            <CreateTopingPage />
                         </Suspense>
                     ),
                 },
