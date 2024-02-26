@@ -1,24 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { errorToast, successToast } from "@/lib/toast";
-import axios from "@/lib/axios";
-import { AxiosError } from "axios";
-import { BackendError } from "@/types/api";
-import { ValidateBackendResponse } from "@/utils";
+import { successToast } from "@/lib/toast";
 import { TTopingSchema, TopingSchema } from "../schema";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
-async function createToping(data: any): Promise<TTopingSchema | undefined> {
-    return await axios
-        .post("/toping/admin/create", data, {
+async function createToping(data: any): Promise<TTopingSchema> {
+    return await makeRequest(
+        {
+            url: "/toping/admin/create",
+            method: "POST",
+            data: data,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
-        })
-        .then((res) => ValidateBackendResponse(res.data,TopingSchema));
+        },
+        TopingSchema
+    );
 }
 
 export function useCreateToping() {
     const queryClient = useQueryClient();
-    return useMutation({
+    return useMutation<TTopingSchema, TBackendErrorReponse, any>({
         mutationKey: ["toping", "create"],
         mutationFn: createToping,
         onSuccess: () => {
@@ -26,11 +27,6 @@ export function useCreateToping() {
                 queryKey: ["toping"],
             });
             successToast("toping  created");
-        },
-        onError: (err: AxiosError<BackendError>) => {
-            errorToast(
-                err.response?.data.error.message || "some server error",
-            );
         },
     });
 }

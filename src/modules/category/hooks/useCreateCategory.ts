@@ -1,24 +1,22 @@
-import axios from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { errorToast, successToast } from "@/lib/toast";
+import { successToast } from "@/lib/toast";
 import { CategorySchema, TCategorySchema } from "../schema";
-import { BackendError } from "@/types/api";
-import { AxiosError } from "axios";
-import { ValidateBackendResponse } from "@/utils";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
-async function createCategory(data: any): Promise<TCategorySchema | undefined> {
-    return await axios
-        .post("/category/admin/create", data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        .then((res) => ValidateBackendResponse(res.data, CategorySchema));
+async function createCategory(data: any): Promise<TCategorySchema> {
+    return makeRequest(
+        {
+            url: "/category/admin/create",
+            method: "POST",
+            data: data,
+        },
+        CategorySchema
+    );
 }
 
 export function useCreateCategory() {
     const qeryClient = useQueryClient();
-    return useMutation({
+    return useMutation<TCategorySchema, TBackendErrorReponse, any>({
         mutationKey: ["category", "create"],
         mutationFn: createCategory,
         onSuccess: () => {
@@ -26,11 +24,6 @@ export function useCreateCategory() {
                 queryKey: ["category"],
             });
             successToast("category created");
-        },
-        onError: (error: AxiosError<BackendError>) => {
-            errorToast(
-                error.response?.data.error.message || "some error occured"
-            );
         },
     });
 }

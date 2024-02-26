@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { ValidateBackendResponse } from "@/utils";
-import { UserSchema } from "../schema";
+import { TUserSchema, UserSchema } from "../schema";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
 export function useUserAutoLogin({ enabled }: { enabled: boolean }) {
-    return useQuery({
+    return useQuery<TUserSchema, TBackendErrorReponse>({
         queryKey: ["user", "me"],
-        queryFn: () =>
-            axios
-                .get("/auth/me")
-                .then((res) => ValidateBackendResponse(res.data, UserSchema)),
-        enabled,
+        queryFn: async () =>
+            await makeRequest(
+                {
+                    url: "/auth/me",
+                    method: "GET",
+                },
+                UserSchema
+            ),
+        enabled: enabled,
     });
 }

@@ -24,7 +24,7 @@ function CategoryTable({}: Props) {
         ViewCategoryModalRef.current?.onOpen();
     }, []);
 
-    const { data, isLoading, isError } = useCategory({
+    const { data, isLoading, isError, error } = useCategory({
         limit: parseInt(limit),
         page: page,
         name,
@@ -34,6 +34,11 @@ function CategoryTable({}: Props) {
         setPages(data?.pages || 1);
     }, [data]);
 
+    useEffect(() => {
+        if (error) {
+            console.log(error);
+        }
+    }, [isError]);
     return (
         <>
             <DeleteCategoryAlert ref={DeleteModalRef} />

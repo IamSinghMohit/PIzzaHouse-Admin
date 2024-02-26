@@ -16,7 +16,7 @@ import CreateCategoryPageLoader from "./modules/category/create/CreateCategoryPa
 import ViewProductPageLoader from "./modules/products/view/ViewProductPageLoader";
 import CreateProductPageLoader from "./modules/products/create/CreateProductPageLoader";
 import { TableSkaletonLoader } from "./modules/loaders";
-import CreateTopingPage from "./modules/topings/create/CreateTopingPage";
+import TopingPageLoader from "./modules/topings/page/TopingPageLoader";
 
 // pages
 const CreateProductPage = lazy(
@@ -33,6 +33,7 @@ const Product = lazy(() => import("./modules/products"));
 const Orders = lazy(() => import("./modules/orders"));
 const Topings = lazy(() => import("./modules/topings"));
 const Dashboard = lazy(() => import("./modules/home"));
+const TopingPage = lazy(() => import("./modules/topings/page"));
 
 const App = () => {
     const router = createBrowserRouter([
@@ -100,10 +101,10 @@ const App = () => {
                     ),
                 },
                 {
-                    path: "topings/create",
+                    path: "topings/:id",
                     element: (
-                        <Suspense fallback={<TopingLoader />}>
-                            <CreateTopingPage />
+                        <Suspense fallback={<TopingPageLoader />}>
+                            <TopingPage />
                         </Suspense>
                     ),
                 },

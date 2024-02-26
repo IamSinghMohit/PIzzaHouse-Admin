@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { GetProductStatsSchema, TGetProductStatsSchema } from "../schema";
-import { ValidateBackendResponse } from "@/utils";
+import { makeRequest } from "@/utils";
 
-async function getProductStats(): Promise<TGetProductStatsSchema | undefined> {
-    return await axios("/product/stats").then((res) =>
-        ValidateBackendResponse(res.data, GetProductStatsSchema)
+async function getProductStats(): Promise<TGetProductStatsSchema> {
+    return await makeRequest(
+        {
+            url: "/product/stats",
+            method: "GET",
+        },
+        GetProductStatsSchema
     );
 }
 export function useProductStats() {

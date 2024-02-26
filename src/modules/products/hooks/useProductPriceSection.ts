@@ -1,22 +1,23 @@
-import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import {
     GetProductPriceSectionSchema,
     TGetProductPriceSectionSchema,
 } from "../schema";
-import { ValidateBackendResponse } from "@/utils";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
 async function getProductPriceSections(
     id: string
-): Promise<TGetProductPriceSectionSchema | undefined> {
-    return await api
-        .get(
-            `/product/sections/${id}`
-        )
-        .then((res) => ValidateBackendResponse(res.data,GetProductPriceSectionSchema));
+): Promise<TGetProductPriceSectionSchema> {
+    return await makeRequest(
+        {
+            url: `/product/sections/${id}`,
+            method: "GET",
+        },
+        GetProductPriceSectionSchema
+    );
 }
 export function useProductPriceSection(id: string) {
-    return useQuery({
+    return useQuery<TGetProductPriceSectionSchema, TBackendErrorReponse>({
         queryKey: ["product", "sections", id],
         queryFn: () => getProductPriceSections(id),
         enabled: !!id,

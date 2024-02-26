@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { AxiosError } from "axios";
-import { errorToast, successToast } from "@/lib/toast";
-import { BackendError } from "@/types/api";
-import { ValidateBackendResponse } from "@/utils";
+import { successToast } from "@/lib/toast";
 import { ProductSchema, TProductSchema } from "../schema";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
-async function updateProduct(data:any):Promise<TProductSchema | undefined> {
-    return await axios
-        .patch(`/product/admin`, data, {
+async function updateProduct(data: any): Promise<TProductSchema> {
+    return await makeRequest(
+        {
+            url: `product/admin`,
+            data: data,
             headers: {
                 "Content-Type": "multipart/form-data",
             },
-        })
-        .then((res) => ValidateBackendResponse(res.data,ProductSchema));
+        },
+        ProductSchema
+    );
 }
 
 export function useUpdateProduct() {
     const qeryClient = useQueryClient();
-    return useMutation({
+    return useMutation<TProductSchema, TBackendErrorReponse, any>({
         mutationKey: ["product", "update"],
         mutationFn: updateProduct,
         onSuccess: () => {
@@ -26,11 +26,6 @@ export function useUpdateProduct() {
                 queryKey: ["product"],
             });
             successToast("product updated");
-        },
-        onError: (err: AxiosError<BackendError>) => {
-            if (err.response) {
-                errorToast(err.response.data.error.message);
-            }
         },
     });
 }

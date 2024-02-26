@@ -1,11 +1,5 @@
 import ImageUploader from "@/components/ImageUploader";
-import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-} from "@nextui-org/react";
+import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import {
     TopingCategorySelector,
     TopingNameInput,
@@ -14,16 +8,32 @@ import {
 } from "../components/TopingForm";
 import TopingCategoryRenderer from "../components/TopingCategoryRenderer";
 import { useEffect, useState } from "react";
-import CreateTopingButton from "../components/button/CreateTopingButton";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { TProcessedImage } from "@/types/ImageUploader";
+import { useAppDispatch, useAppSelector } from "@/hooks/state";
+import CreateTopingButton from "../components/button/CreateTopingButton";
+import {
+    setTopingCategories,
+    setTopingState,
+    setTopingUpdatedFields,
+} from "@/store/slices/topings";
+import { StatusEnum } from "@/modules/types/inex";
+import ToggledUpdateTopingButton from "../components/button/ToggledUpdateTopingButton";
 
 type Props = {};
 
-function CreateTopingPage({}: Props) {
+function TopingPage({}: Props) {
+    const { id } = useParams();
+    const isCreatePage = id?.startsWith("create");
+
     const shouldRedirectBack = useMediaQuery({
         query: "(min-width:710px)",
     });
+    const dispatch = useAppDispatch();
+    const defaultImage = useAppSelector(
+        (state) => state.toping.toping_management.image,
+    );
     const [processedImage, setProcessedImage] = useState<TProcessedImage>({
         url: "",
         file: null,
@@ -33,7 +43,26 @@ function CreateTopingPage({}: Props) {
     if (shouldRedirectBack) {
         navigate("topings");
     }
-    console.log(shouldRedirectBack)
+
+    /* useEffect(() => {
+        return () => {
+            dispatch(
+                setTopingState({
+                    type: "SET",
+                    data: {
+                        id: "",
+                        image: "",
+                        name: "",
+                        status: StatusEnum.DRAFT,
+                        price: 0,
+                    },
+                }),
+            );
+            dispatch(setTopingCategories({}));
+            dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
+        };
+    }, []); */
+
     return (
         <Card>
             <CardBody className="space-y-2">
@@ -41,9 +70,7 @@ function CreateTopingPage({}: Props) {
                     aspectRatio={{ x: 2, y: 2 }}
                     processedImage={processedImage}
                     setProcessedImage={setProcessedImage}
-                    // defaultImage={
-                    //     type == "Update" ? defaultImage : undefined
-                    // }
+                    defaultImage={isCreatePage ? undefined : defaultImage}
                 >
                     <ImageUploader.PlaceholderContainer
                         baseClassName="w-[180px] h-[180px] mx-auto"
@@ -61,25 +88,17 @@ function CreateTopingPage({}: Props) {
                 <TopingStatusSelector />
                 <TopingPrice />
             </CardBody>
-            <CardFooter className="px-6 py-2">
-                <Button radius="sm" color="danger" variant="light">
-                    Close
-                </Button>
-                {/* {type == "Create" ? (
-                    <CreateTopingButton
-                        setIsLoading={setIsLoading}
-                        processedImage={processedImage}
-                    />
+            <CardFooter className="flex justify-end">
+                {isCreatePage ? (
+                    <CreateTopingButton processedImage={processedImage} />
                 ) : (
-                    <UpdateTopingButton
-                        setIsLoading={setIsLoading}
+                    <ToggledUpdateTopingButton
                         processedImage={processedImage}
-                        onSuccess={onClose}
                     />
-                )} */}
+                )}
             </CardFooter>
         </Card>
     );
 }
 
-export default CreateTopingPage;
+export default TopingPage;

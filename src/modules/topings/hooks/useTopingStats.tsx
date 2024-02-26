@@ -1,14 +1,15 @@
-import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { GetTopingStatsShchema, TGetTopingStatsShchema } from "../schema";
-import { ValidateBackendResponse } from "@/utils";
+import { makeRequest } from "@/utils";
 
 async function getStats(): Promise<TGetTopingStatsShchema | undefined> {
-    return await axios
-        .get("toping/admin/stats")
-        .then((res) =>
-            ValidateBackendResponse(res.data, GetTopingStatsShchema)
-        );
+    return await makeRequest(
+        {
+            url: "toping/admin/stats",
+            method: "GET",
+        },
+        GetTopingStatsShchema
+    );
 }
 export function useTopingStats() {
     return useQuery({

@@ -1,25 +1,26 @@
-import axios from "@/lib/axios";
-import { errorToast, successToast } from "@/lib/toast";
-import { BackendError } from "@/types/api";
-import { ValidateBackendResponse } from "@/utils";
+import {  successToast } from "@/lib/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { TopingSchema } from "../schema";
+import { TTopingSchema, TopingSchema } from "../schema";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
 async function updateTopoing(data: any) {
-    return await axios
-        .patch(`/toping/admin`, data, {
+    return await makeRequest(
+        {
+            url: `/toping/admin`,
+            method: "PATCH",
             headers: {
                 "Content-Type": "multipart/form-data",
             },
-        })
-        .then((res) => ValidateBackendResponse(res.data,TopingSchema));
+            data: data,
+        },
+        TopingSchema
+    );
 }
 
 export function useUpdateToping() {
     const qeryClient = useQueryClient();
 
-    return useMutation({
+    return useMutation<TTopingSchema,TBackendErrorReponse,any>({
         mutationKey: ["toping", "update"],
         mutationFn: updateTopoing,
         onSuccess: () => {
@@ -27,11 +28,6 @@ export function useUpdateToping() {
                 queryKey: ["toping"],
             });
             successToast("toping updated");
-        },
-        onError: (err: AxiosError<BackendError>) => {
-            if (err.response) {
-                errorToast(err.response.data.error.message);
-            }
         },
     });
 }

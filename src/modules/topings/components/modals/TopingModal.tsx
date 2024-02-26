@@ -25,11 +25,16 @@ import {
     TopingPrice,
     TopingStatusSelector,
 } from "../TopingForm";
-import { setTopingCategories, setTopingState, setTopingUpdatedFields } from "@/store/slices/topings";
+import {
+    setTopingCategories,
+    setTopingState,
+    setTopingUpdatedFields,
+} from "@/store/slices/topings";
 import CreateTopingButton from "../button/CreateTopingButton";
 import UpdateTopingButton from "../button/UpdateTopingButton";
 import { StatusEnum } from "@/modules/types/inex";
 import TopingCategoryRenderer from "../TopingCategoryRenderer";
+import ToggledUpdateTopingButton from "../button/ToggledUpdateTopingButton";
 
 interface Props {
     type: "Create" | "Update";
@@ -85,7 +90,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                         },
                     }),
                 );
-                dispatch(setTopingCategories({}))
+                dispatch(setTopingCategories({}));
                 dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
                 onClose();
             }}
@@ -124,7 +129,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 </ImageUploader>
 
                                 <TopingNameInput />
-                                <TopingCategoryRenderer className="min-w-[280px] w-[280px]" />
+                                <TopingCategoryRenderer className="min-w-[280px] min-[280px]" />
                             </div>
                             <Divider orientation="vertical" />
                             <div className="flex gap-3 flex-col items-end">
@@ -148,7 +153,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                     processedImage={processedImage}
                                 />
                             ) : (
-                                <UpdateTopingButton
+                                <ToggledUpdateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
                                     onSuccess={onClose}

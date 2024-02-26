@@ -1,18 +1,25 @@
-import axios from "@/lib/axios";
 import { successToast } from "@/lib/toast";
 import { BaseDeleteResponseSchema, TBaseDeleteReponseSchema } from "@/schema";
-import { ValidateBackendResponse } from "@/utils";
+import { makeRequest } from "@/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-async function deleteCategory(id: string): Promise<TBaseDeleteReponseSchema | undefined> {
-    return await axios
-        .delete(`/category/admin/delete/${id}`)
-        .then((res) => ValidateBackendResponse(res.data,BaseDeleteResponseSchema));
+async function deleteCategory(id: string): Promise<TBaseDeleteReponseSchema> {
+    return await makeRequest(
+        {
+            url: `/category/admin/delete/${id}`,
+            method: "DELETE",
+        },
+        BaseDeleteResponseSchema
+    );
 }
 
 export function useDeleteCategory() {
     const queryClient = useQueryClient();
-    return useMutation({
+    return useMutation<
+        TBaseDeleteReponseSchema,
+        TBaseDeleteReponseSchema,
+        string
+    >({
         mutationKey: ["category", "delete"],
         mutationFn: deleteCategory,
         onSuccess: () => {

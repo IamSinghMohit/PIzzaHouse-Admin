@@ -50,7 +50,7 @@ export type TCurrentSelections = {
 export type TSetProductPriceSectoinAttribute =
     | {
           type: "SET";
-          data: TGetCategorySections["data"];
+          data: TGetCategorySections;
       }
     | {
           type: "UPDATE";

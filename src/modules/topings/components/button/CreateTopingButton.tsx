@@ -7,7 +7,7 @@ import { errorToast } from "@/lib/toast";
 import { useCreateToping } from "../../hooks/useCreateToping";
 
 interface Props {
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
     onSuccess?:() => void;
 }

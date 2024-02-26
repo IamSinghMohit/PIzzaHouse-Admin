@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import {
     removeFromTopingCategories,
-    setTopingUpdatedFields,
 } from "@/store/slices/topings";
 import { Chip } from "@nextui-org/react";
 
