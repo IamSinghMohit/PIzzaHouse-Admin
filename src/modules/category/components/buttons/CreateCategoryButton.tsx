@@ -28,6 +28,14 @@ function CreateCategoryButton({
         } else if (!category_name) {
             return errorToast("name is required");
         }
+        console.log(
+
+            {
+                image: processedImage.file,
+                name: category_name,
+                json: JSON.stringify(category_price_sec),
+            },
+        )
         FormDataSend(
             {
                 image: processedImage.file,

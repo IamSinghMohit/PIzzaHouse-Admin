@@ -6,8 +6,11 @@ import { TBackendErrorReponse, makeRequest } from "@/utils";
 async function createCategory(data: any): Promise<TCategorySchema> {
     return makeRequest(
         {
-            url: "/category/admin/create",
+            url: "category/admin/create",
             method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
             data: data,
         },
         CategorySchema
