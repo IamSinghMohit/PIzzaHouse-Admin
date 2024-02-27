@@ -19,6 +19,7 @@ function TabList({}: Props) {
             variant="light"
             color="primary"
             radius="none"
+            className="min-h-screen-nav"
             defaultSelectedKey={location.pathname.split("/")[1]}
             onSelectionChange={(e) => navigate(e as string)}
         >

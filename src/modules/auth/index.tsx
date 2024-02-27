@@ -40,7 +40,7 @@ function Login() {
             navigate("/home");
         }
         if (data) {
-            dispatch(setUser(queryData));
+            dispatch(setUser(data));
             navigate("/home");
         }
     }, [isError, queryData, data]);
