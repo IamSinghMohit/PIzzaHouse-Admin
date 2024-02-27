@@ -15,7 +15,7 @@ import { Divider } from "@nextui-org/react";
 export function DummyPriceSectionRenderer({
     data,
 }: {
-    data: TGetCategorySections["data"];
+    data: TGetCategorySections;
 }) {
     return (
         <div

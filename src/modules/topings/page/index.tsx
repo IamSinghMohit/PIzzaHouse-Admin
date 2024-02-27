@@ -7,7 +7,7 @@ import {
     TopingStatusSelector,
 } from "../components/TopingForm";
 import TopingCategoryRenderer from "../components/TopingCategoryRenderer";
-import { useEffect, useState } from "react";
+import {  useEffect,useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate, useParams } from "react-router-dom";
 import { TProcessedImage } from "@/types/ImageUploader";
@@ -44,7 +44,7 @@ function TopingPage({}: Props) {
         navigate("topings");
     }
 
-    /* useEffect(() => {
+    useEffect(() => {
         return () => {
             dispatch(
                 setTopingState({
@@ -61,7 +61,7 @@ function TopingPage({}: Props) {
             dispatch(setTopingCategories({}));
             dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
         };
-    }, []); */
+    }, []); 
 
     return (
         <Card>

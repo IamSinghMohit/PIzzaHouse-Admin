@@ -7,19 +7,17 @@ import {
     ProductNameInput,
     ProductDescriptionInput,
 } from "../components/ProductForm";
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate } from "react-router-dom";
 import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
-import UpdateProductButton, {
-    TUpdateProductButtonProps,
-} from "../components/button/UpdateProductButton";
 import {
+    setProductState,
     setProductUpdatedFields,
 } from "@/store/slices/product";
-import { TProductUpdatedFields } from "@/store/slices/product/types";
+import ToggledUpdateProductButton from "../components/button/ToggledProductUpdateButton";
 
 type Props = {};
 
@@ -31,7 +29,7 @@ function ViewProductPage({}: Props) {
     const dispatch = useAppDispatch();
     const shouldRedirectBack = useMediaQuery({ query: "(min-width:800px)" });
     const defaultImage = useAppSelector(
-        (state) => state.product.product_management.product_image,
+        (state) => state.product.product_management.product_image
     );
     if (shouldRedirectBack) {
         <Navigate to="/products" />;
@@ -43,12 +41,12 @@ function ViewProductPage({}: Props) {
     useEffect(() => {
         if (processedImage.file) {
             dispatch(
-                setProductUpdatedFields({ type: "product_image", value: true }),
+                setProductUpdatedFields({ type: "product_image", value: true })
             );
         }
     }, [processedImage.file]);
 
-    /* useEffect(() => {
+    useEffect(() => {
         return () => {
             dispatch(
                 setProductState({
@@ -63,11 +61,10 @@ function ViewProductPage({}: Props) {
                         product_price: 0,
                         product_description: "",
                     },
-                }),
+                })
             );
         };
-
-    }, []); */
+    }, []);
 
     return (
         <Card radius="sm">
@@ -107,7 +104,7 @@ function ViewProductPage({}: Props) {
                     shouldRenderDivider={false}
                 />
                 <CardFooter className="flex justify-end">
-                    <ViewProductPageUpdateButton
+                    <ToggledUpdateProductButton
                         processedImage={processedImage}
                     />{" "}
                 </CardFooter>
@@ -117,29 +114,3 @@ function ViewProductPage({}: Props) {
 }
 
 export default ViewProductPage;
-
-function ViewProductPageUpdateButton({
-    processedImage,
-    setIsLoading,
-}: TUpdateProductButtonProps) {
-    const { updated_fields } = useAppSelector((state) => state.product);
-
-    const shouldRender = useMemo(() => {
-        let key: keyof TProductUpdatedFields;
-        for (key in updated_fields) {
-            if (updated_fields[key]) {
-                return true;
-            }
-        }
-        return false;
-    }, [updated_fields]);
-
-    return shouldRender ? (
-        <UpdateProductButton
-            setIsLoading={setIsLoading}
-            processedImage={processedImage}
-        />
-    ) : (
-        <></>
-    );
-}

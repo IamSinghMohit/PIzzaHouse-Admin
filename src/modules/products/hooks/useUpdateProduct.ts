@@ -7,6 +7,7 @@ async function updateProduct(data: any): Promise<TProductSchema> {
     return await makeRequest(
         {
             url: `product/admin`,
+            method:'PATCH',
             data: data,
             headers: {
                 "Content-Type": "multipart/form-data",

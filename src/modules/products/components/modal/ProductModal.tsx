@@ -13,7 +13,6 @@ import {
     forwardRef,
     useEffect,
     useImperativeHandle,
-    useMemo,
     useState,
 } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
@@ -34,12 +33,9 @@ import {
     setProductState,
     setProductUpdatedFields,
 } from "@/store/slices/product";
-import UpdateProductButton, {
-    TUpdateProductButtonProps,
-} from "../button/UpdateProductButton";
 import ProductPriceSectionRender from "../ProductPriceSectionRender";
-import { TProductUpdatedFields } from "@/store/slices/product/types";
 import CreateProductButton from "../button/CreateProductButton";
+import ToggledUpdateProductButton from "../button/ToggledProductUpdateButton";
 
 interface Props {
     type: "Create" | "Update";
@@ -183,7 +179,7 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                                 Close
                             </Button>
                             {type == "Update" ? (
-                                <ProductModalUpdateProductButton
+                                <ToggledUpdateProductButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
                                     onSuccess={onClose}
@@ -205,31 +201,3 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
 
 export default forwardRef(ProductModal);
 
-function ProductModalUpdateProductButton({
-    processedImage,
-    setIsLoading,
-    onSuccess,
-}: TUpdateProductButtonProps) {
-    const { updated_fields } = useAppSelector((state) => state.product);
-    const [isTrue, setIsTrue] = useState(false);
-    const shouldRender = useMemo(() => {
-        if (isTrue) return true;
-        for (let key in updated_fields) {
-            if (updated_fields[key as keyof TProductUpdatedFields]) {
-                setIsTrue(true);
-                return true;
-            }
-        }
-        return false;
-    }, [updated_fields]);
-
-    return shouldRender ? (
-        <UpdateProductButton
-            setIsLoading={setIsLoading}
-            processedImage={processedImage}
-            onSuccess={onSuccess}
-        />
-    ) : (
-        <></>
-    );
-}
