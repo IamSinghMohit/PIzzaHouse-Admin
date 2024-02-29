@@ -7,7 +7,7 @@ import {
     TableCell,
     Chip,
 } from "@nextui-org/react";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import TableActions from "@/components/Table/TableAction";
 import { memo, useMemo } from "react";
 import { useAppDispatch } from "@/hooks/state";

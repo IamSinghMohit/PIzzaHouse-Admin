@@ -10,7 +10,7 @@ import {
     TableCell,
 } from "@nextui-org/react";
 import { TCategorySchema } from "../../schema";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import TableAction from "@/components/Table/TableAction";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
 import ClImage from "@/modules/commponents/ClImage";

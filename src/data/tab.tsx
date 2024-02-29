@@ -13,18 +13,18 @@ export const TAB = [
         to: "home",
     },
     {
-        id: "6555108a1e2da48a28041593",
-        key: "products",
-        iconText: "Products",
-        icon: <IconCheese />,
-        to: "products",
-    },
-    {
         id: "655510951e2da48a28041594",
         key: "categories",
         iconText: "Categories",
         icon: <IconCategory2 />,
         to: "categories",
+    },
+    {
+        id: "6555108a1e2da48a28041593",
+        key: "products",
+        iconText: "Products",
+        icon: <IconCheese />,
+        to: "products",
     },
     {
         id: "655510a01e2da48a28041595",

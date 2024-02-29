@@ -1,3 +1,5 @@
+import { IconCurrencyRupee } from "@tabler/icons-react";
+
 export const OrderColumns = [
     {
         id: "fc67d7c7-e978-4cc7-bb29-28df2213c6f6",
@@ -17,11 +19,16 @@ export const OrderColumns = [
     },
     {
         id: "724f2b51-aea4-42ac-87d2-7d92e6b8b088",
-        name: "STATE",
+        name: (
+            <span className="flex items-center">
+                <IconCurrencyRupee width={16} />
+                <span>PRICE</span>
+            </span>
+        ),
     },
     {
         id: "eea5a825-14f4-4f65-90c3-c60bd1e8136d",
-        name: "CITY",
+        name: "STATE",
     },
     {
         id: "12d301b5-cfbb-46df-8313-e943300dbebb",

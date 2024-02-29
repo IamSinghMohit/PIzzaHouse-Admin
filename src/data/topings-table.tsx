@@ -1,3 +1,5 @@
+import { IconCurrencyRupee } from "@tabler/icons-react";
+
 export const TopingColumns = [
     {
         id:'658ec01391462083a9feb125',
@@ -17,7 +19,12 @@ export const TopingColumns = [
     },
     {
         id:'655510c61e2da48a28041598',
-        name:'PRICE'
+        name: (
+            <span className="flex items-center">
+                <IconCurrencyRupee width={16}/>
+                <span>PRICE</span>
+            </span>
+        ),
     },
     {
         id:'655510df1e2da48a2804159b',

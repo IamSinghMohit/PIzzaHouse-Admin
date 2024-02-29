@@ -10,7 +10,7 @@ import {
     TableRow,
 } from "@nextui-org/react";
 import { useOrders } from "./hooks/useOrders";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { OrderStatusEnum } from "./schema";
 import { useUpdateOrderStatus } from "./hooks/useUpdateOrderStatus";
@@ -68,8 +68,8 @@ function Orders({}: Props) {
                                 <OrderSelector order={item} />
                             </TableCell>
                             <TableCell>{item.user_full_name}</TableCell>
+                            <TableCell>{item.price}</TableCell>
                             <TableCell>{item.state}</TableCell>
-                            <TableCell>{item.city}</TableCell>
                             <TableCell>
                                 {dayjs(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
