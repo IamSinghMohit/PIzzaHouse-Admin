@@ -38,7 +38,7 @@ const initialState: TProductSliceInitialStateType = {
         product_featured: false,
         product_name: "",
         product_status: "All",
-        range: [0, 10],
+        range: [0, 0],
     },
     current_category: null,
 };

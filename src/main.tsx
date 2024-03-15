@@ -13,6 +13,12 @@ const queryClient = new QueryClient({
         queries:{
             refetchInterval:false,
             refetchOnWindowFocus:false,
+            staleTime: 30000000,
+            refetchOnMount: false,
+            refetchOnReconnect: "always",
+            refetchIntervalInBackground: false,
+        },
+        mutations:{
         }
     }
 });

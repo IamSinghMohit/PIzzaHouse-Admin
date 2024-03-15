@@ -30,7 +30,7 @@ api.interceptors.response.use(
                     }
                 );
 
-                return api.request(originalRequest);
+                return axios.request(originalRequest);
             } catch (err) {
                 console.log(err);
             }
@@ -40,3 +40,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+

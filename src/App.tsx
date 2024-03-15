@@ -17,6 +17,8 @@ import ViewProductPageLoader from "./modules/products/view/ViewProductPageLoader
 import CreateProductPageLoader from "./modules/products/create/CreateProductPageLoader";
 import { TableSkaletonLoader } from "./modules/loaders";
 import TopingPageLoader from "./modules/topings/page/TopingPageLoader";
+import ErrorBoundary from "./lib/error-boundary";
+import FaqPage from "./modules/faq";
 
 // pages
 const CreateProductPage = lazy(
@@ -47,76 +49,98 @@ const App = () => {
                 {
                     path: "home",
                     element: (
-                        <Suspense fallback={<DashboardLoader />}>
-                            <Dashboard />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<DashboardLoader />}>
+                                <Dashboard />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "categories",
                     element: (
-                        <Suspense fallback={<CategoryLoader />}>
-                            <Category />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<CategoryLoader />}>
+                                <Category />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "categories/create",
                     element: (
-                        <Suspense fallback={<CreateCategoryPageLoader />}>
-                            <CreateCategoryPage />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<CreateCategoryPageLoader />}>
+                                <CreateCategoryPage />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "products",
                     element: (
-                        <Suspense fallback={<ProductLoader />}>
-                            <Product />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<ProductLoader />}>
+                                <Product />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "products/create",
                     element: (
-                        <Suspense fallback={<CreateProductPageLoader />}>
-                            <CreateProductPage />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<CreateProductPageLoader />}>
+                                <CreateProductPage />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "products/view",
                     element: (
-                        <Suspense fallback={<ViewProductPageLoader />}>
-                            <ViewProductPage />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<ViewProductPageLoader />}>
+                                <ViewProductPage />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "topings",
                     element: (
-                        <Suspense fallback={<TopingLoader />}>
-                            <Topings />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<TopingLoader />}>
+                                <Topings />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "topings/:id",
                     element: (
-                        <Suspense fallback={<TopingPageLoader />}>
-                            <TopingPage />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<TopingPageLoader />}>
+                                <TopingPage />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
                 {
                     path: "orders",
                     element: (
-                        <Suspense fallback={<TableSkaletonLoader />}>
-                            <Orders />
-                        </Suspense>
+                        <ErrorBoundary message="*Requested page is not available">
+                            <Suspense fallback={<TableSkaletonLoader />}>
+                                <Orders />
+                            </Suspense>
+                        </ErrorBoundary>
                     ),
                 },
             ],
+        },
+        {
+            path: "/faq",
+            element: <FaqPage />,
         },
         {
             path: "*",

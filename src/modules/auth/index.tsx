@@ -15,7 +15,7 @@ function Login() {
     const { isError, data: queryData } = useUserAutoLogin({
         enabled: !user && !isTriedToAutoLogin,
     });
-    const { mutate, data } = useUserLogin();
+    const { mutate, data ,isPending} = useUserLogin();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -97,6 +97,7 @@ function Login() {
                             type="submit"
                             className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-darkOrange"
                             color="primary"
+                            isLoading={isPending}
                         >
                             Login in
                         </Button>

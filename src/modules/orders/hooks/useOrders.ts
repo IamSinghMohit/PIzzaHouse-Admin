@@ -16,5 +16,6 @@ export function useOrders() {
     return useQuery<TGetOrderSchema,TBackendErrorReponse>({
         queryFn: getOrders,
         queryKey: ["orders", "page=1"],
+        retry:false,
     });
 }

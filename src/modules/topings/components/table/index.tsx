@@ -27,15 +27,20 @@ function TopingTable() {
         range,
     } = useAppSelector((state) => state.toping.fetching_states, shallowEqual);
 
-    const { data, isError, isLoading } = useTopings({
-        max: range[1],
-        min: range[0],
-        name: name,
-        category: topingCategory,
-        status: status,
-        limit: parseInt(limit),
-        page: page,
-    });
+    const { data, isError, isLoading } = useTopings(
+        {
+            max: range[1],
+            min: range[0],
+            name: name,
+            category: topingCategory,
+            status: status,
+            limit: parseInt(limit),
+            page: page,
+        },
+        {
+            enabled: !!range[1],
+        },
+    );
 
     const handleDeleteClick = useCallback(() => {
         DeleteModalRef.current?.onOpen();

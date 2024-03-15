@@ -29,19 +29,16 @@ function ViewProductPage({}: Props) {
     const dispatch = useAppDispatch();
     const shouldRedirectBack = useMediaQuery({ query: "(min-width:800px)" });
     const defaultImage = useAppSelector(
-        (state) => state.product.product_management.product_image
+        (state) => state.product.product_management.product_image,
     );
-    if (shouldRedirectBack) {
+    if (shouldRedirectBack || !defaultImage) {
         <Navigate to="/products" />;
-    }
-    if (!defaultImage) {
-        return <Navigate to="/products" />;
     }
 
     useEffect(() => {
         if (processedImage.file) {
             dispatch(
-                setProductUpdatedFields({ type: "product_image", value: true })
+                setProductUpdatedFields({ type: "product_image", value: true }),
             );
         }
     }, [processedImage.file]);
@@ -61,7 +58,7 @@ function ViewProductPage({}: Props) {
                         product_price: 0,
                         product_description: "",
                     },
-                })
+                }),
             );
         };
     }, []);

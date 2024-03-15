@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { IconLogout, IconX } from "@tabler/icons-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { HamBurgerIcon } from "@/icons";
 import { CapitalizeWord } from "@/utils";
@@ -32,7 +32,9 @@ function Navbar({}: Props) {
             <div className="w-[140px] flex gap-2 items-center justify-between">
                 <img src={Logo} alt="logo image" className="w-full h-full" />
             </div>
-
+            <NavLink to="faq" className="underline text-primaryOrange">
+                FAQ
+            </NavLink>
             {showToggleButton ? (
                 <div
                     className="text-primaryOrange text-2xl w-6 cursor-pointer"

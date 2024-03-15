@@ -36,7 +36,7 @@ export async function makeRequest<T>(
         const result = baseResponse.parse(response.data);
         return result.data!;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error instanceof ZodError) {
             errorToast("received bad from server");
             throw {

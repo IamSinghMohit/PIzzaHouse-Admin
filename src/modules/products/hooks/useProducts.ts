@@ -28,11 +28,14 @@ async function getProducts(opts: getProductsType): Promise<TGetProductsSchema> {
             url: url,
             method: "GET",
         },
-        GetProductsSchema
+        GetProductsSchema,
     );
 }
 
-export function useProducts(opts: getProductsType) {
+export function useProducts(
+    opts: getProductsType,
+    { enabled }: { enabled?: boolean },
+) {
     return useQuery<TGetProductsSchema, TBackendErrorReponse>({
         queryKey: [
             "product",
@@ -45,5 +48,6 @@ export function useProducts(opts: getProductsType) {
             `page=${opts.page}`,
         ],
         queryFn: async () => getProducts(opts),
+        enabled: enabled,
     });
 }

@@ -1,42 +1,25 @@
-import axios from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TGetProductsSchema } from "../schema";
+import { makeRequest } from "@/utils";
+import { BaseDeleteResponseSchema } from "@/schema";
 
 const deleteProduct = async (id: string) => {
-    await axios.delete(`/product/admin/${id}`);
+    return await makeRequest(
+        {
+            url: `/product/admin/${id}`,
+            method: "DELETE",
+        },
+        BaseDeleteResponseSchema,
+    );
 };
 export function useDeleteProduct() {
     const queryClient = useQueryClient();
-    const queryKeys = [
-        "product",
-    ];
     return useMutation({
         mutationKey: ["product", "delete"],
         mutationFn: deleteProduct,
-        onMutate: (id: string) => {
-            const prevData = queryClient.getQueryData(queryKeys) as TGetProductsSchema;
-            queryClient.setQueryData(queryKeys, () => {
-              return prevData.products.filter((pro) => {
-                    if (pro.id !== id) {
-                        return pro;
-                    }
-                });
-            });
-            return {
-                previousData: prevData,
-            };
-        },
-        onError: (_error, _id, context) => {
-            queryClient.setQueryData(queryKeys, () => {
-                return context?.previousData;
-            });
-        },
-        onSettled: () => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: queryKeys,
-                exact: true,
+                queryKey: ["product"],
             });
         },
     });
 }
-

@@ -25,16 +25,21 @@ function ProductTable() {
     } = useAppSelector((state) => state.product.fetching_states, shallowEqual);
     const navigate = useNavigate();
 
-    const { data, isError, isLoading } = useProducts({
-        max: range[1],
-        min: range[0],
-        name: product_name,
-        category: product_category,
-        featured: product_featured,
-        status: product_status,
-        limit: parseInt(limit),
-        page: page,
-    });
+    const { data, isError, isLoading } = useProducts(
+        {
+            max: range[1],
+            min: range[0],
+            name: product_name,
+            category: product_category,
+            featured: product_featured,
+            status: product_status,
+            limit: parseInt(limit),
+            page: page,
+        },
+        {
+            enabled: !!range[1],
+        },
+    );
     const shouldOpenUpdateProductModal = useMediaQuery({
         query: "(min-width:825px)",
     });

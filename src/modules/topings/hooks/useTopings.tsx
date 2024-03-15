@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetTopingsSchema, TGetTopingsSchema } from "../schema";
 import { TitemStatus } from "@/modules/types/inex";
-import {
-    TBackendErrorReponse,
-    makeRequest,
-} from "@/utils";
+import { TBackendErrorReponse, makeRequest } from "@/utils";
 
 type getTopingsType = {
     name: string;
@@ -32,11 +29,18 @@ async function getTopings(opts: getTopingsType): Promise<TGetTopingsSchema> {
             url: url,
             method: "GET",
         },
-        GetTopingsSchema
+        GetTopingsSchema,
     );
 }
 
-export function useTopings(opts: getTopingsType) {
+export function useTopings(
+    opts: getTopingsType,
+    {
+        enabled,
+    }: {
+        enabled?: boolean;
+    },
+) {
     return useQuery<TGetTopingsSchema, TBackendErrorReponse>({
         queryKey: [
             "toping",
@@ -48,5 +52,6 @@ export function useTopings(opts: getTopingsType) {
             `page=${opts.page}`,
         ],
         queryFn: async () => getTopings(opts),
+        enabled: enabled,
     });
 }

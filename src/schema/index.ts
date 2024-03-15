@@ -13,7 +13,5 @@ export const BaseResponseWithNameAndImage = z
     })
     .merge(BaseResponse);
 
-export const BaseDeleteResponseSchema = z.object({
-    message: z.string(),
-});
+export const BaseDeleteResponseSchema = z.string()
 export type TBaseDeleteReponseSchema = TypeOf<typeof BaseDeleteResponseSchema>;

@@ -31,6 +31,11 @@ function Orders({}: Props) {
         setPages(data?.pages || 1);
     }, [data]);
 
+    useEffect(() => {
+        if (isError) {
+            console.log("error");
+        }
+    }, [isError]);
     return (
         <div>
             <Table
@@ -90,11 +95,7 @@ function Orders({}: Props) {
 
 export default Orders;
 
-function OrderSelector({
-    order,
-}: {
-    order: TGetOrderSchema["orders"][0];
-}) {
+function OrderSelector({ order }: { order: TGetOrderSchema["orders"][0] }) {
     const { mutate } = useUpdateOrderStatus();
     const [selected, setSelected] = useState(`${order.status}`);
 
