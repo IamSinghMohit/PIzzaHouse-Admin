@@ -18,7 +18,6 @@ import CreateProductPageLoader from "./modules/products/create/CreateProductPage
 import { TableSkaletonLoader } from "./modules/loaders";
 import TopingPageLoader from "./modules/topings/page/TopingPageLoader";
 import ErrorBoundary from "./lib/error-boundary";
-import FaqPage from "./modules/faq";
 
 // pages
 const CreateProductPage = lazy(
@@ -36,6 +35,7 @@ const Orders = lazy(() => import("./modules/orders"));
 const Topings = lazy(() => import("./modules/topings"));
 const Dashboard = lazy(() => import("./modules/home"));
 const TopingPage = lazy(() => import("./modules/topings/page"));
+const FaqPage = lazy(() => import("./modules/faq"));
 
 const App = () => {
     const router = createBrowserRouter([
@@ -140,7 +140,13 @@ const App = () => {
         },
         {
             path: "/faq",
-            element: <FaqPage />,
+            element: (
+                <Suspense
+                    fallback={<div className="min-h-screen">Loading...</div>}
+                >
+                    <FaqPage />
+                </Suspense>
+            ),
         },
         {
             path: "*",

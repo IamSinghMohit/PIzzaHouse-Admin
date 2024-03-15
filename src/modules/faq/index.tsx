@@ -26,17 +26,15 @@ function FaqPage({}: Props) {
                         know more about me 💡
                     </a>
                     <h6 className="text-gray-700">Prefer watching a video😇</h6>
-                    <div className="max-w-[560px] h-0 max-h-[315px]">
-                        <div className="relative pb-[56.25%]">
-                            <iframe
-                                className="w-full h-full absolute top-0 left-0 max-h-[315px] max-w-[560px]"
-                                src="https://www.youtube.com/embed/QhWyXj2bQFc?si=dlOpTrL0SjlG__eC"
-                                title="YouTube video player"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                            />
-                        </div>
+                    <div className="relative pb-[56.25%] max-w-[560px] h-0 max-h-[315px]">
+                        <iframe
+                            className="w-full h-full absolute top-0 left-0 max-h-[315px] max-w-[560px]"
+                            src="https://www.youtube.com/embed/QhWyXj2bQFc?si=dlOpTrL0SjlG__eC"
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                        />
                     </div>
                     <Accordion>
                         <AccordionItem

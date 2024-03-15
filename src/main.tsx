@@ -9,18 +9,25 @@ import { NextUIProvider } from "@nextui-org/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
-    defaultOptions:{
-        queries:{
-            refetchInterval:false,
-            refetchOnWindowFocus:false,
+    defaultOptions: {
+        queries: {
+            refetchInterval: false,
+            refetchOnWindowFocus: false,
             staleTime: 30000000,
+            retry(failureCount, _error) {
+                if (failureCount > 1) {
+                    return false;
+                }
+                return true;
+            },
+            retryDelay(failureCount, _error) {
+                return failureCount * 2000
+            },
             refetchOnMount: false,
             refetchOnReconnect: "always",
             refetchIntervalInBackground: false,
         },
-        mutations:{
-        }
-    }
+    },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -31,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     <App />
                 </Provider>
             </NextUIProvider>
-            <ReactQueryDevtools initialIsOpen/>
+            <ReactQueryDevtools initialIsOpen />
         </QueryClientProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
 );
