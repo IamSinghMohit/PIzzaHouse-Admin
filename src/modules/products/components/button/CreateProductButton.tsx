@@ -67,7 +67,7 @@ function CreateProductButton({
                     }),
                 );
             }
-            if (default_prices[attribute.section].id === key && !error) {
+            if (default_prices[attribute.section]?.id === key && !error) {
                 DefaultPriceAttributesArray.push({
                     name: attribute.name,
                     id: key,

@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import CreateProductButton from "../components/button/CreateProductButton";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ProductPriceSectionRender from "../components/ProductPriceSectionRender";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch } from "@/hooks/state";
@@ -28,7 +28,7 @@ function CreateProductPage({}: Props) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     if (shouldRedirectBack) {
-        navigate("products");
+        <Navigate to={"products"} />;
     }
 
     useEffect(() => {
@@ -92,6 +92,7 @@ function CreateProductPage({}: Props) {
                     <CreateProductButton
                         processedImage={processedImage}
                         className="z-10"
+                        onSuccess={() => navigate("products")}
                     />
                 </CardFooter>
             </CardBody>

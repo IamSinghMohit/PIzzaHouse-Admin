@@ -146,7 +146,6 @@ function ImageUploader({
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
-        console.log("inside function");
         const { files } = event.target;
 
         if (files && files.length > 0) {
@@ -204,6 +203,7 @@ function ImageUploader({
                     type="file"
                     id="image-upload"
                     className="hidden"
+                    accept="image/*"
                     onChange={handleInputChange}
                     ref={InputRef}
                 />

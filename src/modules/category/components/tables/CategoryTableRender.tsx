@@ -51,8 +51,10 @@ function CategoryTableRender({
             aria-label="category table"
             shadow="sm"
             layout="auto"
+            className="thin-scroll-thumb"
             classNames={{
                 table: `${isLoading && "h-[500px]"}`,
+                base:'thin-scroll-thumb'
             }}
         >
             <TableHeader>

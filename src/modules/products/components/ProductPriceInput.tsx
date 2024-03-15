@@ -86,7 +86,6 @@ function ProductPriceInput({ attribute, section }: Props) {
                                 : "border-red-700 bg-red-500"
                         }`}
                         onPress={() => {
-                            console.log("called here");
                             dispatch(
                                 setDefaultProductPrices({
                                     type: "UPDATE",

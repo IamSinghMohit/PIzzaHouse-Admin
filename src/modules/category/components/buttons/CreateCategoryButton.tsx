@@ -10,12 +10,14 @@ interface Props {
     setIsLoading?: Dispatch<SetStateAction<boolean>>;
     processedImage: TProcessedImage;
     onSuccess?: () => void;
+    className?: string;
 }
 
 function CreateCategoryButton({
     setIsLoading,
     processedImage,
     onSuccess,
+    className,
 }: Props) {
     const { mutate, isPending, data } = useCreateCategory();
     const { category_price_sec, category_name } = useAppSelector(
@@ -28,14 +30,6 @@ function CreateCategoryButton({
         } else if (!category_name) {
             return errorToast("name is required");
         }
-        console.log(
-
-            {
-                image: processedImage.file,
-                name: category_name,
-                json: JSON.stringify(category_price_sec),
-            },
-        )
         FormDataSend(
             {
                 image: processedImage.file,
@@ -56,7 +50,11 @@ function CreateCategoryButton({
     }, [isPending]);
 
     return (
-        <ModalButton isLoading={isPending} onPress={handleCreate}>
+        <ModalButton
+            isLoading={isPending}
+            onPress={handleCreate}
+            className={className}
+        >
             Create
         </ModalButton>
     );

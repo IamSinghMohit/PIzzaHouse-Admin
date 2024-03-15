@@ -13,7 +13,7 @@ async function createCategory(data: any): Promise<TCategorySchema> {
             },
             data: data,
         },
-        CategorySchema
+        CategorySchema,
     );
 }
 

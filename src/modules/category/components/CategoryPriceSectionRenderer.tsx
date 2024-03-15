@@ -4,7 +4,6 @@ import {
     CardBody,
     Button,
     Chip,
-    Divider,
 } from "@nextui-org/react";
 import { DeleteIcon } from "@/icons";
 import { TCategorySection } from "@/store/slices/category/types";
@@ -13,17 +12,19 @@ interface IProps {
     renderDeleteButton?: boolean;
     priceSections: TCategorySection[];
     onDelete?: (id:string) => void;
+    className?:string
 }
 
 function CategoryPriceSectionRenderer({
     renderDeleteButton = true,
     priceSections,
     onDelete,
+    className
 }: IProps) {
     return priceSections.map((sec) => (
         <Card
             shadow="sm"
-            className="max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange"
+            className={`max-w-[400px] w-full mx-auto lg:mx-0 lg:min-w-[350px] xl:w-full border-1 border-darkOrange ${className}`}
             key={sec.id}
         >
             <CardHeader className="flex gap-2 p-0 justify-between bg-primaryOrange text-lg uppercase text-white">
@@ -44,7 +45,6 @@ function CategoryPriceSectionRenderer({
                     )}
                 </div>
             </CardHeader>
-            <Divider />
             <CardBody className="p-2 flex-wrap flex-row gap-2">
                 {sec.attributes.map((att) => (
                     <Chip

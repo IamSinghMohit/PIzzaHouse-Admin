@@ -40,7 +40,7 @@ function CategorySelector({
             defaultItems={items}
             shouldCloseOnBlur={true}
             defaultInputValue={inputValue}
-            size="sm"
+            size="lg"
             color="primary"
             radius="sm"
             onSelectionChange={setSelectedCategory}

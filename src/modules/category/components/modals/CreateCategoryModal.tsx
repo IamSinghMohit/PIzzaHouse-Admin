@@ -21,6 +21,7 @@ import { TModalRef } from "@/types/Modal";
 import CreateCategoryButton from "../buttons/CreateCategoryButton";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import {
+    deletePriceSection,
     setCategoryImageUpdated,
     setCategorySections,
     setCurrentSelectedCategory,
@@ -102,7 +103,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                 <CategoryInput />
                                 <CategoryPriceSection />
                             </div>
-                            <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
+                            <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2 thin-scroll-thumb">
                                 <CreateCategoryModalPriceSectionRenderer />
                             </div>
                         </ModalBody>
@@ -131,13 +132,18 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
 export default forwardRef(CreateCategoryModal);
 
 function CreateCategoryModalPriceSectionRenderer() {
+    const dispatch = useAppDispatch()
     const priceSections = useAppSelector(
         (state) => state.category.category_price_sec,
     );
+    function handleDeleteSection(id: string) {
+        dispatch(deletePriceSection(id));
+    }
     return (
         <CategoryPriceSectionRenderer
             renderDeleteButton={true}
             priceSections={priceSections}
+            onDelete={handleDeleteSection}
         />
     );
 }

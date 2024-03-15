@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { CategoryInput } from "../CategoryForm";
 import CategoryPriceSection from "../components/CategoryPriceSection";
 import CreateCategoryButton from "../components/buttons/CreateCategoryButton";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import CategoryPriceSectionRenderer from "../components/CategoryPriceSectionRenderer";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
@@ -22,6 +22,8 @@ function CreateCategoryPage({}: Props) {
         file: null,
     });
     const shouldRener = useMediaQuery({ query: "(max-width:750px)" });
+    const navigate = useNavigate();
+
     if (!shouldRener) {
         return <Navigate to={"/categories"} />;
     }
@@ -53,8 +55,14 @@ function CreateCategoryPage({}: Props) {
                 </ImageUploader>
                 <CategoryInput />
                 <CategoryPriceSection />
-                <CreateCategoryPagePriceSectionRenderer />
-                <CreateCategoryButton processedImage={processedImage} />
+                <div className="max-h-[400px] overflow-y-scroll thin-scroll-thumb w-full">
+                    <CreateCategoryPagePriceSectionRenderer />
+                </div>
+                <CreateCategoryButton
+                    processedImage={processedImage}
+                    className="z-10"
+                    onSuccess={() => navigate("/categories")}
+                />
             </CardBody>
         </Card>
     );
@@ -76,6 +84,7 @@ function CreateCategoryPagePriceSectionRenderer() {
             renderDeleteButton={true}
             priceSections={category_price_sec}
             onDelete={handleDeleteSection}
+            className="mb-2 w-full"
         />
     );
 }

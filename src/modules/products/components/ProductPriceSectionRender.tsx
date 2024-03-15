@@ -19,7 +19,7 @@ export function DummyPriceSectionRenderer({
 }) {
     return (
         <div
-            className={`flex flex-col gap-2 ${
+            className={`flex flex-col gap-2 w-full ${
                 data.length > 0 && "overflow-y-scroll"
             } ml-1`}
         >

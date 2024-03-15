@@ -111,7 +111,7 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
                                         }
                                     />
                                 </ImageUploader>
-                                <Input value={"hello"} disabled />
+                                <Input value={currentCategory?.name} disabled size="lg" radius="sm"/>
                             </div>
                             {isSectionExist && (
                                 <>
@@ -119,7 +119,7 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
                                         orientation="vertical"
                                         className="hidden md:block"
                                     />
-                                    <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2">
+                                    <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2 w-full md:w-1/2 lg:w-auto">
                                         <CategoryPriceSectionRenderer
                                             priceSections={data}
                                             renderDeleteButton={false}

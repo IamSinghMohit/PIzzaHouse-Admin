@@ -150,6 +150,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 <CreateTopingButton
                                     setIsLoading={setIsLoading}
                                     processedImage={processedImage}
+                                    onSuccess={onClose}
                                 />
                             ) : (
                                 <ToggledUpdateTopingButton

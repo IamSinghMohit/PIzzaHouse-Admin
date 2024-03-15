@@ -153,7 +153,7 @@ function CategoryPriceSection() {
                     <UiInput
                         variant="bordered"
                         radius="sm"
-                        size="sm"
+                        size="lg"
                         onChange={(e) => {
                             setChipText(e.target.value);
                             setErrors((prev) => ({
@@ -192,7 +192,7 @@ function CategoryPriceSection() {
                 </div>
             </CardHeader>
             <Divider />
-            <CardBody className="p-2 flex-wrap flex-row gap-2 max-h-[100px] overflow-y-scroll">
+            <CardBody className="p-2 flex-wrap flex-row gap-2 max-h-[100px] overflow-y-scroll thin-scroll-thumb">
                 {attributes.map((att) => (
                     <Chip
                         key={att.id}

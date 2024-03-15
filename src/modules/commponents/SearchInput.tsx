@@ -10,7 +10,8 @@ type Props = {
 function SearchInput({ value, onChange }: Props) {
     return (
         <Input
-            size="sm"
+            size="lg"
+            radius="sm"
             type="text"
             value={value}
             onChange={onChange}
