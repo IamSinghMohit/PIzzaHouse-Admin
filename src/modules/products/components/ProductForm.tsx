@@ -76,7 +76,7 @@ export function ProductDescriptionInput() {
             radius="sm"
             value={value}
             onChange={(e) => {
-                if (e.target.value.length < 120) {
+                if (e.target.value.length < 230) {
                     setValue(e.target.value);
                     if (error.length > 0) {
                         setError("");

@@ -33,7 +33,7 @@ function Navbar({}: Props) {
                 <img src={Logo} alt="logo image" className="w-full h-full" />
             </div>
             <NavLink to="faq" className="underline text-primaryOrange">
-                FAQ
+                FAQ 🔥
             </NavLink>
             {showToggleButton ? (
                 <div
