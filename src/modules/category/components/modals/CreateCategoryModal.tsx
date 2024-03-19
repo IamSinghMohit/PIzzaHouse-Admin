@@ -69,7 +69,6 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                 dispatch(setCurrentSelectedCategory(null));
                 dispatch(setCategorySections({ data: [], type: "REPLACE" }));
                 dispatch(setCategoryImageUpdated(false));
-                onClose();
             }}
             radius="sm"
             className="h-[530px]"

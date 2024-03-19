@@ -22,9 +22,10 @@ export function useCreateCategory() {
     return useMutation<TCategorySchema, TBackendErrorReponse, any>({
         mutationKey: ["category", "create"],
         mutationFn: createCategory,
-        onSuccess: () => {
-            qeryClient.invalidateQueries({
+        onSuccess: async () => {
+            await qeryClient.invalidateQueries({
                 queryKey: ["category"],
+                refetchType:'all'
             });
             successToast("category created");
         },

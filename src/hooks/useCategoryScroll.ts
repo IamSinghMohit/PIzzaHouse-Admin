@@ -5,6 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 async function InfiniteCategoryScroll(
     cursor?: string
 ): Promise<TCategorySchema[]> {
+    console.log('fetching')
     return await axios
         .get(`/category/search?name&limit=10&cursor=${cursor}`)
         .then((res) => res.data.data);
@@ -20,8 +21,6 @@ export function useCategoryScroll() {
             lastePage.length >= 10
                 ? lastePage[lastePage.length - 1].id
                 : undefined,
-        refetchInterval: false,
-        refetchIntervalInBackground: false,
     });
 
     return {

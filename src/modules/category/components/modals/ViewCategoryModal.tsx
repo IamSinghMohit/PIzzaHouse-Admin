@@ -73,7 +73,6 @@ function ViewCategoryModel({}: Props, ref: Ref<TModalRef>) {
                 setProcessedImage({ url: "", file: null });
                 dispatch(setCurrentSelectedCategory(null));
                 dispatch(setCategorySections({ data: [], type: "REPLACE" }));
-                onClose();
             }}
             radius="sm"
             className={isSectionExist ? "h-[530px]" : ""}

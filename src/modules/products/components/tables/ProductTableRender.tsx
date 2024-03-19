@@ -76,6 +76,7 @@ function ProductTableRender({
             radius="sm"
             classNames={{
                 table: `${isLoading && "h-[500px]"}`,
+                base:'thin-scroll-thumb max-h-[600px]'
             }}
         >
             <TableHeader>

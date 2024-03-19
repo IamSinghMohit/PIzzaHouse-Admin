@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation} from "@tanstack/react-query";
 
 async function updateStatus(opts: { id: string; data: string }) {
     await axios.patch(`/order/${opts.id}`, { status: opts.data });

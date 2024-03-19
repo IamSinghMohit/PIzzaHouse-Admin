@@ -12,7 +12,7 @@ import { setTriedAutoToLogin, setUser } from "@/store/slices/user";
 
 function Login() {
     const { user, isTriedToAutoLogin } = useAppSelector((state) => state.user);
-    const { isError, data: queryData } = useUserAutoLogin({
+    const { isError, data: queryData} = useUserAutoLogin({
         enabled: !user && !isTriedToAutoLogin,
     });
     const { mutate, data ,isPending} = useUserLogin();

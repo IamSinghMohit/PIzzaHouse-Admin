@@ -1,21 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { TGetOrderSchema, GetOrderSchema } from "../schema";
-import { TBackendErrorReponse, makeRequest } from "@/utils";
+import { TBackendErrorReponse, ValidateBackendResponse } from "@/utils";
+import api from "@/lib/axios";
 
-async function getOrders(): Promise<TGetOrderSchema > {
-    return await makeRequest(
-        {
-            url: "order/admin",
-            method: "GET",
+type TOpts = {
+    page: number;
+    limit: number | string;
+};
+export function useOrders({ page, limit }: TOpts) {
+    return useQuery<TGetOrderSchema, TBackendErrorReponse>({
+        queryKey: ["orders", `page=${page}`, `limit=${limit}`],
+        queryFn: async () =>
+            await api.get("order/admin").then((res) => res.data),
+        select: (data) => {
+            return ValidateBackendResponse(data, GetOrderSchema);
         },
-        GetOrderSchema
-    );
-}
-
-export function useOrders() {
-    return useQuery<TGetOrderSchema,TBackendErrorReponse>({
-        queryFn: getOrders,
-        queryKey: ["orders", "page=1"],
-        retry:false,
     });
 }

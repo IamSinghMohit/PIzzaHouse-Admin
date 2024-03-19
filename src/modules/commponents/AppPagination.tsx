@@ -1,11 +1,12 @@
 import { Select, SelectItem, Pagination } from "@nextui-org/react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 interface Props {
     totalPages: number;
     page: number;
     setPage: Dispatch<SetStateAction<number>>;
     selected: string;
     setSelected: Dispatch<SetStateAction<string>>;
+    children?: ReactNode;
 }
 
 function AppPagination({
@@ -13,6 +14,7 @@ function AppPagination({
     page,
     setPage,
     selected,
+    children,
     setSelected,
 }: Props) {
     return (
@@ -56,6 +58,7 @@ function AppPagination({
                     30
                 </SelectItem>
             </Select>
+            {children}
         </div>
     );
 }

@@ -91,7 +91,6 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                 );
                 dispatch(setTopingCategories({}));
                 dispatch(setTopingUpdatedFields({ type: "ALL", value: false }));
-                onClose();
             }}
             radius="sm"
         >

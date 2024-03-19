@@ -105,7 +105,6 @@ function ProductModal({ type }: Props, ref: Ref<TModalRef>) {
                 dispatch(
                     setProductUpdatedFields({ type: "ALL", value: false }),
                 );
-                onClose();
             }}
             radius="sm"
             className="h-[530px]"

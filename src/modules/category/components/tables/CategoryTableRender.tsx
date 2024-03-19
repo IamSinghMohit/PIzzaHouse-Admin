@@ -54,7 +54,7 @@ function CategoryTableRender({
             className="thin-scroll-thumb"
             classNames={{
                 table: `${isLoading && "h-[500px]"}`,
-                base:'thin-scroll-thumb'
+                base:'thin-scroll-thumb max-h-[600px]'
             }}
         >
             <TableHeader>

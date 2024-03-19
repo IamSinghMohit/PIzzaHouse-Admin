@@ -7,7 +7,7 @@ async function updateCategory(data: any): Promise<TCategorySchema> {
     return await makeRequest(
         {
             url: "/category/admin/update",
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Content-Type": "multipart/form-data",
             },

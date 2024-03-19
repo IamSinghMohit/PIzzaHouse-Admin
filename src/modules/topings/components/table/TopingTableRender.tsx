@@ -80,6 +80,7 @@ function ProductTableRender({
             layout="auto"
             classNames={{
                 table: `${isLoading && "h-[500px]"}`,
+                base:'thin-scroll-thumb max-h-[600px]'
             }}
         >
             <TableHeader>
