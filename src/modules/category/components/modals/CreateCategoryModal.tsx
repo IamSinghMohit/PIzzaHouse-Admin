@@ -79,11 +79,12 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                         {isLoading && (
                             <div className="modal-overlay w-full h-[530px] absolute"></div>
                         )}
-                        <ModalHeader className="flex flex-col gap-1">
+                        <ModalHeader className="pb-1">
                             Create Category
                         </ModalHeader>
                         <ModalBody className="flex-row justify-between">
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-start gap-2">
                                 <ImageUploader
                                     aspectRatio={{ x: 2, y: 2 }}
                                     processedImage={processedImage}
@@ -100,6 +101,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                                     />
                                 </ImageUploader>
                                 <CategoryInput />
+                                </div>
                                 <CategoryPriceSection />
                             </div>
                             <div className="overflow-y-scroll space-y-3 max-h-[400px] pr-2 thin-scroll-thumb">

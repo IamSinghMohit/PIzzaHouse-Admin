@@ -116,7 +116,7 @@ function Orders({}: Props) {
                             isIconOnly
                             className="bg-primaryOrange text-white"
                             onClick={() => {
-                                queryClient.invalidateQueries({
+                                queryClient.refetchQueries({
                                     queryKey: ["orders"],
                                 });
                             }}
