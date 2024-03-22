@@ -158,7 +158,7 @@ function OrderSelector({ order }: { order: TGetOrderSchema["orders"][0] }) {
             isDisabled={selected === OrderStatusEnum.COMPLETE}
             defaultSelectedKeys={[order.status]}
             disabledKeys={disabled}
-            size="sm"
+            size="md"
             radius="sm"
             variant="faded"
             onChange={(e) => handleOnChange(e.target.value)}

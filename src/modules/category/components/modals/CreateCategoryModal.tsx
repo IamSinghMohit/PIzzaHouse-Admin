@@ -84,7 +84,7 @@ function CreateCategoryModal({}: Props, ref: Ref<TModalRef>) {
                         </ModalHeader>
                         <ModalBody className="flex-row justify-between">
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-start gap-2">
+                                <div className="flex items-end gap-2">
                                 <ImageUploader
                                     aspectRatio={{ x: 2, y: 2 }}
                                     processedImage={processedImage}
