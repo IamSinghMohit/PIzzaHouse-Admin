@@ -1,7 +1,7 @@
 import ModalButton from "@/modules/commponents/ModalButton";
 import { useCreateProduct } from "../../hooks/useCreateProduct";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { errorToast } from "@/lib/toast";
@@ -29,6 +29,7 @@ function CreateProductButton({
     const dispatch = useAppDispatch();
 
     function handleCreate() {
+        return ShowProhibitedInfo()
         if (!processedImage.file) {
             return errorToast("image is required");
         } else if (!product_management.product_name) {

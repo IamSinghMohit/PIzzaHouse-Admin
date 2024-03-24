@@ -3,7 +3,7 @@ import { useUpdateCategory } from "../../hooks";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import ModalButton from "@/modules/commponents/ModalButton";
 
 interface Props {
@@ -24,10 +24,11 @@ function UpdateCategoryButton({
 
     const handleUpdateCategory = () => {
         if (!is_image_updated || !current_selected_category) return;
+        return ShowProhibitedInfo();
         FormDataSend(
             {
                 image: processedImage.file,
-                id: current_selected_category.id,
+                id: current_selected_category!.id, // remove this '!' mark when running in dev or original depl
             },
             mutate,
         );

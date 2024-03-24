@@ -5,6 +5,7 @@ import { TModalRef } from "@/types/Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import AlertModelContent from "@/modules/commponents/AlertModelContent";
 import { setCurrentSelectedCategory } from "@/store/slices/category";
+import { ShowProhibitedInfo } from "@/utils";
 
 interface Props {}
 
@@ -16,6 +17,7 @@ function DeleteCategoryAlert({}: Props, ref: Ref<TModalRef>) {
     const dispatch = useAppDispatch();
 
     function handleYesPress() {
+        return  ShowProhibitedInfo()
         mutate(currentCategory?.id || "");
         dispatch(setCurrentSelectedCategory(null));
     }

@@ -2,7 +2,7 @@ import { useCreateCategory } from "../../hooks";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import { errorToast } from "@/lib/toast";
 import ModalButton from "@/modules/commponents/ModalButton";
 
@@ -25,6 +25,7 @@ function CreateCategoryButton({
     );
 
     function handleCreate() {
+        return ShowProhibitedInfo()
         if (!processedImage.file) {
             return errorToast("image is required");
         } else if (!category_name) {

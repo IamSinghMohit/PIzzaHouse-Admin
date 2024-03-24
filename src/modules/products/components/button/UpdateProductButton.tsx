@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/state";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useUpdateProduct } from "../../hooks/useUpdateProduct";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import { errorToast } from "@/lib/toast";
 import { setProductPriceSectionAttribute } from "@/store/slices/product";
 
@@ -29,6 +29,7 @@ function UpdateProductButton({
     } = useAppSelector((state) => state.product);
 
     function handleUpdateProduct() {
+        return ShowProhibitedInfo()
         const obj: any = {
             id: product_management.product_id,
             featured:product_management.product_featured,

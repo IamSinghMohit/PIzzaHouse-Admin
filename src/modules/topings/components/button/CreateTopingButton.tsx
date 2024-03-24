@@ -1,6 +1,6 @@
 import ModalButton from "@/modules/commponents/ModalButton";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import { TProcessedImage } from "@/types/ImageUploader";
 import { useAppSelector } from "@/hooks/state";
 import { errorToast } from "@/lib/toast";
@@ -20,6 +20,7 @@ function CreateTopingButton({ setIsLoading, processedImage ,onSuccess}: Props) {
     const topingCategoryArray = Object.keys(categories )
 
     function handleCreate() {
+        return ShowProhibitedInfo()
         if (!processedImage.file) {
             return errorToast("image is required");
         } else if (!toping_management.name) {

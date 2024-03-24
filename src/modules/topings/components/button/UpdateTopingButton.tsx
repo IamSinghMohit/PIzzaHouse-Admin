@@ -3,7 +3,7 @@ import { TProcessedImage } from "@/types/ImageUploader";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useAppSelector } from "@/hooks/state";
 import { IconPencilPlus } from "@tabler/icons-react";
-import { FormDataSend } from "@/utils";
+import { FormDataSend, ShowProhibitedInfo } from "@/utils";
 import { useUpdateToping } from "../../hooks/useUpdateToping";
 
 export interface TUpdateTopingButton {
@@ -26,6 +26,7 @@ function UpdateTopingButton({
     const categories = Object.keys(categoriesMap)
 
     function handleUpdateProduct() {
+        return ShowProhibitedInfo()
         const obj: any = {
             id: toping_management.id,
             ...(updated_fields.name ? { name: toping_management.name } : {}),

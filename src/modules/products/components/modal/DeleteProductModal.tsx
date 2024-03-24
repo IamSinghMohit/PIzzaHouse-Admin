@@ -4,6 +4,7 @@ import AlertModelContent from "@/modules/commponents/AlertModelContent";
 import { useDeleteProduct } from "../../hooks/useDeleteProduct";
 import { TModalRef } from "@/types/Modal";
 import { forwardRef, Ref } from "react";
+import { ShowProhibitedInfo } from "@/utils";
 
 function DeleteProductModal({}, ref: Ref<TModalRef>) {
     const id = useAppSelector(
@@ -14,6 +15,7 @@ function DeleteProductModal({}, ref: Ref<TModalRef>) {
     );
     const { mutate } = useDeleteProduct();
     const handleDeleteProduct = () => {
+        return ShowProhibitedInfo()
         mutate(id || "");
     };
 

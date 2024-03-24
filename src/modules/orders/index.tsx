@@ -24,6 +24,7 @@ import { errorToast } from "@/lib/toast";
 import { ZodError } from "zod";
 import { IconRefresh } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { ShowProhibitedInfo } from "@/utils";
 
 interface Props {}
 
@@ -145,6 +146,7 @@ function OrderSelector({ order }: { order: TGetOrderSchema["orders"][0] }) {
     const [disabled, setDisabled] = useState<Array<string>>(keys);
 
     function handleOnChange(data: string) {
+        return ShowProhibitedInfo()
         setDisabled((prev) => [...prev, selected]);
         setSelected(data);
         mutate({ id: order.id, data: data });

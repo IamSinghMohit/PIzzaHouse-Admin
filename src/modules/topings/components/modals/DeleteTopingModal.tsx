@@ -4,6 +4,7 @@ import AlertModelContent from "@/modules/commponents/AlertModelContent";
 import { TModalRef } from "@/types/Modal";
 import { forwardRef, Ref } from "react";
 import { useDeleteToping } from "../../hooks/useDeleteTopoing";
+import { ShowProhibitedInfo } from "@/utils";
 
 function DeleteTopinModal({}, ref: Ref<TModalRef>) {
     const {mutate} = useDeleteToping()
@@ -15,6 +16,7 @@ function DeleteTopinModal({}, ref: Ref<TModalRef>) {
     );
 
     const handleDeleteProduct = () => {
+        return ShowProhibitedInfo()
         mutate(id || "");
     };
 

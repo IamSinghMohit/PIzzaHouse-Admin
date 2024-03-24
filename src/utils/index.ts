@@ -1,4 +1,6 @@
 import { Cloudinary } from "@cloudinary/url-gen";
+import { IconInfoTriangle } from "@tabler/icons-react";
+import toast from "react-hot-toast";
 
 export function FormDataSend(
     data: Record<string, any>,
@@ -72,4 +74,10 @@ export function ValidateBackendErrorResponse(res: any) {
         }),
     });
     return schema.parse(res).error;
+}
+export function ShowProhibitedInfo() {
+    toast.error("Database operations are prohibited");
+    toast("Go to faq page for more info", {
+        icon:"💡",
+    });
 }
