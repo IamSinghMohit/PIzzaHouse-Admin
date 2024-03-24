@@ -1,5 +1,4 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { IconInfoTriangle } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 
 export function FormDataSend(
