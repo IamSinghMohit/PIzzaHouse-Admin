@@ -72,6 +72,19 @@ function FaqPage({}: Props) {
                             Bro i am not a UI designer i am a engineer i just
                             built it from what i was able to come up
                         </AccordionItem>
+                        <AccordionItem
+                            key="4"
+                            aria-label="Accordion 4"
+                            title="Api are not working or they too slow"
+                            classNames={{
+                                title: "font-bold",
+                            }}
+                        >
+                            It could be due to that `render.com`,my hosting
+                            provider will shutdown my server after some
+                            inactivity and its rebooting could take more than 50
+                            seconds.
+                        </AccordionItem>
                     </Accordion>
                 </div>
             </div>
