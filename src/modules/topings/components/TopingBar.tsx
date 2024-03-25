@@ -131,7 +131,7 @@ function TopingBar() {
 
     return (
         <Card className="mb-2" shadow="sm" radius="sm">
-            <CardBody className="flex-row justify-between flex-wrap gap-3">
+            <CardBody className="flex-row justify-between flex-wrap gap-3 overflow-hidden">
                 <div className="bar-grid">
                     <TopingSearchInput />
                     <FetchingCategorySelector />
