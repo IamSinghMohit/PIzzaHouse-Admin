@@ -103,7 +103,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                         <ModalHeader className="flex flex-col gap-1">
                             {type} Toping
                         </ModalHeader>
-                        <ModalBody className="flex-row justify-center gap-8 sm:justify-between flex-wrap">
+                        <ModalBody className="flex-row justify-center gap-2 sm:justify-between flex-wrap">
                             <div className="flex flex-col gap-3 items-center">
                                 <ImageUploader
                                     aspectRatio={{ x: 2, y: 2 }}
@@ -127,7 +127,7 @@ function TopingModal({ type }: Props, ref: Ref<TModalRef>) {
                                 </ImageUploader>
 
                                 <TopingNameInput />
-                                <TopingCategoryRenderer className="min-w-[280px] min-[280px]" />
+                                <TopingCategoryRenderer className="min-w-[280px] min-[280px] max-w-[310px]" />
                             </div>
                             <Divider orientation="vertical" />
                             <div className="flex gap-3 flex-col items-end">
