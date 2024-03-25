@@ -52,7 +52,7 @@ body {
 .thin-scroll-thumb::-webkit-scrollbar {
    width: 4px; 
 }
-.thin-scroll-thumb*::-webkit-scrollbar {
+.thin-scroll-thumb *::-webkit-scrollbar {
    width: 4px; 
 }
 /* ************************************ Scrollbar******/
