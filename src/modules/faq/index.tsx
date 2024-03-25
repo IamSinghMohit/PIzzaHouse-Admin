@@ -75,14 +75,14 @@ function FaqPage({}: Props) {
                         <AccordionItem
                             key="4"
                             aria-label="Accordion 4"
-                            title="Api are not working or they too slow"
+                            title="Api's are not working or they are too slow"
                             classNames={{
                                 title: "font-bold",
                             }}
                         >
                             It could be due to that `render.com`,my hosting
                             provider will shutdown my server after some
-                            inactivity and its rebooting could take more than 50
+                            inactivity and its reboot could take more than 50
                             seconds.
                         </AccordionItem>
                     </Accordion>
